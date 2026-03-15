@@ -304,9 +304,182 @@
       color: #444;
       font-size: 0.75rem;
     }
+
+    /* ═══════════════════════════════════════
+       DRAGON BACKGROUND ANIMATION
+    ═══════════════════════════════════════ */
+    #dragon-wrap {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    #dragon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 340px;
+      height: 260px;
+      opacity: 0.13;
+      filter: drop-shadow(0 0 12px rgba(255, 107, 0, 0.18));
+      transform-origin: 170px 130px;
+      animation: dragonFlight 42s ease-in-out infinite;
+      will-change: transform, opacity;
+    }
+
+    @keyframes dragonFlight {
+      /* Segment 1 — enter from left, sweep across mid-screen → exit right */
+      0%   { transform: translate(-420px, calc(48vh - 130px)) rotate(0deg) scale(1);    opacity: 0; }
+      4%   { opacity: 0.13; }
+      16%  { transform: translate(calc(28vw - 170px), calc(38vh - 130px)) rotate(-10deg) scale(1.05); opacity: 0.14; }
+      28%  { transform: translate(calc(64vw - 170px), calc(20vh - 130px)) rotate(-24deg) scale(0.95); opacity: 0.13; }
+      38%  { transform: translate(calc(100vw + 60px), calc(10vh - 130px)) rotate(-8deg) scale(1);  opacity: 0.12; }
+      41%  { opacity: 0; }
+
+      /* jump to top — re-enter diving down-left */
+      42%  { transform: translate(calc(78vw - 170px), -320px) rotate(88deg) scale(1.05); opacity: 0; }
+      45%  { opacity: 0.12; }
+      54%  { transform: translate(calc(50vw - 170px), calc(45vh - 130px)) rotate(170deg) scale(1); opacity: 0.14; }
+      63%  { transform: translate(calc(16vw - 170px), calc(72vh - 130px)) rotate(198deg) scale(0.95); opacity: 0.13; }
+      70%  { transform: translate(-360px, calc(86vh - 130px)) rotate(182deg) scale(1); opacity: 0.12; }
+      73%  { opacity: 0; }
+
+      /* jump to bottom — re-enter rising up */
+      74%  { transform: translate(calc(44vw - 170px), calc(100vh + 60px)) rotate(-92deg) scale(1.08); opacity: 0; }
+      77%  { opacity: 0.12; }
+      87%  { transform: translate(calc(22vw - 170px), calc(28vh - 130px)) rotate(-18deg) scale(1); opacity: 0.14; }
+      96%  { transform: translate(-380px, calc(52vh - 130px)) rotate(-4deg) scale(1); opacity: 0.13; }
+      100% { transform: translate(-420px, calc(48vh - 130px)) rotate(0deg) scale(1); opacity: 0; }
+    }
   </style>
 </head>
 <body>
+
+  <!-- ═══ FLYING DRAGON ═══ -->
+  <div id="dragon-wrap">
+    <svg id="dragon" xmlns="http://www.w3.org/2000/svg" viewBox="-170 -130 340 260"
+         role="presentation" aria-hidden="true">
+
+      <!-- ── BACK WING (far, slightly dimmer) ── -->
+      <g id="wing-back">
+        <path d="M -18,-16
+                 C -45,-55 -72,-95 -92,-110
+                 C -78,-84 -62,-56 -44,-28
+                 C -48,-8  -44,10  -32,20
+                 Z"
+              fill="rgba(140,62,18,0.88)"/>
+        <!-- wing spars -->
+        <line x1="-18" y1="-16" x2="-92" y2="-110" stroke="rgba(85,38,8,0.5)"  stroke-width="1.8"/>
+        <line x1="-18" y1="-16" x2="-62" y2="-85"  stroke="rgba(85,38,8,0.35)" stroke-width="1.2"/>
+        <line x1="-18" y1="-16" x2="-35" y2="-62"  stroke="rgba(85,38,8,0.22)" stroke-width="1"/>
+        <animateTransform attributeName="transform" type="rotate"
+          values="0,-18,-16; 16,-18,-16; -3,-18,-16; 16,-18,-16; 0,-18,-16"
+          keyTimes="0; 0.32; 0.52; 0.72; 1"
+          calcMode="spline"
+          keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
+          dur="1.9s" repeatCount="indefinite"/>
+      </g>
+
+      <!-- ── FRONT WING (near, brighter, slightly larger) ── -->
+      <g id="wing-front">
+        <path d="M 12,-18
+                 C 38,-60 68,-96 88,-108
+                 C 72,-78  50,-50  28,-24
+                 C 22,-6   16,12   8,20
+                 Z"
+              fill="rgba(158,72,22,0.93)"/>
+        <!-- wing spars -->
+        <line x1="12" y1="-18" x2="88" y2="-108" stroke="rgba(95,44,10,0.52)" stroke-width="1.8"/>
+        <line x1="12" y1="-18" x2="60" y2="-82"  stroke="rgba(95,44,10,0.36)" stroke-width="1.2"/>
+        <line x1="12" y1="-18" x2="34" y2="-60"  stroke="rgba(95,44,10,0.22)" stroke-width="1"/>
+        <animateTransform attributeName="transform" type="rotate"
+          values="0,12,-18; 18,12,-18; -4,12,-18; 18,12,-18; 0,12,-18"
+          keyTimes="0; 0.32; 0.52; 0.72; 1"
+          calcMode="spline"
+          keySplines="0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1; 0.4 0 0.6 1"
+          dur="1.9s" begin="0.18s" repeatCount="indefinite"/>
+      </g>
+
+      <!-- ── BODY ── -->
+      <ellipse cx="0" cy="2" rx="60" ry="17" fill="rgba(52,70,36,0.97)"/>
+      <!-- scale sheen -->
+      <ellipse cx="4" cy="-2" rx="36" ry="9"  fill="rgba(74,96,52,0.28)"/>
+      <!-- dorsal spines -->
+      <path d="M -44,-15 L -41,-26 L -37,-15" fill="rgba(65,88,46,0.55)"/>
+      <path d="M -24,-16 L -21,-28 L -17,-16" fill="rgba(65,88,46,0.60)"/>
+      <path d="M  -4,-17 L  -1,-30 L   3,-17" fill="rgba(65,88,46,0.65)"/>
+      <path d="M  16,-17 L  19,-28 L  23,-17" fill="rgba(65,88,46,0.60)"/>
+      <path d="M  36,-15 L  39,-26 L  43,-15" fill="rgba(65,88,46,0.55)"/>
+
+      <!-- ── NECK ── -->
+      <path d="M 50,-13 C 66,-9 82,-4 90,-1 C 82,4 66,8 50,13 Z"
+            fill="rgba(56,75,40,0.97)"/>
+
+      <!-- ── HEAD ── -->
+      <path d="M 84,-10 C 98,-5 114,0 120,1 C 114,5 98,7 84,10 C 90,5 90,-3 84,-10 Z"
+            fill="rgba(54,73,38,0.97)"/>
+      <!-- snout -->
+      <path d="M 108,-3 C 120,-1 128,1 130,2 C 120,4 108,5 106,4 Z"
+            fill="rgba(50,68,34,0.90)"/>
+      <!-- nostril -->
+      <circle cx="124" cy="2" r="1.6" fill="rgba(28,46,18,0.7)"/>
+
+      <!-- ── EYE ── -->
+      <ellipse cx="95" cy="-2" rx="3.2" ry="2.6" fill="rgba(255,165,30,0.95)"/>
+      <ellipse cx="95.4" cy="-2" rx="1.6" ry="2"   fill="rgba(200,55,0,0.95)"/>
+      <circle  cx="94.6" cy="-3"  r="0.8"           fill="rgba(255,255,200,0.85)"/>
+
+      <!-- ── HORNS ── -->
+      <path d="M 90,-9 L 95,-28 L 99,-10"  fill="rgba(40,58,26,0.90)"/>
+      <path d="M 82,-8 L 86,-20 L 89,-9"   fill="rgba(40,58,26,0.75)"/>
+      <path d="M 74,-7 L 77,-15 L 79,-7"   fill="rgba(40,58,26,0.50)"/>
+      <!-- chin spike -->
+      <path d="M 92,8 L 94,18 L 97,9"      fill="rgba(40,58,26,0.55)"/>
+
+      <!-- ── FRONT LEGS ── -->
+      <path d="M 34,15 C 37,25 37,35 35,40"
+            stroke="rgba(48,65,33,0.80)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M 35,40 L 30,47 M 35,40 L 37,48 M 35,40 L 43,44"
+            stroke="rgba(48,65,33,0.80)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+
+      <path d="M 18,16 C 20,26 20,35 18,40"
+            stroke="rgba(48,65,33,0.70)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M 18,40 L 13,47 M 18,40 L 20,48 M 18,40 L 26,44"
+            stroke="rgba(48,65,33,0.70)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+
+      <!-- ── BACK LEGS ── -->
+      <path d="M -14,15 C -13,25 -13,34 -15,39"
+            stroke="rgba(48,65,33,0.72)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M -15,39 L -20,46 M -15,39 L -13,47 M -15,39 L -7,43"
+            stroke="rgba(48,65,33,0.72)" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+
+      <path d="M -30,14 C -31,23 -30,32 -32,37"
+            stroke="rgba(48,65,33,0.62)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M -32,37 L -38,43 M -32,37 L -30,45 M -32,37 L -24,41"
+            stroke="rgba(48,65,33,0.62)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+
+      <!-- ── TAIL — long sinuous coil ── -->
+      <path d="M -60,5
+               C -80,12 -98,-5 -112,-2
+               C -124,1  -128,14 -134,18
+               C -138,21 -136,14 -140,20"
+            stroke="rgba(50,68,35,0.96)" stroke-width="9"  fill="none" stroke-linecap="round"/>
+      <!-- tail highlight -->
+      <path d="M -60,5
+               C -80,12 -98,-5 -112,-2
+               C -124,1  -128,14 -134,18
+               C -138,21 -136,14 -140,20"
+            stroke="rgba(68,90,50,0.28)" stroke-width="5"  fill="none" stroke-linecap="round"/>
+      <!-- tail tip — spade/diamond -->
+      <path d="M -140,20 L -152,13 L -156,22 L -150,31 L -140,25 Z"
+            fill="rgba(50,68,35,0.92)"/>
+
+    </svg>
+  </div>
+  <!-- ═══ /FLYING DRAGON ═══ -->
+
   <div class="bg"></div>
   <div class="container">
     <img
