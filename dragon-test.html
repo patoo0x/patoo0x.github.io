@@ -7,429 +7,264 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #0a0a0a; overflow: hidden; }
-    canvas { display: block; }
-    #info {
-      position: fixed; bottom: 1.5rem; left: 50%;
-      transform: translateX(-50%);
-      color: rgba(255,255,255,0.2);
-      font-family: sans-serif; font-size: 0.7rem;
-      letter-spacing: 0.1em; text-transform: uppercase;
+
+    #dragon-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100% !important;
+      height: 100% !important;
       pointer-events: none;
+      z-index: 0;
+      opacity: 0.20;  /* transparency level — adjust here */
     }
+
+    /* Sample page content so we can test contrast */
+    .content {
+      position: relative;
+      z-index: 1;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 100vh;
+      color: #fff; font-family: sans-serif; text-align: center;
+      gap: 1rem;
+    }
+    .content h1 { font-size: 3rem; font-weight: 700; letter-spacing: -0.03em; }
+    .content p  { color: rgba(255,255,255,0.45); font-size: 1rem; }
   </style>
 </head>
 <body>
-<canvas id="c"></canvas>
-<div id="info">dragon test · patoo.ai</div>
+
+<!-- Three.js WebGL dragon — transparent overlay -->
+<canvas id="dragon-canvas"></canvas>
+
+<!-- Test content underneath -->
+<div class="content">
+  <h1>Patoo</h1>
+  <p>@Patoo0x · Monkey-Lion-Owl-Dragon spirit animal.</p>
+  <p>⚡ Zap · Nostr · GitHub</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="./STLLoader.js"></script>
 <script>
 (function () {
   'use strict';
 
-  const CV = document.getElementById('c');
-  const CX = CV.getContext('2d');
-
-  function resize() { CV.width = window.innerWidth; CV.height = window.innerHeight; }
-  window.addEventListener('resize', resize);
-  resize();
-
   // ─────────────────────────────────────────────────────────────────────────
-  // CONFIG — mirrors the reference (14 body segs, head, 4 legs, tail)
+  // RENDERER — transparent background so page shows through
   // ─────────────────────────────────────────────────────────────────────────
-  const BNUM    = 14;       // body segments (same as reference)
-  const SPEED   = 0.28;     // degrees/frame → matches reference 0.2 rad/sec at 60fps
-  const SEG_R   = 38;       // body segment disc radius (px)
-  const HEAD_R  = 62;       // head radius (px)
-  const OPA     = 0.52;     // overall opacity
-
-  // Path radius as fraction of screen — keeps dragon on screen most of the time
-  const RX = () => Math.min(CV.width, CV.height) * 0.30;
-  const RY = () => Math.min(CV.width, CV.height) * 0.22;
+  const canvas = document.getElementById('dragon-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0);  // fully transparent clear
 
   // ─────────────────────────────────────────────────────────────────────────
-  // PARAMETRIC PATH  (same circle + vertical wobble as reference)
-  //   x = cx + Rx * cos(θ)
-  //   y = cy + Ry * cos(3θ)   ← vertical lissajous
+  // SCENE + CAMERA
   // ─────────────────────────────────────────────────────────────────────────
-  function path(theta) {
-    const cx = CV.width  * 0.5;
-    const cy = CV.height * 0.5;
-    return {
-      x: cx + RX() * Math.cos(theta),
-      y: cy + RY() * Math.cos(3 * theta),
-      // tangent angle (direction of travel)
-      angle: Math.atan2(
-        -3 * RY() * Math.sin(3 * theta),
-        -RX() * Math.sin(theta)
-      )
-    };
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 1000);
+  camera.position.set(3, 0.15, 3);
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // LIGHTING — warm copper tones
+  // ─────────────────────────────────────────────────────────────────────────
+  const ambientLight = new THREE.AmbientLight(0xffd0a0, 1.8);
+  scene.add(ambientLight);
+
+  const dirLight1 = new THREE.DirectionalLight(0xffe8c0, 4.5);
+  dirLight1.position.set(8, 15, 10);
+  scene.add(dirLight1);
+
+  const dirLight2 = new THREE.DirectionalLight(0xff6020, 2.2);
+  dirLight2.position.set(-12, -5, -8);
+  scene.add(dirLight2);
+
+  const rimLight = new THREE.DirectionalLight(0xffa050, 1.8);
+  rimLight.position.set(0, 5, -15);
+  scene.add(rimLight);
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // MATERIALS — replicate the copper/red BRDF shaders with Phong
+  // ─────────────────────────────────────────────────────────────────────────
+  const matHead = new THREE.MeshPhongMaterial({
+    color:    0xd4762a,
+    specular: 0xffe0a0,
+    shininess: 220,
+    emissive: 0x2a0c00,
+    emissiveIntensity: 0.5
+  });
+
+  const matBody = new THREE.MeshPhongMaterial({
+    color:    0xb35218,
+    specular: 0xd4a050,
+    shininess: 180,
+    emissive: 0x1e0800,
+    emissiveIntensity: 0.45
+  });
+
+  const matLegs = new THREE.MeshPhongMaterial({
+    color:    0x8b1818,
+    specular: 0xff5030,
+    shininess: 140,
+    emissive: 0x1a0000,
+    emissiveIntensity: 0.45
+  });
+
+  const matTail = new THREE.MeshPhongMaterial({
+    color:    0xc56820,
+    specular: 0xffc060,
+    shininess: 200,
+    emissive: 0x250a00,
+    emissiveIntensity: 0.48
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // LOAD STL MESHES
+  // ─────────────────────────────────────────────────────────────────────────
+  const loader = new THREE.STLLoader();
+  let tou, wei;
+  const jiao  = [];
+  const meshB = [];
+  const BNUM  = 14;
+  let ready   = false;
+  let loaded  = 0;
+
+  function onLoad() {
+    loaded++;
+    if (loaded === 3 + BNUM) { ready = true; }
+  }
+
+  // Head
+  loader.load('./tou.stl', geo => {
+    tou = new THREE.Mesh(geo, matHead);
+    tou.scale.set(0.15, 0.15, 0.15);
+    tou.rotation.set(-Math.PI / 2, 0, 0);
+    scene.add(tou);
+    onLoad();
+  });
+
+  // Tail
+  loader.load('./wei.stl', geo => {
+    wei = new THREE.Mesh(geo, matTail);
+    wei.scale.set(0.11, 0.11, 0.11);
+    wei.rotation.set(-Math.PI / 2, 0, 0);
+    scene.add(wei);
+    onLoad();
+  });
+
+  // Legs (2 pairs)
+  for (let i = 0; i < 4; i++) {
+    const file = (i === 0 || i === 2) ? './jiao.stl' : './jiao2.stl';
+    loader.load(file, geo => {
+      const m = new THREE.Mesh(geo, matLegs);
+      m.scale.set(0.12, 0.12, 0.12);
+      m.rotation.set(-Math.PI / 2, 0, -Math.PI / 2);
+      jiao.push(m);
+      scene.add(m);
+    });
+  }
+
+  // Body segments
+  for (let i = 0; i < BNUM; i++) {
+    loader.load('./bodyy.stl', geo => {
+      const m = new THREE.Mesh(geo, matBody.clone());
+      m.scale.set(0.2, 0.1, 0.2);
+      m.rotation.set(-Math.PI / 2, 0, 0);
+      meshB.push(m);
+      scene.add(m);
+      onLoad();
+    });
   }
 
   // ─────────────────────────────────────────────────────────────────────────
-  // STARS
+  // ANIMATION — identical to test2.js render()
   // ─────────────────────────────────────────────────────────────────────────
-  const STARS = Array.from({length: 200}, () => ({
-    x: Math.random(), y: Math.random(),
-    r: Math.random() * 1.3 + 0.2,
-    a: Math.random() * 0.45 + 0.08,
-    tw: Math.random() * Math.PI * 2
-  }));
+  const clock = new THREE.Clock();
+  const base  = Math.sqrt(30 * 30 + 3 * 3);
 
-  function drawStars(frame) {
-    CX.save();
-    STARS.forEach(s => {
-      const flicker = 0.75 + 0.25 * Math.sin(frame * 0.018 + s.tw);
-      CX.beginPath();
-      CX.arc(s.x * CV.width, s.y * CV.height, s.r, 0, Math.PI * 2);
-      CX.fillStyle = `rgba(255,255,255,${s.a * flicker})`;
-      CX.fill();
-    });
-    CX.restore();
-  }
+  function render() {
+    const timeR = clock.getElapsedTime();
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // DRAW: 3D-looking body segment disc
-  //   Renders as a short cylinder viewed from slight above-side angle:
-  //   dark bottom "depth" face + bright top face + scale ribs
-  // ─────────────────────────────────────────────────────────────────────────
-  function drawBodySeg(x, y, r, angle, idx) {
-    const squeeze = 0.88 - 0.06 * Math.abs(Math.cos(3 * angle)); // squish like reference
-    const ry = r * squeeze;
-    const alpha = OPA * (1 - idx * 0.028);  // fade slightly toward tail
-
-    CX.save();
-    CX.translate(x, y);
-    CX.rotate(angle);
-    CX.globalAlpha = alpha;
-
-    // Shadow glow
-    CX.shadowBlur  = r * 1.6;
-    CX.shadowColor = `rgba(210,95,25,0.55)`;
-
-    // ── Depth face (bottom of cylinder — darker, offset down) ──
-    CX.beginPath();
-    CX.ellipse(0, r * 0.18, r * 0.96, ry * 0.72, 0, 0, Math.PI * 2);
-    CX.fillStyle = `rgba(90,32,10,0.9)`;
-    CX.fill();
-
-    CX.shadowBlur = 0;
-
-    // ── Top face (main copper disc) ──
-    CX.beginPath();
-    CX.ellipse(0, 0, r, ry, 0, 0, Math.PI * 2);
-
-    // Copper radial gradient (light from top-left)
-    const grd = CX.createRadialGradient(-r * 0.28, -ry * 0.32, 0, 0, 0, r);
-    grd.addColorStop(0,   `rgba(235,155,65,0.95)`);  // highlight
-    grd.addColorStop(0.45,`rgba(185,85,32,0.97)`);   // mid copper
-    grd.addColorStop(1,   `rgba(120,42,14,0.97)`);   // dark edge
-    CX.fillStyle = grd;
-    CX.fill();
-
-    // ── Scale ribs (3 curved arcs across top face) ──
-    CX.strokeStyle = `rgba(240,168,55,0.38)`;
-    CX.lineWidth   = 1.5;
-    CX.lineCap     = 'round';
-    [-ry * 0.42, -ry * 0.08, ry * 0.28].forEach((oy, ii) => {
-      const arcR = r * (0.48 + ii * 0.14);
-      const halfAngle = Math.acos(Math.min(1, Math.abs(oy) / arcR + 0.05));
-      CX.globalAlpha = alpha * [0.38, 0.28, 0.18][ii];
-      CX.beginPath();
-      CX.arc(0, oy, arcR, halfAngle, Math.PI - halfAngle, false);
-      CX.stroke();
-    });
-
-    // ── Dorsal ridge (small fin on top-center) ──
-    CX.globalAlpha = alpha * 0.72;
-    CX.beginPath();
-    CX.moveTo(-r * 0.18, -ry * 0.94);
-    CX.lineTo(0,          -ry * 1.22);
-    CX.lineTo( r * 0.18, -ry * 0.94);
-    CX.fillStyle = `rgba(235,168,55,0.82)`;
-    CX.fill();
-
-    CX.restore();
-  }
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // DRAW: Leg/claw  (red, extends perpendicular to body)
-  // ─────────────────────────────────────────────────────────────────────────
-  function drawLeg(x, y, angle, side, alpha) {
-    const len = SEG_R * 1.6;
-    CX.save();
-    CX.translate(x, y);
-    CX.rotate(angle + side * (Math.PI / 2 + 0.25));
-    CX.globalAlpha = alpha * 0.78;
-    CX.strokeStyle = `rgba(185,28,28,1)`;
-    CX.lineCap = 'round';
-
-    // Upper limb
-    CX.beginPath(); CX.moveTo(0, 0); CX.lineTo(0, len * 0.50);
-    CX.lineWidth = 7; CX.stroke();
-
-    // Lower limb (bent)
-    CX.beginPath(); CX.moveTo(0, len * 0.50); CX.lineTo(len * 0.30 * side, len);
-    CX.lineWidth = 5.5; CX.stroke();
-
-    // Three claws
-    const fx = len * 0.30 * side, fy = len;
-    CX.lineWidth = 3;
-    CX.strokeStyle = `rgba(200,35,35,0.92)`;
-    [[-0.45, 0.55], [0, 0.65], [0.45, 0.55]].forEach(([dx, dy]) => {
-      CX.beginPath(); CX.moveTo(fx, fy); CX.lineTo(fx + dx * 18, fy + dy * 18); CX.stroke();
-    });
-    CX.restore();
-  }
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // DRAW: Dragon head  (bigger, fully featured Chinese dragon head)
-  // ─────────────────────────────────────────────────────────────────────────
-  function drawHead(p) {
-    const s = HEAD_R;
-    const a = p.angle;
-
-    CX.save();
-    CX.translate(p.x, p.y);
-    CX.rotate(a);
-    CX.globalAlpha = OPA;
-
-    // Neck connection
-    CX.shadowBlur  = s * 1.2;
-    CX.shadowColor = `rgba(215,95,28,0.7)`;
-    CX.beginPath();
-    CX.ellipse(-s * 0.32, 0, s * 0.55, s * 0.46, 0, 0, Math.PI * 2);
-    const neckGrd = CX.createRadialGradient(-s*0.28, -s*0.25, 0, -s*0.28, 0, s*0.55);
-    neckGrd.addColorStop(0, `rgba(225,148,58,0.97)`);
-    neckGrd.addColorStop(1, `rgba(135,50,15,0.97)`);
-    CX.fillStyle = neckGrd;
-    CX.fill();
-    CX.shadowBlur = 0;
-
-    // Upper skull
-    CX.beginPath();
-    CX.moveTo(s * 1.10, 0);
-    CX.bezierCurveTo( s*0.82, -s*0.52, -s*0.06, -s*0.58, -s*0.44, 0);
-    CX.bezierCurveTo(-s*0.06,  s*0.32,  s*0.82,  s*0.30,  s*1.10, 0);
-    const headGrd = CX.createRadialGradient(-s*0.15, -s*0.28, 0, s*0.3, 0, s*1.3);
-    headGrd.addColorStop(0,   `rgba(240,162,62,0.97)`);
-    headGrd.addColorStop(0.5, `rgba(185,80,30,0.97)`);
-    headGrd.addColorStop(1,   `rgba(115,38,12,0.97)`);
-    CX.fillStyle = headGrd;
-    CX.fill();
-
-    // Lower jaw
-    CX.beginPath();
-    CX.moveTo(s*1.05, s*0.09);
-    CX.bezierCurveTo( s*0.65,  s*0.32,  s*0.10,  s*0.46, -s*0.32, s*0.22);
-    CX.bezierCurveTo(-s*0.08,  s*0.05,  s*0.48, -s*0.05,  s*1.05, s*0.09);
-    CX.fillStyle = `rgba(100,35,10,0.72)`;
-    CX.fill();
-
-    // Teeth
-    CX.fillStyle = `rgba(245,228,190,${OPA * 0.88})`;
-    [0.82, 0.65, 0.48, 0.32].forEach((tx, ti) => {
-      CX.beginPath();
-      CX.ellipse(tx*s, -(s*0.08 + ti*s*0.022), s*0.040, s*0.090, 0.15, 0, Math.PI*2);
-      CX.fill();
-    });
-
-    // Nostril
-    CX.beginPath();
-    CX.ellipse(s*0.88, s*0.07, s*0.058, s*0.033, 0.5, 0, Math.PI*2);
-    CX.fillStyle = `rgba(65,20,5,0.75)`;
-    CX.fill();
-
-    // Mane tendrils (behind head)
-    CX.lineCap = 'round';
-    [
-      [-s*0.12,-s*0.50,  -s*0.58,-s*0.72,  -s*0.88,-s*0.58],
-      [-s*0.28,-s*0.40,  -s*0.62,-s*0.58,  -s*0.95,-s*0.40],
-      [-s*0.12, s*0.32,  -s*0.54, s*0.56,  -s*0.82, s*0.50],
-      [-s*0.28, s*0.22,  -s*0.60, s*0.40,  -s*0.90, s*0.30],
-    ].forEach(([x1,y1,cx1,cy1,x2,y2]) => {
-      CX.beginPath(); CX.moveTo(x1,y1); CX.bezierCurveTo(cx1,cy1,x2*0.8,y2*0.8,x2,y2);
-      CX.strokeStyle = `rgba(240,162,52,0.52)`; CX.lineWidth = s*0.048; CX.stroke();
-    });
-
-    // Antler horns — left (main + branch)
-    CX.strokeStyle = `rgba(238,165,50,0.85)`;
-    CX.beginPath(); CX.moveTo(s*0.05,-s*0.52);
-    CX.bezierCurveTo(-s*0.22,-s*0.98, -s*0.38,-s*1.22, -s*0.44,-s*1.55);
-    CX.lineWidth = s*0.074; CX.lineCap = 'round'; CX.stroke();
-    CX.beginPath(); CX.moveTo(-s*0.30,-s*1.08);
-    CX.bezierCurveTo(-s*0.58,-s*1.18, -s*0.76,-s*1.28, -s*0.88,-s*1.44);
-    CX.lineWidth = s*0.052; CX.stroke();
-    // right antler
-    CX.beginPath(); CX.moveTo(s*0.32,-s*0.46);
-    CX.bezierCurveTo( s*0.24,-s*0.88,  s*0.14,-s*1.12,  s*0.10,-s*1.45);
-    CX.lineWidth = s*0.064; CX.stroke();
-    CX.beginPath(); CX.moveTo(s*0.18,-s*0.95);
-    CX.bezierCurveTo( s*0.32,-s*1.02,  s*0.50,-s*1.10,  s*0.62,-s*1.22);
-    CX.lineWidth = s*0.047; CX.stroke();
-
-    // Whisker tendrils (forward from snout)
-    CX.strokeStyle = `rgba(240,165,45,0.58)`;
-    CX.lineWidth = s * 0.033;
-    [
-      [s*0.95,-s*0.10,  s*1.30,-s*0.04,  s*1.58, s*0.20,  s*1.92, s*0.42],
-      [s*0.95, s*0.06,  s*1.30, s*0.00,  s*1.58,-s*0.20,  s*1.92,-s*0.42],
-      [s*0.85,-s*0.09,  s*1.18,-s*0.24,  s*1.46,-s*0.38,  s*1.78,-s*0.55],
-      [s*0.85, s*0.05,  s*1.18, s*0.18,  s*1.46, s*0.32,  s*1.78, s*0.48],
-    ].forEach(([x1,y1,cx1,cy1,cx2,cy2,x2,y2]) => {
-      CX.beginPath(); CX.moveTo(x1,y1); CX.bezierCurveTo(cx1,cy1,cx2,cy2,x2,y2); CX.stroke();
-    });
-
-    // Forehead scale bumps
-    CX.fillStyle = `rgba(238,165,50,0.25)`;
-    [0.55,0.38,0.22,0.06,-0.10].forEach((fx,i) => {
-      const fy = -0.48 - (i%2)*0.06;
-      CX.beginPath(); CX.arc(fx*s, fy*s, (0.068-i*0.006)*s, Math.PI, 0, false); CX.fill();
-    });
-
-    // Amber eye — glow halo
-    const ex = s*0.46, ey = -s*0.13;
-    CX.save();
-    CX.shadowBlur = s*1.4; CX.shadowColor = `rgba(255,200,40,1.0)`;
-    const eg = CX.createRadialGradient(ex,ey,0, ex,ey,s*0.20);
-    eg.addColorStop(0,   `rgba(255,205,50,1.0)`);
-    eg.addColorStop(0.4, `rgba(225,108,10,0.90)`);
-    eg.addColorStop(1,   `rgba(180,55,0,0)`);
-    CX.beginPath(); CX.arc(ex,ey,s*0.20,0,Math.PI*2); CX.fillStyle=eg; CX.fill();
-    CX.restore();
-    CX.beginPath(); CX.ellipse(ex,ey,s*0.058,s*0.125,0,0,Math.PI*2);
-    CX.fillStyle=`rgba(8,2,0,0.97)`; CX.fill();
-    CX.beginPath(); CX.arc(ex-s*0.032,ey-s*0.052,s*0.032,0,Math.PI*2);
-    CX.fillStyle=`rgba(255,252,215,0.85)`; CX.fill();
-
-    CX.restore();
-  }
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // DRAW: Tail segment
-  // ─────────────────────────────────────────────────────────────────────────
-  function drawTail(p, idx) {
-    const r  = SEG_R * 0.55;
-    const a  = p.angle;
-    const alpha = OPA * 0.55;
-    CX.save();
-    CX.translate(p.x, p.y);
-    CX.rotate(a);
-    CX.globalAlpha = alpha;
-
-    // Tapered body
-    CX.beginPath();
-    CX.ellipse(0, 0, r, r * 0.82, 0, 0, Math.PI * 2);
-    CX.fillStyle = `rgba(165,72,28,0.92)`;
-    CX.fill();
-
-    // Tail fin (pointed flame shape)
-    CX.beginPath();
-    CX.moveTo(-r * 0.6, -r * 0.30);
-    CX.bezierCurveTo(-r * 1.5, -r * 0.8, -r * 2.5, 0, -r * 2.0, r * 0.40);
-    CX.bezierCurveTo(-r * 1.5,  r * 0.6, -r * 0.8,  r * 0.30, -r * 0.6, r * 0.30);
-    CX.closePath();
-    const tailGrd = CX.createLinearGradient(-r*2, 0, -r*0.5, 0);
-    tailGrd.addColorStop(0,   `rgba(240,165,50,0)`);
-    tailGrd.addColorStop(0.4, `rgba(220,110,30,0.65)`);
-    tailGrd.addColorStop(1,   `rgba(175,70,25,0.85)`);
-    CX.fillStyle = tailGrd;
-    CX.fill();
-
-    CX.restore();
-  }
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // WISPS
-  // ─────────────────────────────────────────────────────────────────────────
-  const wisps = [];
-  function tickWisps(bodyPositions) {
-    if (Math.random() < 0.5) {
-      const p = bodyPositions[Math.floor(Math.random() * bodyPositions.length * 0.5)];
-      wisps.push({
-        x: p.x + (Math.random()-0.5)*16, y: p.y + (Math.random()-0.5)*16,
-        vx: (Math.random()-0.5)*1.1, vy: (Math.random()-0.5)*1.1 - 0.3,
-        life: 1.0, decay: 0.011 + Math.random()*0.018,
-        r: 2.5 + Math.random()*5.5
-      });
+    // ── HEAD ──
+    const thetat = 0.2 * (timeR + 0.6);
+    if (tou) {
+      tou.position.x = Math.cos(thetat) * 15;
+      tou.position.z = Math.sin(thetat) * 15;
+      tou.position.y = Math.cos(3 * thetat) * 1 - 5 + 0.5;
+      tou.rotation.y = Math.sin(thetat) > 0
+        ? -Math.atan(Math.sin(3 * thetat) * 2 * 3 / 15)
+        :  Math.atan(Math.sin(3 * thetat) * 2 * 3 / 15);
+      tou.rotation.z = -thetat;
     }
-    CX.save();
-    for (let i = wisps.length-1; i >= 0; i--) {
-      const w = wisps[i];
-      w.x += w.vx; w.y += w.vy; w.life -= w.decay;
-      if (w.life <= 0) { wisps.splice(i,1); continue; }
-      const a = w.life * OPA * 0.55;
-      CX.beginPath(); CX.arc(w.x, w.y, w.r*w.life+0.5, 0, Math.PI*2);
-      CX.fillStyle   = `rgba(218,100,28,${a})`;
-      CX.shadowBlur  = 14; CX.shadowColor = `rgba(240,130,18,${a*0.7})`;
-      CX.fill();
+
+    // ── LEGS ──
+    if (jiao.length === 4) {
+      let thetaj = 0.2 * (timeR - 1.5);
+      const posLeg = (m, r) => {
+        m.position.x = Math.cos(thetaj) * r;
+        m.position.z = Math.sin(thetaj) * r;
+        m.position.y = Math.cos(3 * thetaj) * 1 - 2 - 5;
+        m.rotation.y = Math.sin(thetaj) > 0
+          ? -Math.atan(Math.sin(3 * thetaj) * 2 * 3 / 15)
+          :  Math.atan(Math.sin(3 * thetaj) * 2 * 3 / 15);
+        m.rotation.z = -thetaj;
+      };
+      posLeg(jiao[0], 17); posLeg(jiao[1], 13);
+      thetaj = 0.2 * (timeR - 4.5);
+      posLeg(jiao[2], 17); posLeg(jiao[3], 13);
     }
-    CX.restore();
+
+    // ── BODY SEGMENTS ──
+    for (let i = 0; i < meshB.length; i++) {
+      const time  = timeR - 0.6 * i;
+      const theta = 0.2 * time;
+      if (i > 8) {
+        meshB[i].scale.x = 0.2 - (i - 8) * 0.015;
+        meshB[i].scale.z = 0.2 - (i - 8) * 0.015;
+        meshB[i].scale.y = 0.2 - (i - 8) * 0.02 * (0.3 - 0.07 * Math.abs(Math.cos(3 * theta)));
+      } else {
+        meshB[i].scale.y = 0.3 - 0.07 * Math.abs(Math.cos(3 * theta));
+      }
+      meshB[i].position.x = Math.cos(theta) * 15;
+      meshB[i].position.z = Math.sin(theta) * 15;
+      meshB[i].position.y = Math.cos(3 * theta) * 1 - 5;
+      meshB[i].rotation.y = Math.sin(theta) > 0
+        ? -Math.atan(Math.sin(3 * theta) * 2 * 3 / 15)
+        :  Math.atan(Math.sin(3 * theta) * 2 * 3 / 15);
+      meshB[i].rotation.z = -theta;
+    }
+
+    // ── TAIL ──
+    if (wei) {
+      const thetaw = 0.2 * (timeR - 0.6 * BNUM + 0.1);
+      wei.position.x = Math.cos(thetaw) * 15;
+      wei.position.z = Math.sin(thetaw) * 15;
+      wei.position.y = Math.cos(3 * thetaw) * 1 - 5 + 0.5 - 0.5;
+      wei.rotation.y = Math.sin(thetaw) > 0
+        ? -Math.atan(Math.sin(3 * thetaw) * 2 * 3 / 15)
+        :  Math.atan(Math.sin(3 * thetaw) * 2 * 3 / 15);
+      wei.rotation.z = -thetaw;
+    }
+
+    // ── CAMERA ORBIT (same as reference) ──
+    const time = clock.getElapsedTime();
+    camera.position.x = 30 + Math.cos(0.3 * time) * 5;
+    camera.position.y = Math.sin(0.3 * time) * 5 - 5;
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    renderer.render(scene, camera);
   }
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // MAIN LOOP
-  // ─────────────────────────────────────────────────────────────────────────
-  let theta = 0;   // current head angle (radians)
-  let frame = 0;
-  const dTheta = (SPEED * Math.PI) / 180;  // speed in rad/frame
-
-  // Leg offsets (reference places them at time - 1.5 and time - 4.5)
-  const LEG_OFFSET_A = 1.5 * dTheta * 60;  // ≈ same lag as reference
-  const LEG_OFFSET_B = 4.5 * dTheta * 60;
 
   function animate() {
-    CX.clearRect(0, 0, CV.width, CV.height);
-    frame++;
-
-    // ── Background ──
-    drawStars(frame);
-
-    // ── Advance time ──
-    theta += dTheta;
-    const T = theta;
-
-    // ── Compute all positions ──
-    const headP = path(T);
-
-    // Body segments: each lags by 0.6 * dTheta * 60 per index
-    // (mirrors reference: time -= 0.6 * i at 60fps)
-    const bodyLag = 0.6 * dTheta * 60;
-    const bodyPositions = [];
-    for (let i = 0; i < BNUM; i++) {
-      bodyPositions.push(path(T - bodyLag * (i + 1)));
-    }
-
-    // Tail
-    const tailP = path(T - bodyLag * (BNUM + 0.5));
-
-    // Legs (reference: thetaj at time-1.5 and time-4.5)
-    const legA = path(T - LEG_OFFSET_A);
-    const legB = path(T - LEG_OFFSET_B);
-
-    // ── Wisps ──
-    tickWisps([headP, ...bodyPositions]);
-
-    // ── Draw tail first (behind everything) ──
-    drawTail(tailP);
-
-    // ── Draw body segments (tail to head, so head overlaps) ──
-    for (let i = BNUM - 1; i >= 0; i--) {
-      drawBodySeg(bodyPositions[i].x, bodyPositions[i].y,
-                  SEG_R * (1 - i * 0.035),   // slightly taper toward tail
-                  bodyPositions[i].angle,
-                  i);
-    }
-
-    // ── Draw legs ──
-    const legAlpha = OPA * 0.88;
-    drawLeg(legA.x, legA.y, legA.angle,  1, legAlpha);
-    drawLeg(legA.x, legA.y, legA.angle, -1, legAlpha);
-    drawLeg(legB.x, legB.y, legB.angle,  1, legAlpha);
-    drawLeg(legB.x, legB.y, legB.angle, -1, legAlpha);
-
-    // ── Draw head last (on top) ──
-    drawHead(headP);
-
     requestAnimationFrame(animate);
+    render();
   }
 
   animate();
