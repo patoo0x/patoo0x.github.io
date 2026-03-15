@@ -311,47 +311,15 @@
     #dragon-wrap {
       position: fixed;
       inset: 0;
-      overflow: hidden;
       z-index: 0;
       pointer-events: none;
     }
-
-    #dragon {
+    #dragon-canvas {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 340px;
-      height: 260px;
-      opacity: 0.13;
-      filter: drop-shadow(0 0 12px rgba(255, 107, 0, 0.18));
-      transform-origin: 170px 130px;
-      animation: dragonFlight 42s ease-in-out infinite;
-      will-change: transform, opacity;
+      inset: 0;
+      width: 100%;
+      height: 100%;
     }
-
-    @keyframes dragonFlight {
-      /* Segment 1 — enter from left, sweep across mid-screen → exit right */
-      0%   { transform: translate(-420px, calc(48vh - 130px)) rotate(0deg) scale(1);    opacity: 0; }
-      4%   { opacity: 0.13; }
-      16%  { transform: translate(calc(28vw - 170px), calc(38vh - 130px)) rotate(-10deg) scale(1.05); opacity: 0.14; }
-      28%  { transform: translate(calc(64vw - 170px), calc(20vh - 130px)) rotate(-24deg) scale(0.95); opacity: 0.13; }
-      38%  { transform: translate(calc(100vw + 60px), calc(10vh - 130px)) rotate(-8deg) scale(1);  opacity: 0.12; }
-      41%  { opacity: 0; }
-
-      /* jump to top — re-enter diving down-left */
-      42%  { transform: translate(calc(78vw - 170px), -320px) rotate(88deg) scale(1.05); opacity: 0; }
-      45%  { opacity: 0.12; }
-      54%  { transform: translate(calc(50vw - 170px), calc(45vh - 130px)) rotate(170deg) scale(1); opacity: 0.14; }
-      63%  { transform: translate(calc(16vw - 170px), calc(72vh - 130px)) rotate(198deg) scale(0.95); opacity: 0.13; }
-      70%  { transform: translate(-360px, calc(86vh - 130px)) rotate(182deg) scale(1); opacity: 0.12; }
-      73%  { opacity: 0; }
-
-      /* jump to bottom — re-enter rising up */
-      74%  { transform: translate(calc(44vw - 170px), calc(100vh + 60px)) rotate(-92deg) scale(1.08); opacity: 0; }
-      77%  { opacity: 0.12; }
-      87%  { transform: translate(calc(22vw - 170px), calc(28vh - 130px)) rotate(-18deg) scale(1); opacity: 0.14; }
-      96%  { transform: translate(-380px, calc(52vh - 130px)) rotate(-4deg) scale(1); opacity: 0.13; }
-      100% { transform: translate(-420px, calc(48vh - 130px)) rotate(0deg) scale(1); opacity: 0; }
     }
   </style>
 </head>
@@ -359,8 +327,171 @@
 
   <!-- ═══ FLYING DRAGON ═══ -->
   <div id="dragon-wrap">
-    <img id="dragon" src="dragon.png" alt="" role="presentation" aria-hidden="true">
+    <canvas id="dragon-canvas"></canvas>
   </div>
+
+  <script>
+  (function () {
+    'use strict';
+    const CV = document.getElementById('dragon-canvas');
+    const CX = CV.getContext('2d');
+
+    function resize() { CV.width = window.innerWidth; CV.height = window.innerHeight; }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const HIST   = 260;
+    const SEGS   = 90;
+    const HEAD_R = 22;
+    const BODY_W = 19;
+    const SPEED  = 0.0052;
+    const OPA    = 0.28;
+
+    const pos   = [];
+    const wisps = [];
+    let   t     = 0;
+
+    function path(tt) {
+      const W = CV.width, H = CV.height;
+      return {
+        x: W * 0.5 + W * 0.72 * Math.sin(tt),
+        y: H * 0.5 + H * 0.58 * Math.sin(2 * tt + 1.2)
+      };
+    }
+
+    // Pre-fill so dragon starts fully formed mid-flight
+    (function init() {
+      for (let i = HIST - 1; i >= 0; i--) pos.push(path(-i * SPEED));
+    })();
+
+    function getSegs() {
+      const n = pos.length, step = (n - 1) / (SEGS - 1), out = [];
+      for (let i = 0; i < SEGS; i++) out.push(pos[Math.min(Math.round(i * step), n - 1)]);
+      return out;
+    }
+
+    function drawBody(segs) {
+      const n = segs.length;
+      // Pass 1 — golden aura
+      CX.save();
+      CX.shadowBlur = 22; CX.shadowColor = 'rgba(255,140,20,0.7)';
+      for (let i = 0; i < n - 1; i++) {
+        const r = i/(n-1), w = BODY_W*(1-r*0.88)+3, a = OPA*(0.42-r*0.38);
+        if (a < 0.004) continue;
+        CX.beginPath(); CX.moveTo(segs[i].x,segs[i].y); CX.lineTo(segs[i+1].x,segs[i+1].y);
+        CX.strokeStyle=`rgba(255,162,30,${a})`; CX.lineWidth=w+9; CX.lineCap=CX.lineJoin='round'; CX.stroke();
+      }
+      CX.restore();
+      // Pass 2 — stone-grey body
+      CX.save();
+      for (let i = 0; i < n - 1; i++) {
+        const r = i/(n-1), w = BODY_W*(1-r*0.90)+2, a = OPA*(1.0-r*0.55), L = 100+Math.round(r*28);
+        CX.beginPath(); CX.moveTo(segs[i].x,segs[i].y); CX.lineTo(segs[i+1].x,segs[i+1].y);
+        CX.strokeStyle=`rgba(${L+82},${L+64},${L+28},${a})`; CX.lineWidth=w; CX.lineCap=CX.lineJoin='round'; CX.stroke();
+      }
+      CX.restore();
+      // Pass 3 — dorsal highlight
+      CX.save();
+      for (let i = 0; i < n - 1; i++) {
+        const r = i/(n-1), w = BODY_W*(1-r*0.90)*0.34, a = OPA*(0.20-r*0.18);
+        if (a < 0.004 || w < 0.8) continue;
+        CX.beginPath(); CX.moveTo(segs[i].x,segs[i].y); CX.lineTo(segs[i+1].x,segs[i+1].y);
+        CX.strokeStyle=`rgba(235,218,185,${a})`; CX.lineWidth=w; CX.lineCap=CX.lineJoin='round'; CX.stroke();
+      }
+      CX.restore();
+      // Pass 4 — scale circles
+      CX.save();
+      for (let i = 0; i < n; i += 3) {
+        const r = i/(n-1), rad = (BODY_W*(1-r*0.90)+2)*0.48, a = OPA*(0.18-r*0.16);
+        if (a < 0.004 || rad < 0.5) continue;
+        CX.beginPath(); CX.arc(segs[i].x,segs[i].y,rad,0,Math.PI*2);
+        CX.fillStyle=`rgba(200,182,148,${a})`; CX.fill();
+      }
+      CX.restore();
+    }
+
+    function drawHead(p, angle) {
+      const s = HEAD_R;
+      CX.save();
+      CX.translate(p.x, p.y); CX.rotate(angle); CX.globalAlpha = OPA;
+      // Neck
+      CX.beginPath(); CX.ellipse(-s*0.30,0,s*0.54,s*0.38,0,0,Math.PI*2);
+      CX.fillStyle='rgba(160,140,106,0.95)'; CX.fill();
+      // Head
+      CX.beginPath(); CX.moveTo(s*0.95,0);
+      CX.bezierCurveTo(s*0.68,-s*0.40,-s*0.12,-s*0.44,-s*0.42,0);
+      CX.bezierCurveTo(-s*0.12,s*0.44,s*0.68,s*0.40,s*0.95,0);
+      CX.fillStyle='rgba(174,154,118,0.96)'; CX.fill();
+      // Sheen
+      CX.beginPath(); CX.moveTo(s*0.82,0);
+      CX.bezierCurveTo(s*0.55,-s*0.24,-s*0.02,-s*0.28,-s*0.22,0);
+      CX.bezierCurveTo(-s*0.02,s*0.24,s*0.55,s*0.24,s*0.82,0);
+      CX.fillStyle='rgba(215,195,152,0.13)'; CX.fill();
+      // Jaw
+      CX.beginPath(); CX.moveTo(s*0.88,s*0.04);
+      CX.bezierCurveTo(s*0.52,s*0.18,0,s*0.30,-s*0.34,s*0.12);
+      CX.bezierCurveTo(-s*0.08,s*0.02,s*0.44,-s*0.04,s*0.88,s*0.04);
+      CX.fillStyle='rgba(126,106,76,0.52)'; CX.fill();
+      // Nostril
+      CX.beginPath(); CX.ellipse(s*0.80,s*0.07,s*0.052,s*0.030,0.4,0,Math.PI*2);
+      CX.fillStyle='rgba(72,52,32,0.68)'; CX.fill();
+      // Horns
+      [[0.10,-0.40,-0.08,-0.78,0.068],[-0.05,-0.38,-0.24,-0.71,0.058],
+       [0.24,-0.35,0.18,-0.64,0.054],[0.38,-0.29,0.38,-0.54,0.048],[0.50,-0.21,0.55,-0.43,0.040]]
+      .forEach(([ox,oy,tx,ty,wf]) => {
+        CX.beginPath(); CX.moveTo(ox*s,oy*s); CX.lineTo(tx*s,ty*s);
+        CX.strokeStyle='rgba(136,114,84,0.90)'; CX.lineWidth=wf*s; CX.lineCap='round'; CX.stroke();
+      });
+      // Eye glow
+      const ex=s*0.44, ey=-s*0.10;
+      CX.save(); CX.shadowBlur=s*1.1; CX.shadowColor='rgba(255,150,22,0.95)';
+      const eg=CX.createRadialGradient(ex,ey,0,ex,ey,s*0.17);
+      eg.addColorStop(0,'rgba(255,198,48,1.0)'); eg.addColorStop(0.45,'rgba(218,95,8,0.88)'); eg.addColorStop(1,'rgba(180,55,0,0)');
+      CX.beginPath(); CX.arc(ex,ey,s*0.17,0,Math.PI*2); CX.fillStyle=eg; CX.fill(); CX.restore();
+      // Pupil
+      CX.beginPath(); CX.ellipse(ex,ey,s*0.050,s*0.112,0,0,Math.PI*2);
+      CX.fillStyle='rgba(12,4,0,0.96)'; CX.fill();
+      // Catchlight
+      CX.beginPath(); CX.arc(ex-s*0.025,ey-s*0.042,s*0.027,0,Math.PI*2);
+      CX.fillStyle='rgba(255,250,215,0.82)'; CX.fill();
+      CX.restore();
+    }
+
+    function tickWisps(segs) {
+      if (Math.random() < 0.44 && segs.length > 4) {
+        const idx = Math.floor(Math.random()*segs.length*0.65), p = segs[idx];
+        wisps.push({ x:p.x+(Math.random()-0.5)*9, y:p.y+(Math.random()-0.5)*9,
+          vx:(Math.random()-0.5)*0.85, vy:(Math.random()-0.5)*0.85-0.22,
+          life:1.0, decay:0.013+Math.random()*0.015, r:1.4+Math.random()*3.4 });
+      }
+      CX.save();
+      for (let i = wisps.length-1; i >= 0; i--) {
+        const w = wisps[i]; w.x+=w.vx; w.y+=w.vy; w.life-=w.decay;
+        if (w.life <= 0) { wisps.splice(i,1); continue; }
+        const a = w.life*OPA*0.52;
+        CX.beginPath(); CX.arc(w.x,w.y,w.r*w.life+0.4,0,Math.PI*2);
+        CX.fillStyle=`rgba(255,165,35,${a})`; CX.shadowBlur=10; CX.shadowColor=`rgba(255,128,14,${a*0.7})`; CX.fill();
+      }
+      CX.restore();
+    }
+
+    function animate() {
+      CX.clearRect(0,0,CV.width,CV.height);
+      t += SPEED;
+      const head = path(t);
+      pos.unshift(head);
+      if (pos.length > HIST) pos.pop();
+      const segs = getSegs();
+      tickWisps(segs);
+      drawBody(segs);
+      const p0=pos[0], p1=pos[Math.min(5,pos.length-1)];
+      drawHead(p0, Math.atan2(p0.y-p1.y, p0.x-p1.x));
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  })();
+  </script>
   <!-- ═══ /FLYING DRAGON ═══ -->
 
   <div class="bg"></div>
