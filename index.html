@@ -25,7 +25,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      padding: 2rem 0;
     }
 
     .bg {
@@ -156,6 +156,149 @@
     .lightning.show-copied .addr { display: none; }
     .lightning.show-copied .copied { display: inline; }
 
+    /* ── Portfolio Section ─────────────────────────────────── */
+    .portfolio {
+      margin-top: 2.5rem;
+      text-align: left;
+    }
+
+    .portfolio h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .portfolio-card {
+      position: relative;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #111;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.35s ease;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+
+    .portfolio-card::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 15px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(255, 107, 0, 0.0), rgba(139, 92, 246, 0.0));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      transition: background 0.35s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .portfolio-card:hover::before {
+      background: linear-gradient(135deg, rgba(255, 107, 0, 0.6), rgba(139, 92, 246, 0.4));
+    }
+
+    .portfolio-card:hover {
+      transform: translateY(-2px);
+      border-color: transparent;
+      box-shadow:
+        0 8px 32px rgba(255, 107, 0, 0.08),
+        0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* sparkle animation */
+    .portfolio-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        rgba(255, 107, 0, 0.03) 25%,
+        transparent 50%,
+        rgba(139, 92, 246, 0.03) 75%,
+        transparent 100%
+      );
+      animation: sparkle-rotate 8s linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .portfolio-card:hover::after {
+      background: conic-gradient(
+        from 0deg,
+        transparent 0%,
+        rgba(255, 107, 0, 0.06) 25%,
+        transparent 50%,
+        rgba(139, 92, 246, 0.06) 75%,
+        transparent 100%
+      );
+    }
+
+    @keyframes sparkle-rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .card-image {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .card-body {
+      position: relative;
+      z-index: 2;
+      padding: 1rem 1.25rem;
+      background: #111;
+    }
+
+    .card-body h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-body .card-desc {
+      font-size: 0.85rem;
+      color: #888;
+      line-height: 1.5;
+      margin-bottom: 0.6rem;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .card-tags span {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #777;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .card-tags span.tag-cashu { color: #a78bfa; border-color: rgba(167, 139, 250, 0.2); }
+    .card-tags span.tag-bitcoin { color: #f7931a; border-color: rgba(247, 147, 26, 0.2); }
+    .card-tags span.tag-live { color: #4ade80; border-color: rgba(74, 222, 128, 0.2); }
+
     .footer {
       margin-top: 3rem;
       color: #444;
@@ -200,6 +343,32 @@
       <span class="addr">patoo@flashapp.me</span>
       <span class="copied">copied!</span>
     </a>
+
+    <div class="portfolio">
+      <h2>Portfolio</h2>
+
+      <a class="portfolio-card" href="https://github.com/patoo0x/cashu-admin-ui" target="_blank" rel="noopener">
+        <img
+          src="cashu-admin-screenshot.png"
+          alt="Cashu Admin UI Dashboard"
+          class="card-image"
+          loading="lazy"
+        >
+        <div class="card-body">
+          <h3>Cashu Admin UI</h3>
+          <p class="card-desc">
+            Admin dashboard for Cashu Nutshell mints. Real-time monitoring, mint balances, keyset management, and activity logs. Dark theme, responsive design.
+          </p>
+          <div class="card-tags">
+            <span class="tag-cashu">Cashu</span>
+            <span class="tag-bitcoin">Bitcoin</span>
+            <span>Node.js</span>
+            <span>Express</span>
+            <span class="tag-live">● Live</span>
+          </div>
+        </div>
+      </a>
+    </div>
 
     <p class="footer">spirit guide · jamaica 🇯🇲</p>
   </div>
