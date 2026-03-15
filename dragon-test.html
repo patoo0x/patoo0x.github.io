@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dragon Test — patoo.ai</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0a; overflow: hidden; }
+    canvas { display: block; }
+    #info {
+      position: fixed; bottom: 1.5rem; left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.25);
+      font-family: sans-serif; font-size: 0.7rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="info">dragon test · patoo.ai</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const CV = document.getElementById('c');
+  const CX = CV.getContext('2d');
+
+  function resize() { CV.width = window.innerWidth; CV.height = window.innerHeight; }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // ── Config ────────────────────────────────────────────────────────────────
+  const HIST   = 400;     // position history frames
+  const SEGS   = 28;      // visible body segments
+  const HEAD_R = 52;      // head radius (px)
+  const SEG_R0 = 30;      // max body segment radius (px)
+  const SEG_R1 = 5;       // min body segment radius (tail tip)
+  const SPEED  = 0.0048;  // path advance per frame
+  const OPA    = 0.48;    // overall opacity
+
+  // Colors (copper / crimson / gold)
+  const C_BODY_FILL  = (a) => `rgba(172, 78, 32, ${a})`;
+  const C_BODY_DARK  = (a) => `rgba(110, 42, 16, ${a})`;
+  const C_SCALE_GOLD = (a) => `rgba(218, 152, 48, ${a})`;
+  const C_LEG        = (a) => `rgba(165, 22, 22, ${a})`;
+  const C_GLOW       = (a) => `rgba(220, 100, 28, ${a})`;
+  const C_EYE        = (a) => `rgba(255, 200, 45, ${a})`;
+
+  // ── State ─────────────────────────────────────────────────────────────────
+  const pos   = [];
+  const stars = [];
+  const wisps = [];
+  let   t     = 0;
+
+  // ── Stars (background) ───────────────────────────────────────────────────
+  function initStars() {
+    for (let i = 0; i < 180; i++) {
+      stars.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 1.2 + 0.2,
+        a: Math.random() * 0.5 + 0.1,
+        twinkle: Math.random() * Math.PI * 2
+      });
+    }
+  }
+  initStars();
+
+  // ── Lissajous path (goes off-screen) ─────────────────────────────────────
+  function path(tt) {
+    const W = CV.width, H = CV.height;
+    return {
+      x: W * 0.5 + W * 0.50 * Math.sin(tt),
+      y: H * 0.5 + H * 0.42 * Math.sin(2 * tt + 1.2)
+    };
+  }
+
+  // ── Pre-fill history ──────────────────────────────────────────────────────
+  (function init() {
+    for (let i = HIST - 1; i >= 0; i--) pos.push(path(-i * SPEED));
+  })();
+
+  // ── Get evenly-spaced segment positions ───────────────────────────────────
+  function getSegs() {
+    const n = pos.length, step = (n - 1) / (SEGS - 1), out = [];
+    for (let i = 0; i < SEGS; i++) {
+      out.push(pos[Math.min(Math.round(i * step), n - 1)]);
+    }
+    return out;
+  }
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  function segR(r) { return SEG_R0 * (1 - r * 0.80) + SEG_R1; }
+  function segAngle(segs, i) {
+    const prev = segs[Math.max(i - 1, 0)];
+    const next = segs[Math.min(i + 1, segs.length - 1)];
+    return Math.atan2(prev.y - next.y, prev.x - next.x);
+  }
+
+  // ── Draw one body segment disc ────────────────────────────────────────────
+  function drawSegDisc(x, y, r, angle, ratio) {
+    CX.save();
+    CX.translate(x, y);
+    CX.rotate(angle);
+    CX.globalAlpha = OPA * (1 - ratio * 0.45);
+
+    // Outer glow
+    CX.shadowBlur  = r * 1.4;
+    CX.shadowColor = C_GLOW(0.55);
+
+    // Main disc (slightly oval — flatter on the sides)
+    CX.beginPath();
+    CX.ellipse(0, 0, r, r * 0.88, 0, 0, Math.PI * 2);
+    CX.fillStyle = C_BODY_FILL(1);
+    CX.fill();
+
+    CX.shadowBlur = 0;
+
+    // Dark rim (bottom edge shadow)
+    CX.beginPath();
+    CX.ellipse(0, r * 0.12, r * 0.96, r * 0.80, 0, 0, Math.PI);
+    CX.fillStyle = C_BODY_DARK(0.55);
+    CX.fill();
+
+    // Scale arcs (3 curved lines suggesting overlapping scales)
+    CX.strokeStyle = C_SCALE_GOLD(0.40);
+    CX.lineWidth   = 1.2;
+    CX.lineCap     = 'round';
+    [-r * 0.38, -r * 0.08, r * 0.24].forEach((oy, ii) => {
+      const aOpa = [0.40, 0.32, 0.22][ii];
+      CX.globalAlpha = OPA * (1 - ratio * 0.45) * aOpa;
+      const arcR = r * (0.52 + ii * 0.12);
+      const span = Math.acos(Math.min(1, r * 0.96 / arcR));
+      CX.beginPath();
+      CX.arc(0, oy, arcR, span, Math.PI - span, false);
+      CX.strokeStyle = C_SCALE_GOLD(1);
+      CX.stroke();
+    });
+
+    // Dorsal spine nub (top of each segment)
+    CX.globalAlpha = OPA * (1 - ratio * 0.45) * 0.7;
+    CX.beginPath();
+    CX.moveTo(-r * 0.15, -r * 0.88);
+    CX.lineTo(0,          -r * 1.15);
+    CX.lineTo( r * 0.15, -r * 0.88);
+    CX.fillStyle = C_SCALE_GOLD(0.85);
+    CX.fill();
+
+    CX.restore();
+  }
+
+  // ── Draw leg at segment ────────────────────────────────────────────────────
+  function drawLeg(x, y, angle, side) {
+    const S = side;   // +1 = left leg, -1 = right leg
+    const len = 30;
+
+    CX.save();
+    CX.translate(x, y);
+    CX.rotate(angle + S * 1.35); // rotate out from body
+    CX.globalAlpha = OPA * 0.75;
+
+    // Upper leg
+    CX.beginPath();
+    CX.moveTo(0, 0);
+    CX.lineTo(0, len * 0.55);
+    CX.strokeStyle = C_LEG(1);
+    CX.lineWidth   = 5;
+    CX.lineCap     = 'round';
+    CX.stroke();
+
+    // Lower leg (bent back)
+    CX.beginPath();
+    CX.moveTo(0, len * 0.55);
+    CX.lineTo(len * 0.35 * S, len);
+    CX.lineWidth = 4;
+    CX.stroke();
+
+    // Claws (3)
+    const footX = len * 0.35 * S, footY = len;
+    [[-0.4, 0.5], [0, 0.6], [0.4, 0.5]].forEach(([cx, cy]) => {
+      CX.beginPath();
+      CX.moveTo(footX, footY);
+      CX.lineTo(footX + cx * 14, footY + cy * 14);
+      CX.lineWidth   = 2.5;
+      CX.strokeStyle = C_LEG(0.88);
+      CX.stroke();
+    });
+
+    CX.restore();
+  }
+
+  // ── Draw dragon head ───────────────────────────────────────────────────────
+  function drawHead(p, angle) {
+    const s = HEAD_R;
+    CX.save();
+    CX.translate(p.x, p.y);
+    CX.rotate(angle);
+    CX.globalAlpha = OPA;
+
+    // ── Neck connector ──
+    CX.beginPath();
+    CX.ellipse(-s * 0.35, 0, s * 0.58, s * 0.48, 0, 0, Math.PI * 2);
+    CX.fillStyle   = C_BODY_FILL(0.96);
+    CX.shadowBlur  = s;
+    CX.shadowColor = C_GLOW(0.6);
+    CX.fill();
+    CX.shadowBlur  = 0;
+
+    // ── Upper jaw / skull ──
+    CX.beginPath();
+    CX.moveTo(s * 1.1, 0);
+    CX.bezierCurveTo( s * 0.8, -s * 0.50, -s * 0.05, -s * 0.55, -s * 0.42,  0);
+    CX.bezierCurveTo(-s * 0.05,  s * 0.30,  s * 0.8,   s * 0.28,  s * 1.1,  0);
+    CX.fillStyle = C_BODY_FILL(0.97);
+    CX.fill();
+
+    // ── Lower jaw (open slightly) ──
+    CX.beginPath();
+    CX.moveTo(s * 1.05,  s * 0.08);
+    CX.bezierCurveTo( s * 0.65, s * 0.30,  s * 0.10, s * 0.44, -s * 0.30,  s * 0.20);
+    CX.bezierCurveTo(-s * 0.05, s * 0.04,  s * 0.50, -s * 0.04,  s * 1.05,  s * 0.08);
+    CX.fillStyle = C_BODY_DARK(0.75);
+    CX.fill();
+
+    // ── Teeth (upper) ──
+    CX.fillStyle = `rgba(240, 220, 180, ${OPA * 0.85})`;
+    [0.78, 0.60, 0.44, 0.28].forEach((tx, ti) => {
+      const ty = -(s * 0.10 + ti * s * 0.025);
+      CX.beginPath();
+      CX.ellipse(tx * s, ty, s * 0.038, s * 0.08, 0.15, 0, Math.PI * 2);
+      CX.fill();
+    });
+
+    // ── Snout nostril ──
+    CX.beginPath();
+    CX.ellipse(s * 0.90, s * 0.06, s * 0.055, s * 0.032, 0.5, 0, Math.PI * 2);
+    CX.fillStyle = C_BODY_DARK(0.75);
+    CX.fill();
+
+    // ── Mane / beard tendrils (behind head) ──
+    [
+      [-s*0.15, -s*0.48,  -s*0.60, -s*0.70,  -s*0.85, -s*0.55],
+      [-s*0.30, -s*0.38,  -s*0.65, -s*0.55,  -s*0.92, -s*0.38],
+      [-s*0.15,  s*0.30,  -s*0.55,  s*0.55,  -s*0.80,  s*0.48],
+    ].forEach(([x1,y1,cx1,cy1,x2,y2]) => {
+      CX.beginPath();
+      CX.moveTo(x1, y1);
+      CX.bezierCurveTo(cx1, cy1, x2*0.8, y2*0.8, x2, y2);
+      CX.strokeStyle = C_SCALE_GOLD(0.55);
+      CX.lineWidth   = s * 0.045;
+      CX.lineCap     = 'round';
+      CX.stroke();
+    });
+
+    // ── Antler horns (curved, branching) ──
+    // Main left antler
+    CX.beginPath();
+    CX.moveTo(s * 0.05, -s * 0.50);
+    CX.bezierCurveTo(-s*0.20, -s*0.95, -s*0.35, -s*1.20, -s*0.40, -s*1.50);
+    CX.strokeStyle = C_SCALE_GOLD(0.82);
+    CX.lineWidth   = s * 0.072;
+    CX.lineCap     = 'round';
+    CX.stroke();
+    // Branch 1
+    CX.beginPath();
+    CX.moveTo(-s*0.28, -s*1.05);
+    CX.bezierCurveTo(-s*0.55, -s*1.15, -s*0.72, -s*1.25, -s*0.82, -s*1.40);
+    CX.lineWidth = s * 0.050;
+    CX.stroke();
+
+    // Main right antler
+    CX.beginPath();
+    CX.moveTo(s * 0.30, -s * 0.44);
+    CX.bezierCurveTo( s*0.22, -s*0.85,  s*0.12, -s*1.10,  s*0.08, -s*1.40);
+    CX.lineWidth = s * 0.062;
+    CX.stroke();
+    // Branch 2
+    CX.beginPath();
+    CX.moveTo(s*0.16, -s*0.92);
+    CX.bezierCurveTo( s*0.30, -s*1.00,  s*0.48, -s*1.08,  s*0.58, -s*1.20);
+    CX.lineWidth = s * 0.045;
+    CX.stroke();
+
+    // ── Whisker tendrils (forward from snout) ──
+    CX.lineWidth = s * 0.032;
+    CX.strokeStyle = C_SCALE_GOLD(0.60);
+    [
+      // [start-x, start-y,  cp1-x, cp1-y,  cp2-x,  cp2-y,  end-x,  end-y]
+      [s*0.95, -s*0.10,  s*1.28, -s*0.05,  s*1.55,  s*0.18,  s*1.85,  s*0.38],
+      [s*0.95,  s*0.05,  s*1.28,  s*0.00,  s*1.55, -s*0.18,  s*1.85, -s*0.38],
+      [s*0.85, -s*0.08,  s*1.15, -s*0.22,  s*1.42, -s*0.36,  s*1.72, -s*0.52],
+    ].forEach(([x1,y1,cx1,cy1,cx2,cy2,x2,y2]) => {
+      CX.beginPath();
+      CX.moveTo(x1, y1);
+      CX.bezierCurveTo(cx1, cy1, cx2, cy2, x2, y2);
+      CX.stroke();
+    });
+
+    // ── Eye glow ──
+    const ex = s * 0.48, ey = -s * 0.14;
+    CX.save();
+    CX.shadowBlur  = s * 1.2;
+    CX.shadowColor = C_EYE(1.0);
+    const eg = CX.createRadialGradient(ex, ey, 0, ex, ey, s * 0.18);
+    eg.addColorStop(0,   C_EYE(1.0));
+    eg.addColorStop(0.45,'rgba(220, 110, 8, 0.88)');
+    eg.addColorStop(1,   'rgba(180, 55, 0, 0)');
+    CX.beginPath();
+    CX.arc(ex, ey, s * 0.18, 0, Math.PI * 2);
+    CX.fillStyle = eg;
+    CX.fill();
+    CX.restore();
+    // Pupil
+    CX.beginPath();
+    CX.ellipse(ex, ey, s * 0.055, s * 0.120, 0, 0, Math.PI * 2);
+    CX.fillStyle = 'rgba(10, 2, 0, 0.96)';
+    CX.fill();
+    // Catchlight
+    CX.beginPath();
+    CX.arc(ex - s*0.030, ey - s*0.048, s * 0.030, 0, Math.PI * 2);
+    CX.fillStyle = 'rgba(255, 250, 210, 0.85)';
+    CX.fill();
+
+    // ── Forehead ridge scales ──
+    CX.fillStyle = C_SCALE_GOLD(0.28);
+    for (let i = 0; i < 5; i++) {
+      const fx = (0.52 - i * 0.16) * s, fy = (-0.46 - (i % 2) * 0.06) * s;
+      const fr = (0.065 - i * 0.006) * s;
+      CX.beginPath();
+      CX.arc(fx, fy, fr, Math.PI, 0, false);
+      CX.fill();
+    }
+
+    CX.restore();
+  }
+
+  // ── Energy wisps ──────────────────────────────────────────────────────────
+  function tickWisps(segs) {
+    if (Math.random() < 0.50 && segs.length > 2) {
+      const idx = Math.floor(Math.random() * segs.length * 0.60);
+      const p   = segs[idx];
+      wisps.push({
+        x: p.x + (Math.random()-0.5)*14,
+        y: p.y + (Math.random()-0.5)*14,
+        vx: (Math.random()-0.5)*1.0,
+        vy: (Math.random()-0.5)*1.0 - 0.30,
+        life: 1.0,
+        decay: 0.012 + Math.random()*0.018,
+        r: 2.0 + Math.random()*4.5,
+      });
+    }
+    CX.save();
+    for (let i = wisps.length - 1; i >= 0; i--) {
+      const w = wisps[i];
+      w.x += w.vx; w.y += w.vy;
+      w.life -= w.decay;
+      if (w.life <= 0) { wisps.splice(i, 1); continue; }
+      const a = w.life * OPA * 0.60;
+      CX.beginPath();
+      CX.arc(w.x, w.y, w.r * w.life + 0.5, 0, Math.PI * 2);
+      CX.fillStyle   = C_GLOW(a);
+      CX.shadowBlur  = 12;
+      CX.shadowColor = C_GLOW(a * 0.7);
+      CX.fill();
+    }
+    CX.restore();
+  }
+
+  // ── Draw stars ────────────────────────────────────────────────────────────
+  function drawStars(frame) {
+    stars.forEach(s => {
+      const flicker = 0.7 + 0.3 * Math.sin(frame * 0.02 + s.twinkle);
+      CX.beginPath();
+      CX.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      CX.fillStyle = `rgba(255, 255, 255, ${s.a * flicker})`;
+      CX.fill();
+    });
+  }
+
+  // ── Main loop ─────────────────────────────────────────────────────────────
+  let frame = 0;
+  function animate() {
+    CX.clearRect(0, 0, CV.width, CV.height);
+    frame++;
+
+    drawStars(frame);
+
+    t += SPEED;
+    pos.unshift(path(t));
+    if (pos.length > HIST) pos.pop();
+
+    const segs = getSegs();
+    const n    = segs.length;
+
+    tickWisps(segs);
+
+    // ── Draw dragon body segments (tail → head order so head overlaps) ──
+    for (let i = n - 1; i >= 0; i--) {
+      const ratio  = i / (n - 1);  // 0=head, 1=tail
+      const p      = segs[i];
+      const angle  = segAngle(segs, i);
+      const r      = segR(ratio);
+
+      drawSegDisc(p.x, p.y, r, angle, ratio);
+
+      // Legs every 4th segment (but not too close to head or tail)
+      if (i > 2 && i < n - 3 && (i % 4 === 1)) {
+        drawLeg(p.x, p.y, angle,  1);
+        drawLeg(p.x, p.y, angle, -1);
+      }
+    }
+
+    // ── Head ──
+    const p0 = pos[0], p1 = pos[Math.min(6, pos.length - 1)];
+    drawHead(p0, Math.atan2(p0.y - p1.y, p0.x - p1.x));
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+})();
+</script>
+</body>
+</html>
