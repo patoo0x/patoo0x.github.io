@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dragon Test — patoo.ai</title>
+  <title>Dragon Color Test — patoo.ai</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #0a0a0a; overflow: hidden; }
@@ -15,10 +15,9 @@
       height: 100% !important;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.30;  /* transparency level — adjust here */
+      opacity: 0.22;
     }
 
-    /* Sample page content so we can test contrast */
     .content {
       position: relative;
       z-index: 1;
@@ -29,18 +28,75 @@
     }
     .content h1 { font-size: 3rem; font-weight: 700; letter-spacing: -0.03em; }
     .content p  { color: rgba(255,255,255,0.45); font-size: 1rem; }
+
+    /* ── Scheme switcher HUD ── */
+    #hud {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(10,10,10,0.75);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 2rem;
+      padding: 0.6rem 1.2rem;
+      backdrop-filter: blur(8px);
+      user-select: none;
+    }
+    #hud button {
+      background: none; border: none; color: rgba(255,255,255,0.55);
+      font-size: 1.1rem; cursor: pointer; padding: 0 0.2rem;
+      transition: color 0.15s;
+    }
+    #hud button:hover { color: #fff; }
+    #scheme-name {
+      color: #fff;
+      font-family: sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      min-width: 180px;
+      text-align: center;
+    }
+    #scheme-num {
+      color: rgba(255,255,255,0.3);
+      font-family: sans-serif;
+      font-size: 0.72rem;
+    }
+    #hint {
+      position: fixed;
+      top: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.2);
+      font-family: sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      z-index: 10;
+    }
   </style>
 </head>
 <body>
 
-<!-- Three.js WebGL dragon — transparent overlay -->
 <canvas id="dragon-canvas"></canvas>
 
-<!-- Test content underneath -->
 <div class="content">
   <h1>Patoo</h1>
   <p>@Patoo0x · Monkey-Lion-Owl-Dragon spirit animal.</p>
   <p>⚡ Zap · Nostr · GitHub</p>
+</div>
+
+<div id="hint">← → arrow keys or click to cycle schemes</div>
+
+<div id="hud">
+  <button id="prev">&#8592;</button>
+  <span id="scheme-name">Stone Grey + Pale Gold</span>
+  <button id="next">&#8594;</button>
+  <span id="scheme-num">1 / 6</span>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
@@ -50,19 +106,73 @@
   'use strict';
 
   // ─────────────────────────────────────────────────────────────────────────
-  // RENDERER — transparent background so page shows through
+  // COLOR SCHEMES
+  // each: { name, ambient, dir1, dir2, rim, head, body, legs, tail }
+  // head/body/legs/tail: { color, specular, shininess, emissive, emissiveIntensity }
+  // ─────────────────────────────────────────────────────────────────────────
+  const SCHEMES = [
+    {
+      name: 'Stone Grey + Pale Gold',
+      ambient: 0xd8d0c0, dir1: 0xfff8e8, dir2: 0xc8c0a0, rim: 0xe8e4d0,
+      head:  { color: 0xc0b09a, specular: 0xf0e8c8, shininess: 240, emissive: 0x1c1810, ei: 0.40 },
+      body:  { color: 0xa09080, specular: 0xd8cca8, shininess: 180, emissive: 0x141210, ei: 0.38 },
+      legs:  { color: 0x887868, specular: 0xc0b488, shininess: 130, emissive: 0x100e0c, ei: 0.35 },
+      tail:  { color: 0xb8a890, specular: 0xe8dcc0, shininess: 210, emissive: 0x181614, ei: 0.40 },
+    },
+    {
+      name: 'Jade + Emerald',
+      ambient: 0xb0d0b8, dir1: 0xe8ffe8, dir2: 0x40a860, rim: 0x88cc88,
+      head:  { color: 0x4a8860, specular: 0xa0ffc0, shininess: 260, emissive: 0x081808, ei: 0.45 },
+      body:  { color: 0x3a7050, specular: 0x80e8a0, shininess: 200, emissive: 0x061408, ei: 0.42 },
+      legs:  { color: 0x2a5838, specular: 0x60c070, shininess: 150, emissive: 0x040e06, ei: 0.38 },
+      tail:  { color: 0x55906a, specular: 0x90f0b0, shininess: 230, emissive: 0x081a0c, ei: 0.44 },
+    },
+    {
+      name: 'Midnight Blue + Silver',
+      ambient: 0xa0b0c8, dir1: 0xe8f0ff, dir2: 0x6080c0, rim: 0xb0c8e8,
+      head:  { color: 0x4060a0, specular: 0xd0e0ff, shininess: 300, emissive: 0x080c18, ei: 0.42 },
+      body:  { color: 0x304880, specular: 0xb0c8f0, shininess: 240, emissive: 0x060a14, ei: 0.40 },
+      legs:  { color: 0x203060, specular: 0x8090d0, shininess: 160, emissive: 0x04080e, ei: 0.35 },
+      tail:  { color: 0x385890, specular: 0xc0d4ff, shininess: 280, emissive: 0x070a18, ei: 0.42 },
+    },
+    {
+      name: 'Obsidian + Violet',
+      ambient: 0xb0a0c8, dir1: 0xf0e8ff, dir2: 0x8060c0, rim: 0xd0b8f0,
+      head:  { color: 0x6040a8, specular: 0xe8c0ff, shininess: 280, emissive: 0x100818, ei: 0.48 },
+      body:  { color: 0x4a2e88, specular: 0xc090e8, shininess: 220, emissive: 0x0c0614, ei: 0.44 },
+      legs:  { color: 0x301e60, specular: 0x9060c0, shininess: 160, emissive: 0x08040e, ei: 0.38 },
+      tail:  { color: 0x583498, specular: 0xd0a8f8, shininess: 260, emissive: 0x0e0618, ei: 0.46 },
+    },
+    {
+      name: 'Deep Copper + Amber',
+      ambient: 0xd8c090, dir1: 0xffe8b0, dir2: 0xd08030, rim: 0xf0c060,
+      head:  { color: 0xd4762a, specular: 0xffe080, shininess: 240, emissive: 0x2a0c00, ei: 0.50 },
+      body:  { color: 0xb35218, specular: 0xd4a050, shininess: 180, emissive: 0x1e0800, ei: 0.45 },
+      legs:  { color: 0x8b1818, specular: 0xff5030, shininess: 140, emissive: 0x1a0000, ei: 0.45 },
+      tail:  { color: 0xc56820, specular: 0xffc060, shininess: 210, emissive: 0x250a00, ei: 0.48 },
+    },
+    {
+      name: 'Ghost White + Ice Blue',
+      ambient: 0xd0e8f8, dir1: 0xf8fcff, dir2: 0x90c8e8, rim: 0xe0f4ff,
+      head:  { color: 0xd8eef8, specular: 0xffffff, shininess: 320, emissive: 0x101820, ei: 0.35 },
+      body:  { color: 0xb8d8ee, specular: 0xe8f8ff, shininess: 260, emissive: 0x0c141c, ei: 0.32 },
+      legs:  { color: 0x90b8d0, specular: 0xc8e8f8, shininess: 200, emissive: 0x080e14, ei: 0.28 },
+      tail:  { color: 0xcce4f4, specular: 0xf0fbff, shininess: 300, emissive: 0x0e1820, ei: 0.34 },
+    },
+  ];
+
+  let currentScheme = 0;
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // RENDERER
   // ─────────────────────────────────────────────────────────────────────────
   const canvas = document.getElementById('dragon-canvas');
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x000000, 0);  // fully transparent clear
+  renderer.setClearColor(0x000000, 0);
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // SCENE + CAMERA
-  // ─────────────────────────────────────────────────────────────────────────
   const scene = new THREE.Scene();
-
   const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 1000);
   camera.position.set(3, 0.15, 3);
 
@@ -73,97 +183,83 @@
   });
 
   // ─────────────────────────────────────────────────────────────────────────
-  // LIGHTING — warm copper tones
+  // LIGHTS (updated per scheme)
   // ─────────────────────────────────────────────────────────────────────────
   const ambientLight = new THREE.AmbientLight(0xd8d0c0, 2.2);
   scene.add(ambientLight);
-
   const dirLight1 = new THREE.DirectionalLight(0xfff8e8, 5.0);
-  dirLight1.position.set(8, 15, 10);
-  scene.add(dirLight1);
-
+  dirLight1.position.set(8, 15, 10); scene.add(dirLight1);
   const dirLight2 = new THREE.DirectionalLight(0xc8c0a0, 1.8);
-  dirLight2.position.set(-12, -5, -8);
-  scene.add(dirLight2);
-
+  dirLight2.position.set(-12, -5, -8); scene.add(dirLight2);
   const rimLight = new THREE.DirectionalLight(0xe8e4d0, 2.2);
-  rimLight.position.set(0, 5, -15);
-  scene.add(rimLight);
+  rimLight.position.set(0, 5, -15); scene.add(rimLight);
 
   // ─────────────────────────────────────────────────────────────────────────
-  // MATERIALS — replicate the copper/red BRDF shaders with Phong
+  // MATERIALS
   // ─────────────────────────────────────────────────────────────────────────
-  // Stone-grey + pale gold — matches the image reference
-  const matHead = new THREE.MeshPhongMaterial({
-    color:    0xc0b09a,   // warm stone grey
-    specular: 0xf0e8c8,   // pale gold highlight
-    shininess: 240,
-    emissive: 0x1c1810,
-    emissiveIntensity: 0.4
-  });
+  function makeMat(s) {
+    return new THREE.MeshPhongMaterial({
+      color: s.color, specular: s.specular, shininess: s.shininess,
+      emissive: s.emissive, emissiveIntensity: s.ei
+    });
+  }
 
-  const matBody = new THREE.MeshPhongMaterial({
-    color:    0xa09080,   // mid stone grey
-    specular: 0xd8cca8,   // muted gold sheen
-    shininess: 180,
-    emissive: 0x141210,
-    emissiveIntensity: 0.38
-  });
+  let matHead = makeMat(SCHEMES[0].head);
+  let matBody = makeMat(SCHEMES[0].body);
+  let matLegs = makeMat(SCHEMES[0].legs);
+  let matTail = makeMat(SCHEMES[0].tail);
 
-  const matLegs = new THREE.MeshPhongMaterial({
-    color:    0x887868,   // darker stone
-    specular: 0xc0b488,
-    shininess: 130,
-    emissive: 0x100e0c,
-    emissiveIntensity: 0.35
-  });
+  function applyScheme(idx) {
+    const s = SCHEMES[idx];
+    ambientLight.color.set(s.ambient);
+    dirLight1.color.set(s.dir1);
+    dirLight2.color.set(s.dir2);
+    rimLight.color.set(s.rim);
 
-  const matTail = new THREE.MeshPhongMaterial({
-    color:    0xb8a890,   // slightly lighter stone for tail
-    specular: 0xe8dcc0,
-    shininess: 210,
-    emissive: 0x181614,
-    emissiveIntensity: 0.4
-  });
+    const applyMat = (mat, def) => {
+      mat.color.set(def.color);
+      mat.specular.set(def.specular);
+      mat.shininess = def.shininess;
+      mat.emissive.set(def.emissive);
+      mat.emissiveIntensity = def.ei;
+      mat.needsUpdate = true;
+    };
+    applyMat(matHead, s.head);
+    applyMat(matBody, s.body);
+    applyMat(matLegs, s.legs);
+    applyMat(matTail, s.tail);
+    // Update all body segment clones
+    meshB.forEach(m => applyMat(m.material, s.body));
+
+    document.getElementById('scheme-name').textContent = s.name;
+    document.getElementById('scheme-num').textContent  = `${idx + 1} / ${SCHEMES.length}`;
+  }
 
   // ─────────────────────────────────────────────────────────────────────────
-  // LOAD STL MESHES
+  // LOAD MESHES
   // ─────────────────────────────────────────────────────────────────────────
   const loader = new THREE.STLLoader();
   let tou, wei;
   const jiao  = [];
   const meshB = [];
   const BNUM  = 14;
-  let ready   = false;
-  let loaded  = 0;
 
-  function onLoad() {
-    loaded++;
-    if (loaded === 3 + BNUM) { ready = true; }
-  }
-
-  // Head
   loader.load('./tou.stl', geo => {
     tou = new THREE.Mesh(geo, matHead);
     tou.scale.set(0.15, 0.15, 0.15);
     tou.rotation.set(-Math.PI / 2, 0, 0);
     scene.add(tou);
-    onLoad();
   });
 
-  // Tail
   loader.load('./wei.stl', geo => {
     wei = new THREE.Mesh(geo, matTail);
     wei.scale.set(0.11, 0.11, 0.11);
     wei.rotation.set(-Math.PI / 2, 0, 0);
     scene.add(wei);
-    onLoad();
   });
 
-  // Legs (2 pairs)
   for (let i = 0; i < 4; i++) {
-    const file = (i === 0 || i === 2) ? './jiao.stl' : './jiao2.stl';
-    loader.load(file, geo => {
+    loader.load((i === 0 || i === 2) ? './jiao.stl' : './jiao2.stl', geo => {
       const m = new THREE.Mesh(geo, matLegs);
       m.scale.set(0.12, 0.12, 0.12);
       m.rotation.set(-Math.PI / 2, 0, -Math.PI / 2);
@@ -172,102 +268,87 @@
     });
   }
 
-  // Body segments
   for (let i = 0; i < BNUM; i++) {
     loader.load('./bodyy.stl', geo => {
-      const m = new THREE.Mesh(geo, matBody.clone());
+      const m = new THREE.Mesh(geo, makeMat(SCHEMES[currentScheme].body));
       m.scale.set(0.2, 0.1, 0.2);
       m.rotation.set(-Math.PI / 2, 0, 0);
       meshB.push(m);
       scene.add(m);
-      onLoad();
     });
   }
 
   // ─────────────────────────────────────────────────────────────────────────
-  // ANIMATION — identical to test2.js render()
+  // SCHEME NAVIGATION
+  // ─────────────────────────────────────────────────────────────────────────
+  function go(dir) {
+    currentScheme = (currentScheme + dir + SCHEMES.length) % SCHEMES.length;
+    applyScheme(currentScheme);
+  }
+
+  document.getElementById('prev').addEventListener('click', () => go(-1));
+  document.getElementById('next').addEventListener('click', () => go(+1));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft')  go(-1);
+    if (e.key === 'ArrowRight') go(+1);
+  });
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // ANIMATION — identical to test2.js
   // ─────────────────────────────────────────────────────────────────────────
   const clock = new THREE.Clock();
-  const base  = Math.sqrt(30 * 30 + 3 * 3);
 
   function render() {
     const timeR = clock.getElapsedTime();
 
-    // ── HEAD ──
-    const thetat = 0.2 * (timeR + 0.6);
     if (tou) {
-      tou.position.x = Math.cos(thetat) * 15;
-      tou.position.z = Math.sin(thetat) * 15;
-      tou.position.y = Math.cos(3 * thetat) * 1 - 5 + 0.5;
-      tou.rotation.y = Math.sin(thetat) > 0
-        ? -Math.atan(Math.sin(3 * thetat) * 2 * 3 / 15)
-        :  Math.atan(Math.sin(3 * thetat) * 2 * 3 / 15);
-      tou.rotation.z = -thetat;
+      const t = 0.2 * (timeR + 0.6);
+      tou.position.set(Math.cos(t) * 15, Math.cos(3*t) - 4.5, Math.sin(t) * 15);
+      tou.rotation.y = Math.sin(t) > 0 ? -Math.atan(Math.sin(3*t)*0.4) : Math.atan(Math.sin(3*t)*0.4);
+      tou.rotation.z = -t;
     }
 
-    // ── LEGS ──
     if (jiao.length === 4) {
-      let thetaj = 0.2 * (timeR - 1.5);
-      const posLeg = (m, r) => {
-        m.position.x = Math.cos(thetaj) * r;
-        m.position.z = Math.sin(thetaj) * r;
-        m.position.y = Math.cos(3 * thetaj) * 1 - 2 - 5;
-        m.rotation.y = Math.sin(thetaj) > 0
-          ? -Math.atan(Math.sin(3 * thetaj) * 2 * 3 / 15)
-          :  Math.atan(Math.sin(3 * thetaj) * 2 * 3 / 15);
-        m.rotation.z = -thetaj;
+      const doLeg = (m, lag, r) => {
+        const t = 0.2 * (timeR - lag);
+        m.position.set(Math.cos(t)*r, Math.cos(3*t)-7, Math.sin(t)*r);
+        m.rotation.y = Math.sin(t) > 0 ? -Math.atan(Math.sin(3*t)*0.4) : Math.atan(Math.sin(3*t)*0.4);
+        m.rotation.z = -t;
       };
-      posLeg(jiao[0], 17); posLeg(jiao[1], 13);
-      thetaj = 0.2 * (timeR - 4.5);
-      posLeg(jiao[2], 17); posLeg(jiao[3], 13);
+      doLeg(jiao[0], 1.5, 17); doLeg(jiao[1], 1.5, 13);
+      doLeg(jiao[2], 4.5, 17); doLeg(jiao[3], 4.5, 13);
     }
 
-    // ── BODY SEGMENTS ──
     for (let i = 0; i < meshB.length; i++) {
-      const time  = timeR - 0.6 * i;
-      const theta = 0.2 * time;
+      const t = 0.2 * (timeR - 0.6 * i);
       if (i > 8) {
-        meshB[i].scale.x = 0.2 - (i - 8) * 0.015;
-        meshB[i].scale.z = 0.2 - (i - 8) * 0.015;
-        meshB[i].scale.y = 0.2 - (i - 8) * 0.02 * (0.3 - 0.07 * Math.abs(Math.cos(3 * theta)));
+        meshB[i].scale.x = 0.2 - (i-8)*0.015;
+        meshB[i].scale.z = 0.2 - (i-8)*0.015;
+        meshB[i].scale.y = (0.2-(i-8)*0.02) * (0.3-0.07*Math.abs(Math.cos(3*t)));
       } else {
-        meshB[i].scale.y = 0.3 - 0.07 * Math.abs(Math.cos(3 * theta));
+        meshB[i].scale.y = 0.3 - 0.07*Math.abs(Math.cos(3*t));
       }
-      meshB[i].position.x = Math.cos(theta) * 15;
-      meshB[i].position.z = Math.sin(theta) * 15;
-      meshB[i].position.y = Math.cos(3 * theta) * 1 - 5;
-      meshB[i].rotation.y = Math.sin(theta) > 0
-        ? -Math.atan(Math.sin(3 * theta) * 2 * 3 / 15)
-        :  Math.atan(Math.sin(3 * theta) * 2 * 3 / 15);
-      meshB[i].rotation.z = -theta;
+      meshB[i].position.set(Math.cos(t)*15, Math.cos(3*t)-5, Math.sin(t)*15);
+      meshB[i].rotation.y = Math.sin(t) > 0 ? -Math.atan(Math.sin(3*t)*0.4) : Math.atan(Math.sin(3*t)*0.4);
+      meshB[i].rotation.z = -t;
     }
 
-    // ── TAIL ──
     if (wei) {
-      const thetaw = 0.2 * (timeR - 0.6 * BNUM + 0.1);
-      wei.position.x = Math.cos(thetaw) * 15;
-      wei.position.z = Math.sin(thetaw) * 15;
-      wei.position.y = Math.cos(3 * thetaw) * 1 - 5 + 0.5 - 0.5;
-      wei.rotation.y = Math.sin(thetaw) > 0
-        ? -Math.atan(Math.sin(3 * thetaw) * 2 * 3 / 15)
-        :  Math.atan(Math.sin(3 * thetaw) * 2 * 3 / 15);
-      wei.rotation.z = -thetaw;
+      const t = 0.2 * (timeR - 0.6*BNUM + 0.1);
+      wei.position.set(Math.cos(t)*15, Math.cos(3*t)-5, Math.sin(t)*15);
+      wei.rotation.y = Math.sin(t) > 0 ? -Math.atan(Math.sin(3*t)*0.4) : Math.atan(Math.sin(3*t)*0.4);
+      wei.rotation.z = -t;
     }
 
-    // ── CAMERA ORBIT (same as reference) ──
-    const time = clock.getElapsedTime();
-    camera.position.x = 30 + Math.cos(0.3 * time) * 5;
-    camera.position.y = Math.sin(0.3 * time) * 5 - 5;
+    const t2 = clock.getElapsedTime();
+    camera.position.x = 30 + Math.cos(0.3*t2)*5;
+    camera.position.y = Math.sin(0.3*t2)*5 - 5;
     camera.lookAt(new THREE.Vector3(0, -5, 0));
 
     renderer.render(scene, camera);
   }
 
-  function animate() {
-    requestAnimationFrame(animate);
-    render();
-  }
-
+  function animate() { requestAnimationFrame(animate); render(); }
   animate();
 })();
 </script>
