@@ -321,7 +321,7 @@
       height: 100% !important;
       pointer-events: none;
       z-index: -1;
-      opacity: 0.10;
+      opacity: 0.04;
     }
     }
   </style>
@@ -375,14 +375,14 @@
 
     loader.load('./tou.stl', geo => {
       tou = new THREE.Mesh(geo, matHead);
-      tou.scale.set(0.15, 0.15, 0.15);
+      tou.scale.set(0.30, 0.30, 0.30);
       tou.rotation.set(-Math.PI / 2, 0, 0);
       scene.add(tou);
     });
 
     loader.load('./wei.stl', geo => {
       wei = new THREE.Mesh(geo, matTail);
-      wei.scale.set(0.11, 0.11, 0.11);
+      wei.scale.set(0.22, 0.22, 0.22);
       wei.rotation.set(-Math.PI / 2, 0, 0);
       scene.add(wei);
     });
@@ -390,7 +390,7 @@
     for (let i = 0; i < BNUM; i++) {
       loader.load('./bodyy.stl', geo => {
         const m = new THREE.Mesh(geo, mk(0x4a2e88, 0xc090e8, 220, 0x0c0614, 0.44));
-        m.scale.set(0.2, 0.1, 0.2);
+        m.scale.set(0.4, 0.2, 0.4);
         m.rotation.set(-Math.PI / 2, 0, 0);
         meshB.push(m);
         scene.add(m);
@@ -405,7 +405,7 @@
 
       if (tou) {
         const t = 0.2 * (T + 0.6);
-        tou.position.set(Math.cos(t) * 15, Math.cos(3 * t) - 4.5, Math.sin(t) * 15);
+        tou.position.set(Math.cos(t) * 30, Math.cos(3 * t) * 2 - 9, Math.sin(t) * 30);
         tou.rotation.y = Math.sin(t) > 0 ? -Math.atan(Math.sin(3*t)*0.4) : Math.atan(Math.sin(3*t)*0.4);
         tou.rotation.z = -t;
       }
@@ -417,22 +417,22 @@
           meshB[i].scale.z = 0.2 - (i - 8) * 0.015;
           meshB[i].scale.y = (0.2 - (i - 8) * 0.02) * (0.3 - 0.07 * Math.abs(Math.cos(3 * t)));
         } else {
-          meshB[i].scale.y = 0.3 - 0.07 * Math.abs(Math.cos(3 * t));
+          meshB[i].scale.y = 0.6 - 0.14 * Math.abs(Math.cos(3 * t));
         }
-        meshB[i].position.set(Math.cos(t) * 15, Math.cos(3 * t) - 5, Math.sin(t) * 15);
+        meshB[i].position.set(Math.cos(t) * 30, Math.cos(3 * t) * 2 - 10, Math.sin(t) * 30);
         meshB[i].rotation.y = Math.sin(t) > 0 ? -Math.atan(Math.sin(3*t)*0.4) : Math.atan(Math.sin(3*t)*0.4);
         meshB[i].rotation.z = -t;
       }
 
       if (wei) {
         const t = 0.2 * (T - 0.6 * BNUM + 0.1);
-        wei.position.set(Math.cos(t) * 15, Math.cos(3 * t) - 5, Math.sin(t) * 15);
+        wei.position.set(Math.cos(t) * 30, Math.cos(3 * t) * 2 - 10, Math.sin(t) * 30);
         wei.rotation.y = Math.sin(t) > 0 ? -Math.atan(Math.sin(3*t)*0.4) : Math.atan(Math.sin(3*t)*0.4);
         wei.rotation.z = -t;
       }
 
-      camera.position.x = 30 + Math.cos(0.3 * T) * 5;
-      camera.position.y = Math.sin(0.3 * T) * 5 - 5;
+      camera.position.x = 55 + Math.cos(0.3 * T) * 8;
+      camera.position.y = Math.sin(0.3 * T) * 8 - 10;
       camera.lookAt(new THREE.Vector3(0, -5, 0));
       renderer.render(scene, camera);
     }
