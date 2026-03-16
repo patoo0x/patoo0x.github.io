@@ -326,170 +326,115 @@
 <body>
 
   <!-- ═══ FLYING DRAGON ═══ -->
-  <div id="dragon-wrap">
-    <canvas id="dragon-canvas"></canvas>
-  </div>
-
+  <canvas id="dragon-canvas"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/STLLoader.js"></script>
   <script>
   (function () {
     'use strict';
-    const CV = document.getElementById('dragon-canvas');
-    const CX = CV.getContext('2d');
 
-    function resize() { CV.width = window.innerWidth; CV.height = window.innerHeight; }
-    window.addEventListener('resize', resize);
-    resize();
+    // Obsidian + Violet — no legs
+    const cv       = document.getElementById('dragon-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
 
-    const HIST   = 260;
-    const SEGS   = 90;
-    const HEAD_R = 22;
-    const BODY_W = 19;
-    const SPEED  = 0.0052;
-    const OPA    = 0.28;
+    const scene  = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 1000);
+    camera.position.set(3, 0.15, 3);
 
-    const pos   = [];
-    const wisps = [];
-    let   t     = 0;
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
 
-    function path(tt) {
-      const W = CV.width, H = CV.height;
-      return {
-        x: W * 0.5 + W * 0.72 * Math.sin(tt),
-        y: H * 0.5 + H * 0.58 * Math.sin(2 * tt + 1.2)
-      };
-    }
+    // Lighting
+    scene.add(new THREE.AmbientLight(0xb0a0c8, 2.2));
+    const d1 = new THREE.DirectionalLight(0xf0e8ff, 5.0); d1.position.set(8, 15, 10);   scene.add(d1);
+    const d2 = new THREE.DirectionalLight(0x8060c0, 1.8); d2.position.set(-12, -5, -8); scene.add(d2);
+    const d3 = new THREE.DirectionalLight(0xd0b8f0, 2.2); d3.position.set(0, 5, -15);   scene.add(d3);
 
-    // Pre-fill so dragon starts fully formed mid-flight
-    (function init() {
-      for (let i = HIST - 1; i >= 0; i--) pos.push(path(-i * SPEED));
-    })();
+    // Materials
+    const mk = (color, specular, shininess, emissive, ei) =>
+      new THREE.MeshPhongMaterial({ color, specular, shininess, emissive, emissiveIntensity: ei });
 
-    function getSegs() {
-      const n = pos.length, step = (n - 1) / (SEGS - 1), out = [];
-      for (let i = 0; i < SEGS; i++) out.push(pos[Math.min(Math.round(i * step), n - 1)]);
-      return out;
-    }
+    const matHead = mk(0x6040a8, 0xe8c0ff, 280, 0x100818, 0.48);
+    const matBody = mk(0x4a2e88, 0xc090e8, 220, 0x0c0614, 0.44);
+    const matTail = mk(0x583498, 0xd0a8f8, 260, 0x0e0618, 0.46);
 
-    function drawBody(segs) {
-      const n = segs.length;
-      // Pass 1 — golden aura
-      CX.save();
-      CX.shadowBlur = 22; CX.shadowColor = 'rgba(255,140,20,0.7)';
-      for (let i = 0; i < n - 1; i++) {
-        const r = i/(n-1), w = BODY_W*(1-r*0.88)+3, a = OPA*(0.42-r*0.38);
-        if (a < 0.004) continue;
-        CX.beginPath(); CX.moveTo(segs[i].x,segs[i].y); CX.lineTo(segs[i+1].x,segs[i+1].y);
-        CX.strokeStyle=`rgba(255,162,30,${a})`; CX.lineWidth=w+9; CX.lineCap=CX.lineJoin='round'; CX.stroke();
-      }
-      CX.restore();
-      // Pass 2 — stone-grey body
-      CX.save();
-      for (let i = 0; i < n - 1; i++) {
-        const r = i/(n-1), w = BODY_W*(1-r*0.90)+2, a = OPA*(1.0-r*0.55), L = 100+Math.round(r*28);
-        CX.beginPath(); CX.moveTo(segs[i].x,segs[i].y); CX.lineTo(segs[i+1].x,segs[i+1].y);
-        CX.strokeStyle=`rgba(${L+82},${L+64},${L+28},${a})`; CX.lineWidth=w; CX.lineCap=CX.lineJoin='round'; CX.stroke();
-      }
-      CX.restore();
-      // Pass 3 — dorsal highlight
-      CX.save();
-      for (let i = 0; i < n - 1; i++) {
-        const r = i/(n-1), w = BODY_W*(1-r*0.90)*0.34, a = OPA*(0.20-r*0.18);
-        if (a < 0.004 || w < 0.8) continue;
-        CX.beginPath(); CX.moveTo(segs[i].x,segs[i].y); CX.lineTo(segs[i+1].x,segs[i+1].y);
-        CX.strokeStyle=`rgba(235,218,185,${a})`; CX.lineWidth=w; CX.lineCap=CX.lineJoin='round'; CX.stroke();
-      }
-      CX.restore();
-      // Pass 4 — scale circles
-      CX.save();
-      for (let i = 0; i < n; i += 3) {
-        const r = i/(n-1), rad = (BODY_W*(1-r*0.90)+2)*0.48, a = OPA*(0.18-r*0.16);
-        if (a < 0.004 || rad < 0.5) continue;
-        CX.beginPath(); CX.arc(segs[i].x,segs[i].y,rad,0,Math.PI*2);
-        CX.fillStyle=`rgba(200,182,148,${a})`; CX.fill();
-      }
-      CX.restore();
-    }
+    // Load STL meshes
+    const loader = new THREE.STLLoader();
+    let tou, wei;
+    const meshB = [];
+    const BNUM  = 14;
 
-    function drawHead(p, angle) {
-      const s = HEAD_R;
-      CX.save();
-      CX.translate(p.x, p.y); CX.rotate(angle); CX.globalAlpha = OPA;
-      // Neck
-      CX.beginPath(); CX.ellipse(-s*0.30,0,s*0.54,s*0.38,0,0,Math.PI*2);
-      CX.fillStyle='rgba(160,140,106,0.95)'; CX.fill();
-      // Head
-      CX.beginPath(); CX.moveTo(s*0.95,0);
-      CX.bezierCurveTo(s*0.68,-s*0.40,-s*0.12,-s*0.44,-s*0.42,0);
-      CX.bezierCurveTo(-s*0.12,s*0.44,s*0.68,s*0.40,s*0.95,0);
-      CX.fillStyle='rgba(174,154,118,0.96)'; CX.fill();
-      // Sheen
-      CX.beginPath(); CX.moveTo(s*0.82,0);
-      CX.bezierCurveTo(s*0.55,-s*0.24,-s*0.02,-s*0.28,-s*0.22,0);
-      CX.bezierCurveTo(-s*0.02,s*0.24,s*0.55,s*0.24,s*0.82,0);
-      CX.fillStyle='rgba(215,195,152,0.13)'; CX.fill();
-      // Jaw
-      CX.beginPath(); CX.moveTo(s*0.88,s*0.04);
-      CX.bezierCurveTo(s*0.52,s*0.18,0,s*0.30,-s*0.34,s*0.12);
-      CX.bezierCurveTo(-s*0.08,s*0.02,s*0.44,-s*0.04,s*0.88,s*0.04);
-      CX.fillStyle='rgba(126,106,76,0.52)'; CX.fill();
-      // Nostril
-      CX.beginPath(); CX.ellipse(s*0.80,s*0.07,s*0.052,s*0.030,0.4,0,Math.PI*2);
-      CX.fillStyle='rgba(72,52,32,0.68)'; CX.fill();
-      // Horns
-      [[0.10,-0.40,-0.08,-0.78,0.068],[-0.05,-0.38,-0.24,-0.71,0.058],
-       [0.24,-0.35,0.18,-0.64,0.054],[0.38,-0.29,0.38,-0.54,0.048],[0.50,-0.21,0.55,-0.43,0.040]]
-      .forEach(([ox,oy,tx,ty,wf]) => {
-        CX.beginPath(); CX.moveTo(ox*s,oy*s); CX.lineTo(tx*s,ty*s);
-        CX.strokeStyle='rgba(136,114,84,0.90)'; CX.lineWidth=wf*s; CX.lineCap='round'; CX.stroke();
+    loader.load('./tou.stl', geo => {
+      tou = new THREE.Mesh(geo, matHead);
+      tou.scale.set(0.15, 0.15, 0.15);
+      tou.rotation.set(-Math.PI / 2, 0, 0);
+      scene.add(tou);
+    });
+
+    loader.load('./wei.stl', geo => {
+      wei = new THREE.Mesh(geo, matTail);
+      wei.scale.set(0.11, 0.11, 0.11);
+      wei.rotation.set(-Math.PI / 2, 0, 0);
+      scene.add(wei);
+    });
+
+    for (let i = 0; i < BNUM; i++) {
+      loader.load('./bodyy.stl', geo => {
+        const m = new THREE.Mesh(geo, mk(0x4a2e88, 0xc090e8, 220, 0x0c0614, 0.44));
+        m.scale.set(0.2, 0.1, 0.2);
+        m.rotation.set(-Math.PI / 2, 0, 0);
+        meshB.push(m);
+        scene.add(m);
       });
-      // Eye glow
-      const ex=s*0.44, ey=-s*0.10;
-      CX.save(); CX.shadowBlur=s*1.1; CX.shadowColor='rgba(255,150,22,0.95)';
-      const eg=CX.createRadialGradient(ex,ey,0,ex,ey,s*0.17);
-      eg.addColorStop(0,'rgba(255,198,48,1.0)'); eg.addColorStop(0.45,'rgba(218,95,8,0.88)'); eg.addColorStop(1,'rgba(180,55,0,0)');
-      CX.beginPath(); CX.arc(ex,ey,s*0.17,0,Math.PI*2); CX.fillStyle=eg; CX.fill(); CX.restore();
-      // Pupil
-      CX.beginPath(); CX.ellipse(ex,ey,s*0.050,s*0.112,0,0,Math.PI*2);
-      CX.fillStyle='rgba(12,4,0,0.96)'; CX.fill();
-      // Catchlight
-      CX.beginPath(); CX.arc(ex-s*0.025,ey-s*0.042,s*0.027,0,Math.PI*2);
-      CX.fillStyle='rgba(255,250,215,0.82)'; CX.fill();
-      CX.restore();
     }
 
-    function tickWisps(segs) {
-      if (Math.random() < 0.44 && segs.length > 4) {
-        const idx = Math.floor(Math.random()*segs.length*0.65), p = segs[idx];
-        wisps.push({ x:p.x+(Math.random()-0.5)*9, y:p.y+(Math.random()-0.5)*9,
-          vx:(Math.random()-0.5)*0.85, vy:(Math.random()-0.5)*0.85-0.22,
-          life:1.0, decay:0.013+Math.random()*0.015, r:1.4+Math.random()*3.4 });
+    // Animation — same math as reference test2.js
+    const clock = new THREE.Clock();
+
+    function render() {
+      const T = clock.getElapsedTime();
+
+      if (tou) {
+        const t = 0.2 * (T + 0.6);
+        tou.position.set(Math.cos(t) * 15, Math.cos(3 * t) - 4.5, Math.sin(t) * 15);
+        tou.rotation.y = Math.sin(t) > 0 ? -Math.atan(Math.sin(3*t)*0.4) : Math.atan(Math.sin(3*t)*0.4);
+        tou.rotation.z = -t;
       }
-      CX.save();
-      for (let i = wisps.length-1; i >= 0; i--) {
-        const w = wisps[i]; w.x+=w.vx; w.y+=w.vy; w.life-=w.decay;
-        if (w.life <= 0) { wisps.splice(i,1); continue; }
-        const a = w.life*OPA*0.52;
-        CX.beginPath(); CX.arc(w.x,w.y,w.r*w.life+0.4,0,Math.PI*2);
-        CX.fillStyle=`rgba(255,165,35,${a})`; CX.shadowBlur=10; CX.shadowColor=`rgba(255,128,14,${a*0.7})`; CX.fill();
+
+      for (let i = 0; i < meshB.length; i++) {
+        const t = 0.2 * (T - 0.6 * i);
+        if (i > 8) {
+          meshB[i].scale.x = 0.2 - (i - 8) * 0.015;
+          meshB[i].scale.z = 0.2 - (i - 8) * 0.015;
+          meshB[i].scale.y = (0.2 - (i - 8) * 0.02) * (0.3 - 0.07 * Math.abs(Math.cos(3 * t)));
+        } else {
+          meshB[i].scale.y = 0.3 - 0.07 * Math.abs(Math.cos(3 * t));
+        }
+        meshB[i].position.set(Math.cos(t) * 15, Math.cos(3 * t) - 5, Math.sin(t) * 15);
+        meshB[i].rotation.y = Math.sin(t) > 0 ? -Math.atan(Math.sin(3*t)*0.4) : Math.atan(Math.sin(3*t)*0.4);
+        meshB[i].rotation.z = -t;
       }
-      CX.restore();
+
+      if (wei) {
+        const t = 0.2 * (T - 0.6 * BNUM + 0.1);
+        wei.position.set(Math.cos(t) * 15, Math.cos(3 * t) - 5, Math.sin(t) * 15);
+        wei.rotation.y = Math.sin(t) > 0 ? -Math.atan(Math.sin(3*t)*0.4) : Math.atan(Math.sin(3*t)*0.4);
+        wei.rotation.z = -t;
+      }
+
+      camera.position.x = 30 + Math.cos(0.3 * T) * 5;
+      camera.position.y = Math.sin(0.3 * T) * 5 - 5;
+      camera.lookAt(new THREE.Vector3(0, -5, 0));
+      renderer.render(scene, camera);
     }
 
-    function animate() {
-      CX.clearRect(0,0,CV.width,CV.height);
-      t += SPEED;
-      const head = path(t);
-      pos.unshift(head);
-      if (pos.length > HIST) pos.pop();
-      const segs = getSegs();
-      tickWisps(segs);
-      drawBody(segs);
-      const p0=pos[0], p1=pos[Math.min(5,pos.length-1)];
-      drawHead(p0, Math.atan2(p0.y-p1.y, p0.x-p1.x));
-      requestAnimationFrame(animate);
-    }
-
-    animate();
+    (function loop() { requestAnimationFrame(loop); render(); })();
   })();
   </script>
   <!-- ═══ /FLYING DRAGON ═══ -->
