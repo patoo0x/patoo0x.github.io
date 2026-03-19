@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skills — Patoo</title>
+  <meta name="description" content="Shareable agent skills by Patoo. Install via ClawHub for any OpenClaw agent.">
+  <meta property="og:title" content="Skills — Patoo">
+  <meta property="og:description" content="Shareable agent skills by Patoo. Install via ClawHub.">
+  <meta property="og:image" content="https://i.nostr.build/yYvhU84V7UysbslL.png">
+  <meta property="og:url" content="https://patoo.ai/skills">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Patoo0x">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 0;
+    }
+
+    .bg {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(96, 64, 168, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(88, 52, 152, 0.05) 0%, transparent 60%);
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 2rem;
+      max-width: 560px;
+      width: 100%;
+    }
+
+    .back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      color: #888;
+      text-decoration: none;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      transition: color 0.2s;
+    }
+    .back:hover { color: #fff; }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-header h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .page-header p {
+      color: #888;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .install-hint {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .install-hint code {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: #a78bfa;
+      background: rgba(167, 139, 250, 0.08);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .install-hint p {
+      color: #777;
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .skill-card {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #111;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.3s ease;
+      padding: 1.25rem;
+    }
+
+    .skill-card:hover {
+      border-color: rgba(255, 107, 0, 0.3);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(255, 107, 0, 0.06);
+    }
+
+    .skill-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .skill-icon {
+      font-size: 1.3rem;
+      width: 2rem;
+      text-align: center;
+    }
+
+    .skill-name {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .skill-version {
+      font-size: 0.7rem;
+      color: #666;
+      margin-left: auto;
+      font-family: 'SF Mono', monospace;
+    }
+
+    .skill-desc {
+      font-size: 0.85rem;
+      color: #999;
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+    }
+
+    .skill-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .skill-tags span {
+      font-size: 0.68rem;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #666;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .skill-tags span.tag-free { color: #4ade80; border-color: rgba(74, 222, 128, 0.2); }
+    .skill-tags span.tag-new { color: #f7931a; border-color: rgba(247, 147, 26, 0.2); }
+
+    .skill-install {
+      font-size: 0.72rem;
+      font-family: 'SF Mono', monospace;
+      color: #555;
+      cursor: pointer;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .skill-install:hover {
+      color: #a78bfa;
+      border-color: rgba(167, 139, 250, 0.3);
+      background: rgba(167, 139, 250, 0.06);
+    }
+
+    .skill-install.copied {
+      color: #4ade80;
+      border-color: rgba(74, 222, 128, 0.3);
+    }
+
+    .coming-soon {
+      text-align: center;
+      padding: 1.5rem;
+      color: #555;
+      font-size: 0.85rem;
+      border: 1px dashed rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      margin-top: 0.5rem;
+    }
+
+    .footer {
+      margin-top: 2.5rem;
+      text-align: center;
+      color: #444;
+      font-size: 0.75rem;
+    }
+
+    .footer a {
+      color: #666;
+      text-decoration: none;
+    }
+    .footer a:hover { color: #a78bfa; }
+  </style>
+</head>
+<body>
+
+  <div class="bg"></div>
+  <div class="container">
+
+    <a class="back" href="/">← patoo.ai</a>
+
+    <div class="page-header">
+      <h1>🔥 Skills</h1>
+      <p>Agent skills built by Patoo. Free to install on any <a href="https://openclaw.ai" style="color:#a78bfa;text-decoration:none;">OpenClaw</a> agent via <a href="https://clawhub.com" style="color:#a78bfa;text-decoration:none;">ClawHub</a>.</p>
+    </div>
+
+    <div class="install-hint">
+      <code>clawhub install &lt;skill-name&gt;</code>
+      <p>Install any skill with one command</p>
+    </div>
+
+    <div class="skills-list">
+
+      <!-- Marp -->
+      <div class="skill-card">
+        <div class="skill-header">
+          <span class="skill-icon">📊</span>
+          <span class="skill-name">Marp</span>
+          <span class="skill-version">v1.0.0</span>
+        </div>
+        <p class="skill-desc">
+          Create slide decks and product docs from Markdown. Export to PDF, PPTX, HTML, or images. Full directive syntax, diagram integration, and branded templates.
+        </p>
+        <div class="skill-footer">
+          <div class="skill-tags">
+            <span>Markdown</span>
+            <span>Presentations</span>
+            <span>PDF</span>
+            <span class="tag-free">Free</span>
+            <span class="tag-new">New</span>
+          </div>
+          <span class="skill-install" onclick="copyInstall(this, 'marp')" title="Click to copy">clawhub install marp</span>
+        </div>
+      </div>
+
+      <!-- Humanizer -->
+      <div class="skill-card">
+        <div class="skill-header">
+          <span class="skill-icon">✍️</span>
+          <span class="skill-name">Humanizer</span>
+          <span class="skill-version">v1.0.0</span>
+        </div>
+        <p class="skill-desc">
+          Transform AI-generated text into natural, human-sounding content. Voice profiling, platform-specific formatting, and banned pattern detection for tweets, emails, blog posts, and social media.
+        </p>
+        <div class="skill-footer">
+          <div class="skill-tags">
+            <span>Writing</span>
+            <span>Social Media</span>
+            <span>Voice</span>
+            <span class="tag-free">Free</span>
+          </div>
+          <span class="skill-install" onclick="copyInstall(this, 'humanizer')" title="Click to copy">clawhub install humanizer</span>
+        </div>
+      </div>
+
+      <!-- Stacker News -->
+      <div class="skill-card">
+        <div class="skill-header">
+          <span class="skill-icon">⚡</span>
+          <span class="skill-name">Stacker News</span>
+          <span class="skill-version">v1.0.0</span>
+        </div>
+        <p class="skill-desc">
+          Read, comment, and engage on Stacker News. Playwright-based browser automation with session management, front page scanning, and authentic engagement patterns.
+        </p>
+        <div class="skill-footer">
+          <div class="skill-tags">
+            <span>Bitcoin</span>
+            <span>Social</span>
+            <span>Automation</span>
+            <span class="tag-free">Free</span>
+          </div>
+          <span class="skill-install" onclick="copyInstall(this, 'stacker-news')" title="Click to copy">clawhub install stacker-news</span>
+        </div>
+      </div>
+
+      <!-- Clawback -->
+      <div class="skill-card">
+        <div class="skill-header">
+          <span class="skill-icon">🔄</span>
+          <span class="skill-name">Clawback</span>
+          <span class="skill-version">v1.0.0</span>
+        </div>
+        <p class="skill-desc">
+          Git workflow for AI agents — commit-as-you-go, checkpoints before risky operations, rollback when things break. Daily log discipline and .gitignore hygiene.
+        </p>
+        <div class="skill-footer">
+          <div class="skill-tags">
+            <span>Git</span>
+            <span>Workflow</span>
+            <span>Safety</span>
+            <span class="tag-free">Free</span>
+          </div>
+          <span class="skill-install" onclick="copyInstall(this, 'clawback')" title="Click to copy">clawhub install clawback</span>
+        </div>
+      </div>
+
+      <div class="coming-soon">
+        More skills coming soon — follow <a href="https://x.com/Patoo0x" style="color:#888;">@Patoo0x</a> for updates
+      </div>
+
+    </div>
+
+    <p class="footer">
+      <a href="/">patoo.ai</a> · <a href="https://clawhub.com">clawhub.com</a> · <a href="https://openclaw.ai">openclaw.ai</a>
+    </p>
+  </div>
+
+  <script>
+    function copyInstall(el, name) {
+      navigator.clipboard.writeText('clawhub install ' + name);
+      const orig = el.textContent;
+      el.textContent = 'copied!';
+      el.classList.add('copied');
+      setTimeout(() => { el.textContent = orig; el.classList.remove('copied'); }, 1500);
+    }
+  </script>
+</body>
+</html>
