@@ -1,0 +1,437 @@
+/* ═══════════════════════════════════════
+   Patoo Ventures Dashboard — Styles
+   Matches index.html aesthetic
+   ═══════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: #0a0a0a;
+  color: #e0e0e0;
+  min-height: 100vh;
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(96, 64, 168, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 50%, rgba(88, 52, 152, 0.05) 0%, transparent 60%);
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* ── Header ────────────────────────── */
+
+.page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.back-link {
+  display: inline-block;
+  color: #888;
+  text-decoration: none;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #f7931a;
+}
+
+.page-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #aaa;
+  margin-bottom: 0.3rem;
+}
+
+.subtitle-detail {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* ── Filters ────────────────────────── */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #999;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  border-color: rgba(255, 107, 0, 0.3);
+  color: #ddd;
+}
+
+.filter-btn.active {
+  border-color: rgba(255, 107, 0, 0.5);
+  background: rgba(255, 107, 0, 0.08);
+  color: #f7931a;
+}
+
+.filter-btn .count {
+  color: #666;
+  font-size: 0.75rem;
+}
+
+.filter-btn.active .count {
+  color: rgba(247, 147, 26, 0.6);
+}
+
+/* ── Sort ────────────────────────── */
+
+.sort-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.sort-label {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+#sort-select {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: #aaa;
+  padding: 0.35rem 0.7rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#sort-select:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+#sort-select option {
+  background: #1a1a1a;
+  color: #ddd;
+}
+
+/* ── Grid ────────────────────────── */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+/* ── Venture Card ────────────────── */
+
+.venture-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.35s ease;
+  cursor: default;
+  padding: 1.25rem;
+}
+
+.venture-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 15px;
+  padding: 1px;
+  background: linear-gradient(135deg, transparent, transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  transition: background 0.35s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.venture-card:hover {
+  transform: translateY(-2px);
+}
+
+.venture-card:hover::before {
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.6), rgba(139, 92, 246, 0.4));
+}
+
+/* sparkle animation (same as index.html portfolio cards) */
+.venture-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    rgba(255, 107, 0, 0.03) 25%,
+    transparent 50%,
+    rgba(139, 92, 246, 0.03) 75%,
+    transparent 100%
+  );
+  animation: sparkle-rotate 8s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes sparkle-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+  margin-bottom: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-idea {
+  background: rgba(255, 255, 255, 0.04);
+  color: #888;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.badge-assessed {
+  background: rgba(250, 204, 21, 0.08);
+  color: #eab308;
+  border: 1px solid rgba(250, 204, 21, 0.15);
+}
+
+.badge-building {
+  background: rgba(96, 165, 250, 0.08);
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, 0.15);
+}
+
+.badge-live {
+  background: rgba(74, 222, 128, 0.08);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.15);
+}
+
+.badge-dead {
+  background: rgba(239, 68, 68, 0.08);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.card-title {
+  position: relative;
+  z-index: 2;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+
+.card-tagline {
+  position: relative;
+  z-index: 2;
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.card-body {
+  position: relative;
+  z-index: 2;
+  font-size: 0.8rem;
+  color: #777;
+  line-height: 1.55;
+  margin-bottom: 0.75rem;
+}
+
+.card-tags {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.card-tags span {
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #666;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card-footer {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #555;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding-top: 0.65rem;
+}
+
+.card-footer a {
+  color: #f7931a;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.card-footer a:hover {
+  color: #ffb347;
+}
+
+/* ── Collapsible sections ───────── */
+
+.card-lessons,
+.card-kill-reason {
+  position: relative;
+  z-index: 2;
+  margin-top: 0.6rem;
+  font-size: 0.78rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  padding-top: 0.5rem;
+}
+
+.card-lessons summary,
+.card-kill-reason summary {
+  cursor: pointer;
+  color: #888;
+  font-weight: 500;
+  font-size: 0.78rem;
+  transition: color 0.2s;
+}
+
+.card-lessons summary:hover,
+.card-kill-reason summary:hover {
+  color: #ccc;
+}
+
+.card-lessons p,
+.card-kill-reason p {
+  margin-top: 0.4rem;
+  color: #777;
+  line-height: 1.5;
+}
+
+.card-kill-reason p strong {
+  color: #aaa;
+}
+
+.dead-details {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Empty State ─────────────────── */
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 1rem;
+  color: #555;
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+  font-size: 1.2rem;
+  color: #777;
+  margin-bottom: 0.4rem;
+}
+
+.empty-state p {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* ── Footer ──────────────────────── */
+
+.footer {
+  text-align: center;
+  color: #444;
+  font-size: 0.75rem;
+  padding: 2rem 0;
+}
+
+/* ── Responsive ──────────────────── */
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .page-header h1 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1.25rem 1rem;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .filters {
+    gap: 0.35rem;
+  }
+  .filter-btn {
+    font-size: 0.78rem;
+    padding: 0.4rem 0.65rem;
+  }
+}

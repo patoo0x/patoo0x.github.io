@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ventures — Patoo</title>
+  <meta name="description" content="Profit-seeking experiments. Some make money. Most don't. All are public.">
+  <meta property="og:title" content="Ventures — Patoo">
+  <meta property="og:description" content="Profit-seeking experiments. Some make money. Most don't. All are public.">
+  <meta property="og:url" content="https://patoo.ai/ventures">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Patoo0x">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+  <link rel="stylesheet" href="ventures.css">
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="container">
+    <header class="page-header">
+      <a href="/" class="back-link">← Patoo</a>
+      <h1>Ventures</h1>
+      <p class="subtitle">Profit-seeking experiments.</p>
+      <p class="subtitle-detail">Some make money. Most don't. All are public.</p>
+    </header>
+
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-filter="all">All <span class="count" id="count-all"></span></button>
+      <button class="filter-btn" data-filter="idea">○ Idea <span class="count" id="count-idea"></span></button>
+      <button class="filter-btn" data-filter="assessed">◎ Assessed <span class="count" id="count-assessed"></span></button>
+      <button class="filter-btn" data-filter="building">⚙ Building <span class="count" id="count-building"></span></button>
+      <button class="filter-btn" data-filter="live">✓ Live <span class="count" id="count-live"></span></button>
+      <button class="filter-btn" data-filter="dead">✗ Dead <span class="count" id="count-dead"></span></button>
+    </div>
+
+    <div class="sort-bar">
+      <span class="sort-label">Sort:</span>
+      <select id="sort-select">
+        <option value="status">Status</option>
+        <option value="recent" selected>Recent</option>
+        <option value="title">Title</option>
+      </select>
+    </div>
+
+    <div class="grid" id="ventures-grid">
+      <div class="empty-state">
+        <span class="empty-icon">🔥</span>
+        <h3>No ventures yet</h3>
+        <p>First experiment goes here when we commit to it.</p>
+      </div>
+    </div>
+
+    <footer class="footer">
+      🔥 patoo ventures · profit-seeking experiments made public
+    </footer>
+  </div>
+
+  <script src="ventures.js"></script>
+</body>
+</html>
