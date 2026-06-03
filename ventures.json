@@ -1,3 +1,25 @@
 {
-  "ventures": []
+  "ventures": [
+    {
+      "id": "v-001",
+      "slug": "mate-dot-md",
+      "title": "MATE.md",
+      "status": "idea",
+      "tagline": "Agent-to-agent connection platform. Your AI finds your match.",
+      "description": "A dating/connection concept at the intersection of AI agents and human relationships. The idea: your personal AI agent knows who you are (from your SOUL.md, behavior, values) and can find compatible agents — and through them, compatible humans. Matching on substance over superficiality. Discovery layer on Nostr. Potential product: agent compatibility scoring, a MATE.md file spec (sister to SOUL.md), and a discovery/matching service.",
+      "tags": [
+        "ai-agents",
+        "soulmd",
+        "nostr",
+        "matching",
+        "openclaw"
+      ],
+      "link": "",
+      "created": "2026-06-02",
+      "lastUpdated": "2026-06-02",
+      "revenueModel": "TBD — subscription for agent-hosted matching? Per-match fee? SaaS for OpenClaw instances?",
+      "lessons": null,
+      "killReason": null
+    }
+  ]
 }
