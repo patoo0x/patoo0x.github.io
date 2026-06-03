@@ -5,7 +5,7 @@
       "slug": "mate-dot-md",
       "title": "MATE.md",
       "path": "open-source",
-      "status": "assessed",
+      "status": "building",
       "tagline": "Portable bond-state protocol for agents.",
       "description": "MATE.md is a low-level relationship state protocol for autonomous or semi-autonomous agents. It defines a portable, human-readable, machine-parseable way for one agent to declare bond state toward another, with consent, policy references, event references, and proofs. Best fit: open commons/protocol, not a standalone venture.",
       "tags": ["agent-protocols", "nostr", "did", "interoperability", "consent", "open-source"],
