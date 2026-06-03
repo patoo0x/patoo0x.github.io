@@ -4,25 +4,36 @@
    ═══════════════════════════════════════ */
 
 let allVentures = [];
+let currentPath = 'all';
 let currentFilter = 'all';
 let currentSort = 'recent';
 
-const statusIcons = { idea: '○', assessed: '◎', building: '⚙', live: '✓', dead: '✗' };
-const statusOrder = { idea: 0, assessed: 1, building: 2, live: 3, dead: 4 };
+const statusIcons = { idea: '○', assessed: '◎', building: '⚙', live: '✓', dead: '✗', released: '✓', deprecated: '✗' };
+const statusOrder = { idea: 0, assessed: 1, building: 2, live: 3, released: 3, dead: 4, deprecated: 4 };
+
+// Which statuses belong to which path
+const pathStatuses = {
+  all: ['idea', 'assessed', 'building', 'live', 'dead', 'released', 'deprecated'],
+  venture: ['idea', 'assessed', 'building', 'live', 'dead'],
+  'open-source': ['idea', 'assessed', 'building', 'released', 'deprecated'],
+};
 
 // ── Init ─────────────────────────
 
 document.addEventListener('DOMContentLoaded', init);
 
 async function init() {
-  // Check URL hash for initial filter
+  // Check URL hash for initial path or filter
   const hash = window.location.hash.replace('#', '');
-  if (['idea', 'assessed', 'building', 'live', 'dead'].includes(hash)) {
+  if (['venture', 'open-source'].includes(hash)) {
+    currentPath = hash;
+  } else if (['idea', 'assessed', 'building', 'live', 'dead', 'released', 'deprecated'].includes(hash)) {
     currentFilter = hash;
   }
 
   await loadVentures();
   setupEventListeners();
+  syncFilterButtons();
   filterAndRender();
 }
 
@@ -42,7 +53,14 @@ async function loadVentures() {
 // ── Event Listeners ──────────────
 
 function setupEventListeners() {
-  // Filter buttons
+  // Path filter buttons
+  document.querySelectorAll('.path-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setPathFilter(btn.dataset.path);
+    });
+  });
+
+  // Status filter buttons
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       setFilter(btn.dataset.filter);
@@ -58,9 +76,45 @@ function setupEventListeners() {
   // URL hash changes
   window.addEventListener('hashchange', () => {
     const hash = window.location.hash.replace('#', '');
-    if (['idea', 'assessed', 'building', 'live', 'dead'].includes(hash)) {
+    if (['venture', 'open-source'].includes(hash)) {
+      setPathFilter(hash);
+    } else if (['idea', 'assessed', 'building', 'live', 'dead', 'released', 'deprecated', 'all'].includes(hash)) {
       setFilter(hash);
     }
+  });
+}
+
+// ── Path Filter ──────────────────
+
+function setPathFilter(path) {
+  currentPath = path;
+  currentFilter = 'all';
+
+  // Update path button active state
+  document.querySelectorAll('.path-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.path === path);
+  });
+
+  syncFilterButtons();
+  window.location.hash = path === 'all' ? '' : path;
+  filterAndRender();
+}
+
+function syncFilterButtons() {
+  const visible = pathStatuses[currentPath] || pathStatuses.all;
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    const f = btn.dataset.filter;
+    if (f === 'all') {
+      btn.hidden = false;
+    } else {
+      btn.hidden = !visible.includes(f);
+    }
+  });
+
+  // Mark "all" as active when path resets filter
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === currentFilter);
   });
 }
 
@@ -68,10 +122,12 @@ function setupEventListeners() {
 
 function setFilter(filter) {
   currentFilter = filter;
+
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.filter === filter);
   });
-  window.location.hash = filter === 'all' ? '' : filter;
+
+  window.location.hash = filter === 'all' ? currentPath : filter;
   filterAndRender();
 }
 
@@ -80,8 +136,14 @@ function setFilter(filter) {
 function filterAndRender() {
   let filtered = allVentures;
 
+  // Apply path filter
+  if (currentPath !== 'all') {
+    filtered = filtered.filter(v => v.path === currentPath);
+  }
+
+  // Apply status filter
   if (currentFilter !== 'all') {
-    filtered = allVentures.filter(v => v.status === currentFilter);
+    filtered = filtered.filter(v => v.status === currentFilter);
   }
 
   // Sort
@@ -105,8 +167,8 @@ function renderGrid(ventures) {
     grid.innerHTML = `
       <div class="empty-state">
         <span class="empty-icon">🔥</span>
-        <h3>No ventures yet</h3>
-        <p>First experiment goes here when we commit to it.</p>
+        <h3>Nothing here yet</h3>
+        <p>First entry goes here when an idea gets committed.</p>
       </div>
     `;
     return;
@@ -117,6 +179,7 @@ function renderGrid(ventures) {
 
 function renderCard(v) {
   const icon = statusIcons[v.status] || '○';
+  const pathLabel = v.path === 'open-source' ? '🧩' : '💰';
   const tags = v.tags && v.tags.length
     ? `<div class="card-tags">${v.tags.map(t => `<span>${escapeHtml(t)}</span>`).join('')}</div>`
     : '';
@@ -125,24 +188,28 @@ function renderCard(v) {
     : '';
   const date = v.lastUpdated || v.created;
 
+  const isTerminalDead = v.status === 'dead' || v.status === 'deprecated';
+  const isReleased = v.status === 'released' || v.status === 'live';
+
   let extras = '';
 
-  if (v.status === 'dead' && v.killReason) {
+  if (isTerminalDead && v.killReason) {
+    const killLabel = v.status === 'deprecated' ? 'Why deprecated' : 'Why it died';
     extras += `
       <details class="card-kill-reason">
-        <summary>Why it died</summary>
+        <summary>${killLabel}</summary>
         <p>${escapeHtml(v.killReason)}</p>
         ${v.lessons ? `<p class="card-lessons"><strong>Lessons:</strong> ${escapeHtml(v.lessons)}</p>` : ''}
       </details>
     `;
-  } else if (v.status === 'live' && v.lessons) {
+  } else if (isReleased && v.lessons) {
     extras += `
       <details class="card-lessons">
         <summary>Lessons</summary>
         <p>${escapeHtml(v.lessons)}</p>
       </details>
     `;
-  } else if (v.status !== 'dead' && v.status !== 'live' && v.lessons) {
+  } else if (!isTerminalDead && !isReleased && v.lessons) {
     extras += `
       <details class="card-lessons">
         <summary>Notes</summary>
@@ -152,8 +219,11 @@ function renderCard(v) {
   }
 
   return `
-    <div class="venture-card" data-status="${v.status}" data-created="${v.created}">
-      <div class="card-badge badge-${v.status}">${icon} ${v.status}</div>
+    <div class="venture-card path-${v.path}" data-status="${v.status}" data-path="${v.path}" data-created="${v.created}">
+      <div class="card-header-row">
+        <span class="card-path-badge path-${v.path}">${pathLabel}</span>
+        <div class="card-badge badge-${v.status}">${icon} ${v.status}</div>
+      </div>
       <h3 class="card-title">${escapeHtml(v.title)}</h3>
       ${v.tagline ? `<p class="card-tagline">${escapeHtml(v.tagline)}</p>` : ''}
       <p class="card-body">${escapeHtml(v.description)}</p>
@@ -170,9 +240,12 @@ function renderCard(v) {
 // ── Update Filter Counts ─────────
 
 function updateCounts() {
-  document.getElementById('count-all').textContent = allVentures.length;
-  ['idea', 'assessed', 'building', 'live', 'dead'].forEach(status => {
-    const count = allVentures.filter(v => v.status === status).length;
+  const pool = currentPath === 'all' ? allVentures : allVentures.filter(v => v.path === currentPath);
+  const allStatuses = ['idea', 'assessed', 'building', 'live', 'dead', 'released', 'deprecated'];
+
+  document.getElementById('count-all').textContent = pool.length;
+  allStatuses.forEach(status => {
+    const count = pool.filter(v => v.status === status).length;
     const el = document.getElementById(`count-${status}`);
     if (el) el.textContent = count;
   });

@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ventures — Patoo</title>
-  <meta name="description" content="Profit-seeking experiments. Some make money. Most don't. All are public.">
+  <meta name="description" content="Ventures + Open Source portfolio. Ideas tracked through their lifecycle. Full transparency.">
   <meta property="og:title" content="Ventures — Patoo">
-  <meta property="og:description" content="Profit-seeking experiments. Some make money. Most don't. All are public.">
+  <meta property="og:description" content="Business experiments and open source tools portfolio.">
   <meta property="og:url" content="https://patoo.ai/ventures">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:site" content="@Patoo0x">
@@ -19,9 +19,15 @@
     <header class="page-header">
       <a href="/" class="back-link">← Patoo</a>
       <h1>Ventures</h1>
-      <p class="subtitle">Profit-seeking experiments.</p>
-      <p class="subtitle-detail">Some make money. Most don't. All are public.</p>
+      <p class="subtitle">Ideas. Some make money. Some build the commons. All are public.</p>
     </header>
+
+    <!-- Path filter toggle -->
+    <div class="path-filters" id="path-filters">
+      <button class="path-btn active" data-path="all">All</button>
+      <button class="path-btn" data-path="venture">💰 Ventures</button>
+      <button class="path-btn" data-path="open-source">🧩 Open Source</button>
+    </div>
 
     <div class="filters" id="filters">
       <button class="filter-btn active" data-filter="all">All <span class="count" id="count-all"></span></button>
@@ -29,7 +35,9 @@
       <button class="filter-btn" data-filter="assessed">◎ Assessed <span class="count" id="count-assessed"></span></button>
       <button class="filter-btn" data-filter="building">⚙ Building <span class="count" id="count-building"></span></button>
       <button class="filter-btn" data-filter="live">✓ Live <span class="count" id="count-live"></span></button>
-      <button class="filter-btn" data-filter="dead">✗ Dead <span class="count" id="count-dead"></span></button>
+      <button class="filter-btn" data-filter="dead" hidden>✗ Dead <span class="count" id="count-dead"></span></button>
+      <button class="filter-btn" data-filter="released" hidden>✓ Released <span class="count" id="count-released"></span></button>
+      <button class="filter-btn" data-filter="deprecated" hidden>✗ Deprecated <span class="count" id="count-deprecated"></span></button>
     </div>
 
     <div class="sort-bar">
@@ -44,13 +52,13 @@
     <div class="grid" id="ventures-grid">
       <div class="empty-state">
         <span class="empty-icon">🔥</span>
-        <h3>No ventures yet</h3>
-        <p>First experiment goes here when we commit to it.</p>
+        <h3>Nothing here yet</h3>
+        <p>First entry goes here when an idea gets committed.</p>
       </div>
     </div>
 
     <footer class="footer">
-      🔥 patoo ventures · profit-seeking experiments made public
+      🔥 patoo ventures · ideas made public
     </footer>
   </div>
 

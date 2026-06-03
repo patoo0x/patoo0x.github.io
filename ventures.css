@@ -79,6 +79,57 @@ body {
   margin-bottom: 1rem;
 }
 
+/* ── Path Filter ──────────────────────── */
+
+.path-filters {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.path-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #999;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.path-btn:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #ddd;
+}
+
+.path-btn.active {
+  border-color: rgba(247, 147, 26, 0.4);
+  background: rgba(247, 147, 26, 0.08);
+  color: #f7931a;
+}
+
+.path-btn[data-path="venture"].active {
+  border-color: rgba(74, 222, 128, 0.4);
+  background: rgba(74, 222, 128, 0.06);
+  color: #4ade80;
+}
+
+.path-btn[data-path="open-source"].active {
+  border-color: rgba(139, 92, 246, 0.4);
+  background: rgba(139, 92, 246, 0.06);
+  color: #a78bfa;
+}
+
+.filter-btn[hidden] {
+  display: none;
+}
+
 .filter-btn {
   display: inline-flex;
   align-items: center;
@@ -222,6 +273,32 @@ body {
   to { transform: rotate(360deg); }
 }
 
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.7rem;
+}
+
+.card-path-badge {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 5px;
+  letter-spacing: 0.02em;
+}
+
+.card-path-badge.path-venture {
+  background: rgba(74, 222, 128, 0.06);
+  color: #6ee7a0;
+  border: 1px solid rgba(74, 222, 128, 0.1);
+}
+
+.card-path-badge.path-open-source {
+  background: rgba(139, 92, 246, 0.06);
+  color: #c4b5fd;
+  border: 1px solid rgba(139, 92, 246, 0.1);
+}
+
 .card-badge {
   display: inline-flex;
   align-items: center;
@@ -230,7 +307,6 @@ body {
   font-weight: 500;
   padding: 0.2rem 0.55rem;
   border-radius: 5px;
-  margin-bottom: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -259,10 +335,22 @@ body {
   border: 1px solid rgba(74, 222, 128, 0.15);
 }
 
+.badge-released {
+  background: rgba(139, 92, 246, 0.08);
+  color: #a78bfa;
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
 .badge-dead {
   background: rgba(239, 68, 68, 0.08);
   color: #ef4444;
   border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.badge-deprecated {
+  background: rgba(239, 68, 68, 0.06);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.1);
 }
 
 .card-title {
