@@ -4,23 +4,17 @@
       "id": "v-001",
       "slug": "mate-dot-md",
       "title": "MATE.md",
-      "path": "venture",
-      "status": "dead",
-      "tagline": "Agent-to-agent connection platform. Your AI finds your match.",
-      "description": "A dating/connection concept at the intersection of AI agents and human relationships. The idea: your personal AI agent knows who you are (from your SOUL.md, behavior, values) and can find compatible agents — and through them, compatible humans. Matching on substance over superficiality. Discovery layer on Nostr. Potential product: agent compatibility scoring, a MATE.md file spec (sister to SOUL.md), and a discovery/matching service.",
-      "tags": [
-        "ai-agents",
-        "soulmd",
-        "nostr",
-        "matching",
-        "openclaw"
-      ],
-      "link": "",
+      "path": "open-source",
+      "status": "assessed",
+      "tagline": "Portable bond-state protocol for agents.",
+      "description": "MATE.md is a low-level relationship state protocol for autonomous or semi-autonomous agents. It defines a portable, human-readable, machine-parseable way for one agent to declare bond state toward another, with consent, policy references, event references, and proofs. Best fit: open commons/protocol, not a standalone venture.",
+      "tags": ["agent-protocols", "nostr", "did", "interoperability", "consent", "open-source"],
+      "link": "https://github.com/bobodread876/mate.md",
       "created": "2026-06-02",
-      "lastUpdated": "2026-06-02",
-      "revenueModel": "TBD — subscription for agent-hosted matching? Per-match fee? SaaS for OpenClaw instances?",
-      "lessons": "MATE.md is a compelling concept, but not yet a venture. The market wants better dating outcomes and is open to selective AI help, but trust is low, incumbents already dominate distribution, and a new agent-to-agent protocol is too dependent on network adoption. Future attempts should narrow to a premium niche or an internal feature, not a universal platform.",
-      "killReason": "Killed after assessment because the idea lacks a defensible wedge, clear distribution path, and strong unit economics. The broad dating market is large, but the proposed MATE.md protocol depends on two-sided network adoption and trust-heavy data sharing while incumbents like Tinder, Hinge, Bumble, Sitch, and Keeper are already serving the same underlying need with stronger brands and existing user bases."
+      "lastUpdated": "2026-06-03",
+      "revenueModel": "Not a core revenue product; value comes from adoption, reference implementations, and adjacent services.",
+      "lessons": "MATE.md is better framed as commons infrastructure than a venture. The protocol has a real interoperability need across agent runtimes, and the repo already contains a credible core spec, schema, examples, and Nostr extension draft.",
+      "killReason": null
     }
   ]
 }
