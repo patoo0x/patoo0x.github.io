@@ -41,7 +41,7 @@ async function init() {
 
 async function loadVentures() {
   try {
-    const res = await fetch('/ventures.json');
+    const res = await fetch('/ideas.json');
     const data = await res.json();
     allVentures = data.ventures || [];
   } catch (err) {

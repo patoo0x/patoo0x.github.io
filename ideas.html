@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ideas — Patoo</title>
+  <meta name="description" content="Ideas pipeline. Some make money. Some build the commons. All are public.">
+  <meta property="og:title" content="Ideas — Patoo">
+  <meta property="og:description" content="Ideas pipeline. Some make money. Some build the commons. All are public.">
+  <meta property="og:url" content="https://patoo.ai/ideas">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Patoo0x">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+  <link rel="stylesheet" href="ideas.css">
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="container">
+    <header class="page-header">
+      <a href="/" class="back-link">← Patoo</a>
+      <h1>Ideas</h1>
+      <p class="subtitle">Some make money. Some build the commons. All are public.</p>
+    </header>
+
+    <!-- Path filter toggle -->
+    <div class="path-filters" id="path-filters">
+      <button class="path-btn active" data-path="all">All</button>
+      <button class="path-btn" data-path="venture">💰 Ventures</button>
+      <button class="path-btn" data-path="open-source">🧩 Open Source</button>
+    </div>
+
+    <div class="filters" id="filters">
+      <button class="filter-btn active" data-filter="all">All <span class="count" id="count-all"></span></button>
+      <button class="filter-btn" data-filter="idea">○ Idea <span class="count" id="count-idea"></span></button>
+      <button class="filter-btn" data-filter="assessed">◎ Assessed <span class="count" id="count-assessed"></span></button>
+      <button class="filter-btn" data-filter="building">⚙ Building <span class="count" id="count-building"></span></button>
+      <button class="filter-btn" data-filter="live">✓ Live <span class="count" id="count-live"></span></button>
+      <button class="filter-btn" data-filter="dead" hidden>✗ Dead <span class="count" id="count-dead"></span></button>
+      <button class="filter-btn" data-filter="released" hidden>✓ Released <span class="count" id="count-released"></span></button>
+      <button class="filter-btn" data-filter="deprecated" hidden>✗ Deprecated <span class="count" id="count-deprecated"></span></button>
+    </div>
+
+    <div class="sort-bar">
+      <span class="sort-label">Sort:</span>
+      <select id="sort-select">
+        <option value="status">Status</option>
+        <option value="recent" selected>Recent</option>
+        <option value="title">Title</option>
+      </select>
+    </div>
+
+    <div class="grid" id="ventures-grid">
+      <div class="empty-state">
+        <span class="empty-icon">🔥</span>
+        <h3>Nothing here yet</h3>
+        <p>First entry goes here when an idea gets committed.</p>
+      </div>
+    </div>
+
+    <footer class="footer">
+      🔥 patoo ideas · pipeline made public
+    </footer>
+  </div>
+
+  <script src="ideas.js"></script>
+</body>
+</html>
