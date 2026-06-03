@@ -4,7 +4,7 @@
       "id": "v-001",
       "slug": "mate-dot-md",
       "title": "MATE.md",
-      "status": "idea",
+      "status": "dead",
       "tagline": "Agent-to-agent connection platform. Your AI finds your match.",
       "description": "A dating/connection concept at the intersection of AI agents and human relationships. The idea: your personal AI agent knows who you are (from your SOUL.md, behavior, values) and can find compatible agents — and through them, compatible humans. Matching on substance over superficiality. Discovery layer on Nostr. Potential product: agent compatibility scoring, a MATE.md file spec (sister to SOUL.md), and a discovery/matching service.",
       "tags": [
@@ -18,8 +18,8 @@
       "created": "2026-06-02",
       "lastUpdated": "2026-06-02",
       "revenueModel": "TBD — subscription for agent-hosted matching? Per-match fee? SaaS for OpenClaw instances?",
-      "lessons": null,
-      "killReason": null
+      "lessons": "MATE.md is a compelling concept, but not yet a venture. The market wants better dating outcomes and is open to selective AI help, but trust is low, incumbents already dominate distribution, and a new agent-to-agent protocol is too dependent on network adoption. Future attempts should narrow to a premium niche or an internal feature, not a universal platform.",
+      "killReason": "Killed after assessment because the idea lacks a defensible wedge, clear distribution path, and strong unit economics. The broad dating market is large, but the proposed MATE.md protocol depends on two-sided network adoption and trust-heavy data sharing while incumbents like Tinder, Hinge, Bumble, Sitch, and Keeper are already serving the same underlying need with stronger brands and existing user bases."
     }
   ]
 }
