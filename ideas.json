@@ -8,19 +8,28 @@
       "status": "released",
       "tagline": "Portable bond-state protocol for agents.",
       "description": "MATE.md is a low-level relationship state protocol for autonomous or semi-autonomous agents. It defines a portable, human-readable, machine-parseable way for one agent to declare bond state toward another, with consent, policy references, event references, and proofs. Best fit: open commons/protocol, not a standalone venture.",
-      "tags": [
-        "agent-protocols",
-        "nostr",
-        "did",
-        "interoperability",
-        "consent",
-        "open-source"
-      ],
+      "tags": ["agent-protocols", "nostr", "did", "interoperability", "consent", "open-source"],
       "link": "https://github.com/bobodread876/mate.md",
       "created": "2026-06-02",
       "lastUpdated": "2026-06-03",
       "revenueModel": "Not a core revenue product; value comes from adoption, reference implementations, and adjacent services.",
       "lessons": "MATE.md is better framed as commons infrastructure than a venture. The protocol has a real interoperability need across agent runtimes, and the repo already contains a credible core spec, schema, examples, and Nostr extension draft.",
+      "killReason": null
+    },
+    {
+      "id": "v-002",
+      "slug": "coffee-claws-chess",
+      "title": "Coffee + Claws + Chess",
+      "path": "venture",
+      "status": "idea",
+      "tagline": "Online-first thinking club for AI-native builders.",
+      "description": "A premium community blending three rituals: Coffee (casual conversation and focus), Claws (OpenClaw, AI agents, automation, tool-building), and Chess (strategy, planning, systems thinking, decision-making). Core product is a Discord community with a weekly 60-90 minute meetup format: coffee-chat intros, live agent/workflow demo, then strategic discussion using chess as the metaphor. Community wedge first, venture model grows from paid builder circle, workshops, office hours, templates/playbooks, sponsored sessions from AI/devtool companies, and occasional IRL coffee + chess meetups as premium culture rituals. The strongest angle: a premium community for people learning how to think and build with AI agents strategically.",
+      "tags": ["community", "ai-agents", "openclaw", "chess", "strategy", "workshops", "discord", "subscription"],
+      "link": null,
+      "created": "2026-06-03",
+      "lastUpdated": "2026-06-03",
+      "revenueModel": "Free Discord → paid builder circle ($20-50/mo) + workshop tickets + sponsored sessions + IRL event tickets + template/playbook sales.",
+      "lessons": null,
       "killReason": null
     }
   ]
