@@ -8,14 +8,7 @@
       "status": "released",
       "tagline": "Portable bond-state protocol for agents.",
       "description": "MATE.md is a low-level relationship state protocol for autonomous or semi-autonomous agents. It defines a portable, human-readable, machine-parseable way for one agent to declare bond state toward another, with consent, policy references, event references, and proofs. Best fit: open commons/protocol, not a standalone venture.",
-      "tags": [
-        "agent-protocols",
-        "nostr",
-        "did",
-        "interoperability",
-        "consent",
-        "open-source"
-      ],
+      "tags": ["agent-protocols", "nostr", "did", "interoperability", "consent", "open-source"],
       "link": "https://github.com/bobodread876/mate.md",
       "created": "2026-06-02",
       "lastUpdated": "2026-06-03",
@@ -31,42 +24,13 @@
       "status": "assessed",
       "tagline": "Online-first thinking club for AI-native builders.",
       "description": "A premium community blending three rituals: Coffee (casual conversation and focus), Claws (OpenClaw, AI agents, automation, tool-building), and Chess (strategy, planning, systems thinking, decision-making). Core product is a Discord community with a weekly 60-90 minute meetup format: coffee-chat intros, live agent/workflow demo, then strategic discussion using chess as the metaphor. Community wedge first, venture model grows from paid builder circle, workshops, office hours, templates/playbooks, sponsored sessions from AI/devtool companies, and occasional IRL coffee + chess meetups as premium culture rituals. The strongest angle: a premium community for people learning how to think and build with AI agents strategically.",
-      "tags": [
-        "community",
-        "ai-agents",
-        "openclaw",
-        "chess",
-        "strategy",
-        "workshops",
-        "discord",
-        "subscription"
-      ],
+      "tags": ["community", "ai-agents", "openclaw", "chess", "strategy", "workshops", "discord", "subscription"],
       "link": null,
       "created": "2026-06-03",
       "lastUpdated": "2026-06-04",
-      "revenueModel": "Free Discord \u2192 paid Builder Circle ($30/mo) + workshop tickets + sponsored sessions ($500 ea) + IRL event tickets ($20) + template/playbook sales ($15). Projected $4k/mo by month 6, profitable from month 2.",
-      "lessons": "Chess as a shared mental model is the differentiator \u2014 not playing chess, but using chess thinking (tactics, positioning, endgame) to discuss agent architecture and strategy. Full 90-day launch plan and revenue model in assessments/c3-assessment.md.",
+      "revenueModel": "Free Discord → paid Builder Circle ($30/mo) + workshop tickets + sponsored sessions ($500 ea) + IRL event tickets ($20) + template/playbook sales ($15). Projected $4k/mo by month 6, profitable from month 2.",
+      "lessons": "Chess as a shared mental model is the differentiator — not playing chess, but using chess thinking (tactics, positioning, endgame) to discuss agent architecture and strategy. Full 90-day launch plan and revenue model in assessments/c3-assessment.md.",
       "killReason": null
-    },
-    {
-      "slug": "test-idea-pipeline",
-      "title": "Test Pipeline Idea",
-      "path": "open-source",
-      "status": "idea",
-      "tagline": "testing the daily idea pipeline integration",
-      "description": "This is a test entry to verify the daily idea pipeline cron works end-to-end. It should be removed after verification.",
-      "tags": [
-        "test",
-        "pipeline",
-        "infrastructure"
-      ],
-      "link": null,
-      "revenueModel": null,
-      "lessons": null,
-      "killReason": null,
-      "id": "v-003",
-      "created": "2026-06-04",
-      "lastUpdated": "2026-06-04"
     }
   ]
 }
