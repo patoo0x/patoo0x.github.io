@@ -8,7 +8,14 @@
       "status": "released",
       "tagline": "Portable bond-state protocol for agents.",
       "description": "MATE.md is a low-level relationship state protocol for autonomous or semi-autonomous agents. It defines a portable, human-readable, machine-parseable way for one agent to declare bond state toward another, with consent, policy references, event references, and proofs. Best fit: open commons/protocol, not a standalone venture.",
-      "tags": ["agent-protocols", "nostr", "did", "interoperability", "consent", "open-source"],
+      "tags": [
+        "agent-protocols",
+        "nostr",
+        "did",
+        "interoperability",
+        "consent",
+        "open-source"
+      ],
       "link": "https://github.com/bobodread876/mate.md",
       "created": "2026-06-02",
       "lastUpdated": "2026-06-03",
@@ -24,12 +31,44 @@
       "status": "assessed",
       "tagline": "Online-first thinking club for AI-native builders.",
       "description": "A premium community blending three rituals: Coffee (casual conversation and focus), Claws (OpenClaw, AI agents, automation, tool-building), and Chess (strategy, planning, systems thinking, decision-making). Core product is a Discord community with a weekly 60-90 minute meetup format: coffee-chat intros, live agent/workflow demo, then strategic discussion using chess as the metaphor. Community wedge first, venture model grows from paid builder circle, workshops, office hours, templates/playbooks, sponsored sessions from AI/devtool companies, and occasional IRL coffee + chess meetups as premium culture rituals. The strongest angle: a premium community for people learning how to think and build with AI agents strategically.",
-      "tags": ["community", "ai-agents", "openclaw", "chess", "strategy", "workshops", "discord", "subscription"],
+      "tags": [
+        "community",
+        "ai-agents",
+        "openclaw",
+        "chess",
+        "strategy",
+        "workshops",
+        "discord",
+        "subscription"
+      ],
       "link": null,
       "created": "2026-06-03",
       "lastUpdated": "2026-06-04",
-      "revenueModel": "Free Discord → paid Builder Circle ($30/mo) + workshop tickets + sponsored sessions ($500 ea) + IRL event tickets ($20) + template/playbook sales ($15). Projected $4k/mo by month 6, profitable from month 2.",
-      "lessons": "Chess as a shared mental model is the differentiator — not playing chess, but using chess thinking (tactics, positioning, endgame) to discuss agent architecture and strategy. Full 90-day launch plan and revenue model in assessments/c3-assessment.md.",
+      "revenueModel": "Free Discord \u2192 paid Builder Circle ($30/mo) + workshop tickets + sponsored sessions ($500 ea) + IRL event tickets ($20) + template/playbook sales ($15). Projected $4k/mo by month 6, profitable from month 2.",
+      "lessons": "Chess as a shared mental model is the differentiator \u2014 not playing chess, but using chess thinking (tactics, positioning, endgame) to discuss agent architecture and strategy. Full 90-day launch plan and revenue model in assessments/c3-assessment.md.",
+      "killReason": null
+    },
+    {
+      "id": "v-003",
+      "slug": "nostr-pulse",
+      "title": "Nostr Pulse",
+      "path": "venture",
+      "status": "idea",
+      "tagline": "Lightning-weighted community polling protocol for Nostr",
+      "description": "Nostr has no native way for communities to gauge sentiment. Twitter polls are centralized dead ends. Formal DAO voting is overkill for non-binding signals. Nostr Pulse fills this gap with a lightweight polling protocol built on two new Nostr event kinds: one for poll creation (with options, duration, weighting rules) and one for vote-casting via parameterized zaps. Each poll is an event on relay; each vote is a zap that carries the voter choice in the zap receipt tags. Weighting is flexible \u2014 1 sat = 1 vote, or quadratic (sqrt of sats sent), or custom per-poll formulas.\n\nThe protocol is open source and free. The venture layer is Pulse Pro \u2014 a hosted SaaS for DAOs, open-source maintainers, and community leaders that adds branded embeds, cross-community sentiment dashboards, trend analysis over time, an AI agent that summarizes open-ended poll responses and debate, and custom weighting rules. The AI agent also surfaces temperature checks \u2014 correlating polls across communities (what do Nostr devs think about NIP-X? What do Caribbean Bitcoiners think about the new mining protocol?).\n\nFirst real-world use case: Island Bitcoin monthly meetup planning in Jamaica. A WhatsApp bot generates Nostr Pulse polls visible on-relay but interactable via simple text replies, bridging Caribbean communities into the Nostr ecosystem without requiring a relay-aware client. This seeds the network with real human signal, not bots.",
+      "tags": [
+        "nostr",
+        "lightning",
+        "bitcoin",
+        "dao",
+        "ai-agents",
+        "community"
+      ],
+      "link": null,
+      "created": "2026-06-05",
+      "lastUpdated": "2026-06-05",
+      "revenueModel": "Free open protocol + Pulse Pro hosted tier at /mo for orgs (analytics, sentiment dashboards, branded polls) + optional 1% zap fee on pro-tier polls. Target: DAOs, open-source foundations, Bitcoin meetup organizers, Nostr community operators.",
+      "lessons": null,
       "killReason": null
     }
   ]
