@@ -113,7 +113,8 @@
         "rationale": "NWC (NIP-47) + Alby ZapPlanner already solve recurring Lightning payments as a free, open-source, non-custodial service. Building a new RPA event kind + LNURL-Withdraw stack adds no protocol value. The venture layer (Recurr Cloud) competes with free tooling. Best outcome: Flash adopts NWC natively \u2014 no new protocol needed.",
         "buildEstimate": null,
         "nextStep": "Kill the protocol play. If anything, scope to Flash NWC support \u2014 no Recurr brand, no new event kind, no new repo."
-      }
+      },
+      "image": "/img/recurr.png"
     }
   ]
 }
