@@ -21,7 +21,8 @@
       "lastUpdated": "2026-06-03",
       "revenueModel": "Not a core revenue product; value comes from adoption, reference implementations, and adjacent services.",
       "lessons": "MATE.md is better framed as commons infrastructure than a venture. The protocol has a real interoperability need across agent runtimes, and the repo already contains a credible core spec, schema, examples, and Nostr extension draft.",
-      "killReason": null
+      "killReason": null,
+      "image": "img/mate-dot-md.png"
     },
     {
       "id": "v-002",
@@ -46,7 +47,8 @@
       "lastUpdated": "2026-06-04",
       "revenueModel": "Free Discord \u2192 paid Builder Circle ($30/mo) + workshop tickets + sponsored sessions ($500 ea) + IRL event tickets ($20) + template/playbook sales ($15). Projected $4k/mo by month 6, profitable from month 2.",
       "lessons": "Chess as a shared mental model is the differentiator \u2014 not playing chess, but using chess thinking (tactics, positioning, endgame) to discuss agent architecture and strategy. Full 90-day launch plan and revenue model in assessments/c3-assessment.md.",
-      "killReason": null
+      "killReason": null,
+      "image": "img/coffee-claws-chess.png"
     },
     {
       "id": "v-003",
@@ -78,7 +80,8 @@
         "rationale": "The headline protocol play is dead on arrival: lightning-weighted polling already ships in Amethyst and Snort via NIP-69/B9 (since 2023), and free polling is standardized in NIP-88 with multiple live clients (Pollerama, getwired, Pollstr). Competing on a new poll kind would add a 7th fragmented standard to an already-crowded design space \u2014 non-monetizable and undifferentiated. KILL that framing. But two off-protocol assets survive and are genuinely defensible: (1) the WhatsApp<->Nostr poll bridge for Island Bitcoin / Caribbean meetups \u2014 no turnkey equivalent exists, low build cost, real underserved user demand, and a warm beachhead via the Jamaica meetup; (2) an AI sentiment-analytics layer on TOP of existing NIP-88/69 data. Neither requires inventing a protocol. The risk is not technical (Baileys + nostr-tools + a vote-parser is a weekend MVP) \u2014 it is demand: will non-Nostr Caribbean users actually engage with poll replies over WhatsApp? That single unknown is worth one cheap, real-world test before committing build resources. Hence validate, not build, not kill.",
         "buildEstimate": "Scrappy MVP: 1-2 weeks for the WhatsApp<->Nostr bridge (Baileys client + nostr-tools relay client + vote-parser on existing NIP-88/69 kinds). Validation window: one Island Bitcoin Jamaica meetup cycle (~4 weeks). Full build only if engagement validates.",
         "nextStep": "Run a one-meetup validation: build the bare WhatsApp->Nostr poll bridge using existing NIP-88/69 kinds (NO new protocol), deploy it for the next Island Bitcoin Jamaica meetup-planning poll, and measure whether non-Nostr Caribbean users actually cast votes via text reply. Define a clear pass bar up front (e.g. 15+ real human votes from non-Nostr users). Pass -> build out AI analytics layer. Fail -> kill."
-      }
+      },
+      "image": "img/nostr-pulse.png"
     },
     {
       "slug": "recurr",
@@ -101,7 +104,8 @@
       "killReason": null,
       "id": "v-004",
       "created": "2026-06-06",
-      "lastUpdated": "2026-06-06"
+      "lastUpdated": "2026-06-06",
+      "image": "img/recurr.png"
     }
   ]
 }

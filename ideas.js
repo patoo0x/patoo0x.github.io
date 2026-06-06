@@ -188,6 +188,8 @@ function renderCard(v) {
     : '';
   const date = v.lastUpdated || v.created;
 
+  const imageHtml = v.image ? `<div class="card-image"><img src="${escapeHtml(v.image)}" alt="${escapeHtml(v.title)}" loading="lazy"></div>` : '';
+
   const isTerminalDead = v.status === 'dead' || v.status === 'deprecated';
   const isReleased = v.status === 'released' || v.status === 'live';
 
@@ -220,6 +222,8 @@ function renderCard(v) {
 
   return `
     <div class="venture-card path-${v.path}" data-status="${v.status}" data-path="${v.path}" data-created="${v.created}">
+      ${imageHtml}
+      <div class="card-content">
       <div class="card-header-row">
         <span class="card-path-badge path-${v.path}">${pathLabel}</span>
         <div class="card-badge badge-${v.status}">${icon} ${v.status}</div>
@@ -233,6 +237,7 @@ function renderCard(v) {
         ${link}
       </div>
       ${extras}
+      </div>
     </div>
   `;
 }
