@@ -69,7 +69,16 @@
       "lastUpdated": "2026-06-06",
       "revenueModel": "Tiered SaaS: Free tier (nostr-native, self-serve). Pulse Pro at $30/mo for orgs (analytics, sentiment, AI summary, embeds). Pulse Enterprise at custom pricing (API, SLA). Beachhead: Island Bitcoin WhatsApp bridge.",
       "lessons": "NIP-88 (merged, kind 1068/1018) already has working Nostr poll apps (Pollerama, getwired.app, Pollstr). Differentiator must be Lightning-weighted voting (1 sat = 1 vote, quadratic) - no existing app does this. Technical risk: NIP-57 zaps attach to events not option tags, so vote-choice tagging needs new NIP or extension. Protocol politics risk: NIP-88 PR#1501 had drama. Opportunity: position as NIP-88 superset (backward-compatible + lightning weight), not competitor. WhatsApp bridge for Island Bitcoin is a genuine beachhead bridging non-Nostr users. Building scope is large: new event kind, zap extension NIP, WhatsApp bot, Pulse Pro SaaS, AI agent. 3-6 months single-founder effort with unclear adoption. Recommend: validate demand via Island Bitcoin member survey + Nostr dev outreach before building.",
-      "killReason": null
+      "killReason": null,
+      "decision": {
+        "status": "pending",
+        "flaggedAt": "2026-06-06",
+        "recommendation": "build",
+        "confidence": "medium",
+        "rationale": "Lightning-weighted polling is a genuine unfilled niche in Nostr ecosystem. NIP-88 covers basic polls but lacks sats-weighted voting. WhatsApp bridge creates a real beachhead with Island Bitcoin. Main risk: 3-6 month build for single founder with uncertain adoption. Recommend: validate demand first with a lightweight survey/minimum prototype (NIP-57 zap receipt tagging POC + single community poll) before committing to full build.",
+        "buildEstimate": "Phase 1 (POC): 2 weeks. Phase 2 (WhatsApp bridge + Pulse Pro MVP): 6-8 weeks. Phase 3 (full SaaS): 12+ weeks.",
+        "nextStep": "Validate with Island Bitcoin members + Nostr dev community. Build NIP-57 zap receipt tagging POC to prove technical feasibility."
+      }
     },
     {
       "slug": "recurr",
