@@ -53,7 +53,7 @@
       "slug": "nostr-pulse",
       "title": "Nostr Pulse",
       "path": "venture",
-      "status": "assessed",
+      "status": "idea",
       "tagline": "Lightning-weighted community polling protocol for Nostr",
       "description": "Nostr has no native way for communities to gauge sentiment. Twitter polls are centralized dead ends. Formal DAO voting is overkill for non-binding signals. Nostr Pulse fills this gap with a lightweight polling protocol built on two new Nostr event kinds: one for poll creation (with options, duration, weighting rules) and one for vote-casting via parameterized zaps. Each poll is an event on relay; each vote is a zap that carries the voter choice in the zap receipt tags. Weighting is flexible \u2014 1 sat = 1 vote, or quadratic (sqrt of sats sent), or custom per-poll formulas.\n\nThe protocol is open source and free. The venture layer is Pulse Pro \u2014 a hosted SaaS for DAOs, open-source maintainers, and community leaders that adds branded embeds, cross-community sentiment dashboards, trend analysis over time, an AI agent that summarizes open-ended poll responses and debate, and custom weighting rules. The AI agent also surfaces temperature checks \u2014 correlating polls across communities (what do Nostr devs think about NIP-X? What do Caribbean Bitcoiners think about the new mining protocol?).\n\nFirst real-world use case: Island Bitcoin monthly meetup planning in Jamaica. A WhatsApp bot generates Nostr Pulse polls visible on-relay but interactable via simple text replies, bridging Caribbean communities into the Nostr ecosystem without requiring a relay-aware client. This seeds the network with real human signal, not bots.",
       "tags": [
