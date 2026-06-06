@@ -53,7 +53,7 @@
       "slug": "nostr-pulse",
       "title": "Nostr Pulse",
       "path": "venture",
-      "status": "assessed",
+      "status": "idea",
       "tagline": "Lightning-weighted community polling protocol for Nostr",
       "description": "Nostr has no native way for communities to gauge sentiment. Twitter polls are centralized dead ends. Formal DAO voting is overkill for non-binding signals. Nostr Pulse fills this gap with a lightweight polling protocol built on two new Nostr event kinds: one for poll creation (with options, duration, weighting rules) and one for vote-casting via parameterized zaps. Each poll is an event on relay; each vote is a zap that carries the voter choice in the zap receipt tags. Weighting is flexible \u2014 1 sat = 1 vote, or quadratic (sqrt of sats sent), or custom per-poll formulas.\n\nThe protocol is open source and free. The venture layer is Pulse Pro \u2014 a hosted SaaS for DAOs, open-source maintainers, and community leaders that adds branded embeds, cross-community sentiment dashboards, trend analysis over time, an AI agent that summarizes open-ended poll responses and debate, and custom weighting rules. The AI agent also surfaces temperature checks \u2014 correlating polls across communities (what do Nostr devs think about NIP-X? What do Caribbean Bitcoiners think about the new mining protocol?).\n\nFirst real-world use case: Island Bitcoin monthly meetup planning in Jamaica. A WhatsApp bot generates Nostr Pulse polls visible on-relay but interactable via simple text replies, bridging Caribbean communities into the Nostr ecosystem without requiring a relay-aware client. This seeds the network with real human signal, not bots.",
       "tags": [
@@ -67,18 +67,13 @@
       "link": null,
       "created": "2026-06-05",
       "lastUpdated": "2026-06-06",
-      "revenueModel": "Tiered SaaS: Free tier (nostr-native, self-serve). Pulse Pro at $30/mo for orgs (analytics, sentiment, AI summary, embeds). Pulse Enterprise at custom pricing (API, SLA). Beachhead: Island Bitcoin WhatsApp bridge.",
-      "lessons": "NIP-88 (merged, kind 1068/1018) already has working Nostr poll apps (Pollerama, getwired.app, Pollstr). Differentiator must be Lightning-weighted voting (1 sat = 1 vote, quadratic) - no existing app does this. Technical risk: NIP-57 zaps attach to events not option tags, so vote-choice tagging needs new NIP or extension. Protocol politics risk: NIP-88 PR#1501 had drama. Opportunity: position as NIP-88 superset (backward-compatible + lightning weight), not competitor. WhatsApp bridge for Island Bitcoin is a genuine beachhead bridging non-Nostr users. Building scope is large: new event kind, zap extension NIP, WhatsApp bot, Pulse Pro SaaS, AI agent. 3-6 months single-founder effort with unclear adoption. Recommend: validate demand via Island Bitcoin member survey + Nostr dev outreach before building.",
-      "killReason": null,
-      "decision": {
-        "status": "pending",
-        "flaggedAt": "2026-06-06",
-        "recommendation": "build",
-        "confidence": "medium",
-        "rationale": "Lightning-weighted polling is a genuine unfilled niche in Nostr ecosystem. NIP-88 covers basic polls but lacks sats-weighted voting. WhatsApp bridge creates a real beachhead with Island Bitcoin. Main risk: 3-6 month build for single founder with uncertain adoption. Recommend: validate demand first with a lightweight survey/minimum prototype (NIP-57 zap receipt tagging POC + single community poll) before committing to full build.",
-        "buildEstimate": "Phase 1 (POC): 2 weeks. Phase 2 (WhatsApp bridge + Pulse Pro MVP): 6-8 weeks. Phase 3 (full SaaS): 12+ weeks.",
-        "nextStep": "Validate with Island Bitcoin members + Nostr dev community. Build NIP-57 zap receipt tagging POC to prove technical feasibility."
-      }
+      "revenueModel": [
+        "Tiered SaaS: Free tier for individuals/communities (nostr-based, self-serve). Pulse Pro at /mo for orgs (analytics dashboards, cross-community sentiment trends, AI summary agent, branded embeds). Pulse Enterprise at custom pricing for DAO treasuries and foundations (API access, custom weighting, SLA). No zap fee \u2014 the flywheel is network effects, not transaction tolls. Target: Nostr community operators, open-source foundations, DAOs, meetup organizers. Differentiator over existing polling apps (Pollerama, getwired.app): Lightning-weighted voting, cross-community correlation, WhatsApp bridge for non-Nostr users."
+      ],
+      "lessons": [
+        "NIP-88 (merged, kind 1068/1018) already defines Nostr polling with functioning apps (Pollerama, getwired.app, Pollstr). Nostr Pulse can't just be another polling NIP \u2014 it must differentiate through Lightning-weighted voting (1 sat = 1 vote, quadratic), which no existing Nostr poll app implements. Technical challenge: NIP-57 zaps attach to events, not specific option tags within a poll \u2014 the zap receipt tagging scheme for carrying vote choice needs new NIP or custom extension. Risk: NIP-88 PR #1501 had drama and was temporarily removed, indicating protocol politics around polls. Opportunity: Nostr Pulse could become a NIP superset (NIP-88 compatible + lightning weight), and the WhatsApp bridge for Island Bitcoin is a real beachhead that no other Nostr poll app targets."
+      ],
+      "killReason": null
     },
     {
       "slug": "recurr",
