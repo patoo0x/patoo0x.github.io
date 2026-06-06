@@ -440,6 +440,7 @@ body {
 
 /* ── Collapsible sections ───────── */
 
+.card-description,
 .card-lessons,
 .card-kill-reason {
   position: relative;
@@ -450,6 +451,7 @@ body {
   padding-top: 0.5rem;
 }
 
+.card-description summary,
 .card-lessons summary,
 .card-kill-reason summary {
   cursor: pointer;
@@ -459,11 +461,13 @@ body {
   transition: color 0.2s;
 }
 
+.card-description summary:hover,
 .card-lessons summary:hover,
 .card-kill-reason summary:hover {
   color: #ccc;
 }
 
+.card-description p,
 .card-lessons p,
 .card-kill-reason p {
   margin-top: 0.4rem;

@@ -230,7 +230,10 @@ function renderCard(v) {
       </div>
       <h3 class="card-title">${escapeHtml(v.title)}</h3>
       ${v.tagline ? `<p class="card-tagline">${escapeHtml(v.tagline)}</p>` : ''}
-      <p class="card-body">${escapeHtml(v.description)}</p>
+      <details class="card-description">
+        <summary>Description</summary>
+        <p>${escapeHtml(v.description)}</p>
+      </details>
       ${tags}
       <div class="card-footer">
         <span class="card-date">${date}</span>
