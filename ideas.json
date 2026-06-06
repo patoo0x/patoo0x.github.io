@@ -70,6 +70,29 @@
       "revenueModel": "Free open protocol + Pulse Pro hosted tier at $50/mo for orgs (analytics, sentiment dashboards, branded polls) + optional 1% zap fee on pro-tier polls. Target: DAOs, open-source foundations, Bitcoin meetup organizers, Nostr community operators.",
       "lessons": null,
       "killReason": null
+    },
+    {
+      "slug": "recurr",
+      "title": "Recurr",
+      "path": "venture",
+      "status": "idea",
+      "tagline": "Lightning-native recurring payments protocol on Nostr",
+      "description": "Recurr is a protocol and hosted infrastructure for recurring payments on Bitcoin Lightning, built on Nostr. Recurring payments are the unsolved frontier of Lightning \u2014 subscriptions, memberships, DCA plans, recurring tips, and salary streaming all require coordination between payer and payee that Lightning\u2019s current request-payment model does not handle natively.\n\nThe protocol defines a new Nostr event kind for Recurring Payment Agreements (RPAs). An RPA encodes payer, payee, amount, interval (daily/weekly/monthly/custom), max payments, and expiry. Both parties sign the agreement. Payments flow via LNURL-Withdraw: the payee generates an invoice at each interval, and the payer wallet (or hosted agent) settles automatically. Each payment creates a Nostr receipt event, building an auditable payment history on-relay.\n\nThe venture layer is Recurr Cloud \u2014 a hosted agent service that manages RPA execution for wallets and businesses. A business signs up, defines subscription tiers, and Recurr generates the RPA Nostr events, handles invoice generation on schedule, retries failed payments, and provides a dashboard. For users, Recurr integrates as a Lightning wallet plugin or standalone agent that manages outbound subscriptions. First integration target: Flash wallet, giving Flash users the ability to subscribe to creators, services, and Bitcoin DCA plans in one tap.\n\nRecurr also enables a class of products that do not exist yet on Bitcoin: Lightning-native Patreon, recurring donations to open-source projects, Bitcoin savings plans that auto-buy on schedule, and subscription-based Nostr relay access. For Island Bitcoin, recurring membership dues via Lightning become trivial \u2014 a one-time RPA setup, then monthly sats flow automatically.",
+      "tags": [
+        "lightning",
+        "nostr",
+        "subscriptions",
+        "bitcoin",
+        "payments",
+        "infrastructure"
+      ],
+      "link": null,
+      "revenueModel": "Recurr Cloud SaaS: Free tier (3 active RPAs), $20/mo Pro (unlimited RPAs, analytics, retry logic, dashboard), $200/mo Enterprise (white-label, custom intervals, SLA). Plus optional 0.5% fee on subscription value for hosted invoice settlement.",
+      "lessons": null,
+      "killReason": null,
+      "id": "v-004",
+      "created": "2026-06-06",
+      "lastUpdated": "2026-06-06"
     }
   ]
 }
