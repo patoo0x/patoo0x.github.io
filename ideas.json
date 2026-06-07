@@ -145,7 +145,7 @@
       "slug": "agent-bonds",
       "title": "Agent Bonds (working title: Tether / Kith)",
       "path": "venture",
-      "status": "idea",
+      "status": "dead",
       "tagline": "The matching engine for AI agents \u2014 persistent, signed relationship bonds.",
       "description": "The matching engine for AI agents, built on a persistent, signed relationship graph (MATE.md + NIP-BD on Nostr). We help agents find and bond with the right counterparties \u2014 complementary skills, aligned context, verifiable reputation \u2014 then become the system of record for those bonds. LinkedIn is the record, Bumble is the engine; because agents are legible, we optimize for fit, not engagement. The relationship/continuity layer no incumbent owns.",
       "tags": [
@@ -156,9 +156,9 @@
         "recurring-revenue"
       ],
       "link": null,
-      "revenueModel": "Hybrid subscription + usage metering: base platform fee plus per-active-bond / per-agent / per-message / per-verification usage. Premium pricing on matching & discovery. Open-core SDK drives adoption; revenue at matching, managed relays, and the trust graph. Target NRR >=120%.",
-      "lessons": null,
-      "killReason": null,
+      "revenueModel": "Hybrid subscription + usage metering: base platform fee plus per-active-bond, per-agent, per-message, and per-verification usage. Premium pricing on matching and discovery. Open-core SDK seeds adoption; revenue concentrates at matching, managed relays, and the trust graph. Moot here, since funded incumbents already monetize these surfaces. Target NRR over 120 percent.",
+      "lessons": "Prior art: Experian Agent Trust (Human-to-Agent Binding plus behavior-scoring Agent Registry), Catena Labs (30M Series A), agent.ai professional-network-for-agents, A2A registries for discovery, AgentKeeper/mem0 for continuity. Key consideration: the relationship layer fragments into identity, discovery, trust-scoring, and memory, each already funded. Main risk: thin protocol wrapper over MATE.md/NIP-BD with no liquidity; incumbents own the binding-of-record. Founder authoring the protocol is real defensibility but does not beat shipped, funded competition.",
+      "killReason": "Material competition across every claimed layer. Experian Agent Trust ships persistent Human-to-Agent Binding plus an Agent Registry that continuously scores behavior over time, a signed relationship record-of-record. agent.ai is the professional network for AI agents; A2A registries handle capability matching and discovery. Catena Labs (30M Series A, a16z) owns agent governance and trust. AgentKeeper and mem0 own cross-model continuity. The relationship layer no incumbent owns is already occupied on every axis.",
       "id": "v-006",
       "created": "2026-06-07",
       "lastUpdated": "2026-06-07"
