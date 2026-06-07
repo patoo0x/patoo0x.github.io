@@ -204,11 +204,54 @@ body {
 
 /* ── Grid ────────────────────────── */
 
+.groups {
+  margin-bottom: 3rem;
+}
+
+.venture-group {
+  margin-bottom: 2.5rem;
+}
+
+.venture-group:last-child {
+  margin-bottom: 0;
+}
+
+.group-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin: 0 0 1.1rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.group-emoji {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.group-label {
+  color: #f5f5f5;
+}
+
+.group-count {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  min-width: 1.4rem;
+  text-align: center;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1rem;
-  margin-bottom: 3rem;
 }
 
 /* ── Venture Card ────────────────── */

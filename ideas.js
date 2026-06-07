@@ -160,6 +160,13 @@ function filterAndRender() {
 
 // ── Render ───────────────────────
 
+// Card groups, top to bottom. Each maps to a set of statuses.
+const cardGroups = [
+  { key: 'launched', label: 'Launched', emoji: '🚀', statuses: ['live', 'released'] },
+  { key: 'under-construction', label: 'Under Construction', emoji: '🚧', statuses: ['idea', 'assessed', 'building'] },
+  { key: 'graveyard', label: 'Graveyard', emoji: '🪦', statuses: ['dead', 'deprecated'] },
+];
+
 function renderGrid(ventures) {
   const grid = document.getElementById('ventures-grid');
 
@@ -174,7 +181,33 @@ function renderGrid(ventures) {
     return;
   }
 
-  grid.innerHTML = ventures.map(v => renderCard(v)).join('');
+  // Any status not explicitly mapped falls into Under Construction so nothing
+  // ever silently disappears from the page.
+  const mappedStatuses = new Set(cardGroups.flatMap(g => g.statuses));
+  const renderGroups = cardGroups.map(g => ({ ...g }));
+  const ucGroup = renderGroups.find(g => g.key === 'under-construction');
+
+  const sections = renderGroups.map(group => {
+    const items = ventures.filter(v =>
+      group.statuses.includes(v.status) ||
+      (group === ucGroup && !mappedStatuses.has(v.status))
+    );
+    if (items.length === 0) return '';
+    return `
+      <section class="venture-group group-${group.key}">
+        <h2 class="group-heading">
+          <span class="group-emoji">${group.emoji}</span>
+          <span class="group-label">${group.label}</span>
+          <span class="group-count">${items.length}</span>
+        </h2>
+        <div class="grid">
+          ${items.map(v => renderCard(v)).join('')}
+        </div>
+      </section>
+    `;
+  }).join('');
+
+  grid.innerHTML = sections;
 }
 
 function renderCard(v) {
