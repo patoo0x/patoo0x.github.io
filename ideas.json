@@ -115,6 +115,30 @@
         "nextStep": "Kill the protocol play. If anything, scope to Flash NWC support \u2014 no Recurr brand, no new event kind, no new repo."
       },
       "image": "/img/recurr.png"
+    },
+    {
+      "slug": "sats-for-code",
+      "title": "Sats For Code",
+      "path": "venture",
+      "status": "idea",
+      "tagline": "Lightning-native bounty platform for open-source development",
+      "description": "Sats For Code is a bounty platform where open-source maintainers, DAOs, and Bitcoin/Nostr projects fund specific technical tasks and contributors get paid instantly in sats via Lightning. Unlike Gitcoin (which settled in ETH/crypto with delays and high fees) or Bountysource (which is largely abandoned), Sats For Code is built from scratch around Bitcoin-native primitives: Nostr for identity and reputation, Lightning for instant settlement, and AI agents for bounty triage.\n\nThe core flow: a maintainer posts a bounty with a description, requirements, and a sat amount escrowed via Lightning. Contributors browse bounties, claim one, complete the work, submit a PR, and trigger payout on merge. Identity is Nostr-based \u2014 no signup friction, just a pubkey. Reputation accrues as NIP-58 badges or simple event-based proof-of-work (merged PRs, stars from maintainers, completed bounties). AI agents can auto-match bounties to contributors based on skill tags and history, and can even auto-claim and execute certain well-defined bounties (e.g., \"add a test for function X\" or \"update dependency Y\").\n\nThe venture layer includes a hosted platform with bounty escrow (hold invoices), dispute resolution, reputation scoring, curated bounty boards for specific ecosystems (Nostr, Bitcoin Core, Lightning, Flash, Caribbean OSS), and AI agent integrations. First integration target: Flash's open-source repos, turning Flash GitHub issues into Lightning-bountyable tasks.\n\nThis serves a real and growing need: as open-source funding shifts to smaller, more frequent contributions (rather than big grants), there is no go-to Lightning-native bounty platform. Nostr-based identity solves the spam/sockpuppet problem better than email-based signups. And AI agents can economically auto-bounty small tasks that no human would bother with.",
+      "tags": [
+        "lightning",
+        "bitcoin",
+        "open-source",
+        "bounties",
+        "nostr",
+        "ai-agents",
+        "developer-tools"
+      ],
+      "link": null,
+      "revenueModel": "Platform fee on completed bounties (2-5%, paid in sats). Premium boards for projects/orgs ($50-200/mo for curated bounty boards, priority listing, custom workflows). Escrow-as-a-service for DAOs and foundations needing auditable bounty pipelines. AI agent bounty matchmaking as an upsell.",
+      "lessons": null,
+      "killReason": null,
+      "id": "v-005",
+      "created": "2026-06-07",
+      "lastUpdated": "2026-06-07"
     }
   ]
 }
