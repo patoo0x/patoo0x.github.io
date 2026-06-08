@@ -168,7 +168,7 @@
       "slug": "pawket",
       "title": "Pawket",
       "path": "venture",
-      "status": "idea",
+      "status": "assessed",
       "tagline": "Lightning-native wallet SDK for autonomous AI agents",
       "description": "AI agents need wallets to operate autonomously \u2014 pay API costs, distribute rewards, manage budgets. Pawket is a lightweight SDK giving agents a Lightning wallet with NWC delegation, Nostr identity binding, programmable spending policies, and budget caps. Open-core SDK is free; the venture layer is a hosted service with multi-agent treasury management, audit trails, and Flash wallet integration.",
       "tags": [
@@ -180,8 +180,8 @@
         "flash"
       ],
       "link": null,
-      "revenueModel": "Per-agent subscription ($5/mo/agent) or volume-based (0.5% of agent transaction volume). Enterprise: multi-agent treasuries, audit, custom policies.",
-      "lessons": null,
+      "revenueModel": "Hosted tier: per-agent subscription ($5/mo/agent) or volume-based (0.5% of agent transaction volume, capped at $500/mo). Enterprise: multi-agent treasuries, audit trails, custom policies. Open-core SDK free.",
+      "lessons": "Crowded space: Lightning Labs (lnget+L402 tools), Breez SDK (Spark MCP server), Coinbase Agentic Wallets, LightningProx. Differentiator: Nostr identity binding + NWC delegation + Flash wallet integration. None competitor ties agent wallet to Nostr identity or offers Flash-native treasury management.",
       "killReason": null,
       "id": "v-007",
       "created": "2026-06-08",
