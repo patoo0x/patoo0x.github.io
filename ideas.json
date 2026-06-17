@@ -187,6 +187,30 @@
       "created": "2026-06-08",
       "lastUpdated": "2026-06-08",
       "image": "/img/pawket.png"
+    },
+    {
+      "slug": "montego",
+      "title": "Montego",
+      "path": "venture",
+      "status": "idea",
+      "tagline": "Decentralized travel booking for the Bitcoin Caribbean",
+      "description": "Montego is a Nostr-native hospitality marketplace for Bitcoin-friendly Caribbean travel. Properties list as Nostr events; guests browse and book with Lightning, paying only network fees. Communication uses encrypted DMs. Reputation travels via NIP-58 badges. Open protocol is free; the venture layer adds escrow, property verification, AI listing creation, and managed relay hosting. Beachhead: Island Bitcoin meetup attendees booking guesthouses in Jamaica.",
+      "tags": [
+        "nostr",
+        "bitcoin",
+        "travel",
+        "caribbean",
+        "lightning",
+        "hospitality",
+        "marketplace"
+      ],
+      "link": null,
+      "revenueModel": "Per-booking escrow fee (1-2%) on high-value bookings. Managed relay hosting for regional property communities ($20/mo). Verified property badges ($50 one-time). AI listing help and multi-language support as add-on services.",
+      "lessons": null,
+      "killReason": null,
+      "id": "v-008",
+      "created": "2026-06-17",
+      "lastUpdated": "2026-06-17"
     }
   ]
 }
