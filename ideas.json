@@ -211,6 +211,29 @@
       "id": "v-008",
       "created": "2026-06-17",
       "lastUpdated": "2026-06-17"
+    },
+    {
+      "slug": "lumin",
+      "title": "Lumin",
+      "path": "venture",
+      "status": "idea",
+      "tagline": "Lightning-native compliance for wallet operators",
+      "description": "Lumin is a compliance toolkit for Lightning wallets in regulated markets. It monitors transactions, handles travel rule data, screens sanctions, and flags suspicious activity \u2014 designed for Lightning's privacy model. It ingests NWC/Nostr event data and scores risk without compromising user privacy. Unlike Chainalysis or TRM Labs (built for on-chain), Lumin natively understands HTLCs, MPP, hodl invoices, and keysend. Target: wallet operators needing cost-effective, privacy-first compliance. First customer: Flash.",
+      "tags": [
+        "lightning",
+        "compliance",
+        "bitcoin",
+        "regtech",
+        "flash",
+        "privacy"
+      ],
+      "link": null,
+      "revenueModel": "SaaS per-active-wallet or transaction volume. $99/mo base for small operators; enterprise custom pricing. Lightning-native compliance beats repurposing on-chain tools at lower cost.",
+      "lessons": null,
+      "killReason": null,
+      "id": "v-009",
+      "created": "2026-06-21",
+      "lastUpdated": "2026-06-21"
     }
   ]
 }
