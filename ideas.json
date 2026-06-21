@@ -192,7 +192,7 @@
       "slug": "montego",
       "title": "Montego",
       "path": "venture",
-      "status": "idea",
+      "status": "assessed",
       "tagline": "Decentralized travel booking for the Bitcoin Caribbean",
       "description": "Montego is a Nostr-native hospitality marketplace for Bitcoin-friendly Caribbean travel. Properties list as Nostr events; guests browse and book with Lightning, paying only network fees. Communication uses encrypted DMs. Reputation travels via NIP-58 badges. Open protocol is free; the venture layer adds escrow, property verification, AI listing creation, and managed relay hosting. Beachhead: Island Bitcoin meetup attendees booking guesthouses in Jamaica.",
       "tags": [
@@ -205,12 +205,12 @@
         "marketplace"
       ],
       "link": null,
-      "revenueModel": "Per-booking escrow fee (1-2%) on high-value bookings. Managed relay hosting for regional property communities ($20/mo). Verified property badges ($50 one-time). AI listing help and multi-language support as add-on services.",
-      "lessons": null,
+      "revenueModel": "Initial 1-2% escrow fee is probably too thin. Better wedge: 5-8% concierge/booking fee for verified Caribbean stays, host verification/setup fees, and premium retreat/conference lodging coordination. Later, lower-fee self-serve booking can emerge after inventory and demand are proven.",
+      "lessons": "Satlantis is a material adjacent competitor: Bitcoin-native events, calendars, communities, destinations/places, Nostr identity, built-in Lightning wallets, ticketing, and host tools. Montego should not compete head-on as broad Bitcoin travel discovery. The viable wedge is narrower: verified Caribbean lodging and local hospitality around Bitcoin meetups/retreats, starting with Jamaica and Island Bitcoin. Run a concierge MVP with 5-10 verified properties before building protocol/marketplace infrastructure. Full assessment in assessments/montego-assessment.md.",
       "killReason": null,
       "id": "v-008",
       "created": "2026-06-17",
-      "lastUpdated": "2026-06-17",
+      "lastUpdated": "2026-06-21",
       "cardImage": "/img/montego.png"
     },
     {
