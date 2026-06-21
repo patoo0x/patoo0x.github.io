@@ -22,6 +22,29 @@
       <p class="subtitle">Some make money. Some build the commons. All are public.</p>
     </header>
 
+    <section class="stats-bar" id="stats-bar" aria-label="Pipeline summary">
+      <div class="stat-card">
+        <span class="stat-value" id="stat-total">0</span>
+        <span class="stat-label">ideas</span>
+      </div>
+      <div class="stat-card stat-active">
+        <span class="stat-value" id="stat-active">0</span>
+        <span class="stat-label">active</span>
+      </div>
+      <div class="stat-card stat-decision">
+        <span class="stat-value" id="stat-decision">0</span>
+        <span class="stat-label">needs decision</span>
+      </div>
+      <div class="stat-card stat-shipped">
+        <span class="stat-value" id="stat-shipped">0</span>
+        <span class="stat-label">shipped</span>
+      </div>
+      <div class="stat-card stat-parked">
+        <span class="stat-value" id="stat-parked">0</span>
+        <span class="stat-label">parked</span>
+      </div>
+    </section>
+
     <!-- Path filter -->
     <div class="path-filters" id="path-filters">
       <button class="path-btn active" data-path="all">All</button>
@@ -42,13 +65,23 @@
     </div>
 
     <!-- Sort -->
-    <div class="sort-bar">
-      <span class="sort-label">Sort:</span>
-      <select id="sort-select">
-        <option value="status">Status</option>
-        <option value="recent" selected>Recent</option>
-        <option value="title">Title</option>
-      </select>
+    <div class="control-row">
+      <div class="sort-bar">
+        <span class="sort-label">Sort:</span>
+        <select id="sort-select">
+          <option value="decision">Needs decision</option>
+          <option value="developed">Most developed</option>
+          <option value="recent" selected>Newest</option>
+          <option value="shipped">Shipped first</option>
+          <option value="title">Title</option>
+        </select>
+      </div>
+
+      <div class="view-controls" aria-label="View options">
+        <button class="view-btn active" data-view="grid" type="button">Grid</button>
+        <button class="view-btn" data-view="list" type="button">List</button>
+        <button class="reset-btn" id="reset-filters" type="button">Reset</button>
+      </div>
     </div>
 
     <div class="groups" id="ventures-grid">

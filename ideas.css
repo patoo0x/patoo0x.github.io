@@ -28,7 +28,7 @@ body {
   z-index: 1;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 1rem 1.25rem;
+  padding: 0.85rem 1.1rem;
 }
 
 /* ── Header (compact) ─────────────── */
@@ -61,6 +61,50 @@ body {
   color: #aaa;
 }
 
+/* ── Pipeline Stats ──────────────── */
+
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.45rem;
+  margin: 0 auto 0.65rem;
+}
+
+.stat-card {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.stat-value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #f4f4f5;
+}
+
+.stat-label {
+  min-width: 0;
+  color: #777;
+  font-size: 0.68rem;
+  line-height: 1;
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.stat-active .stat-value { color: #60a5fa; }
+.stat-decision .stat-value { color: #f59e0b; }
+.stat-shipped .stat-value { color: #4ade80; }
+.stat-parked .stat-value { color: #f87171; }
+
 /* ── Path Filters (compact) ───────── */
 
 .path-filters {
@@ -71,6 +115,9 @@ body {
 }
 
 .path-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   padding: 0.3rem 0.7rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
@@ -118,6 +165,9 @@ body {
 .filter-btn[hidden] { display: none; }
 
 .filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   padding: 0.3rem 0.65rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 6px;
@@ -135,8 +185,9 @@ body {
 }
 
 .filter-btn.active {
-  border-color: rgba(255, 107, 0, 0.5);
-  background: rgba(255, 107, 0, 0.08);
+  border-color: rgba(255, 107, 0, 0.65);
+  background: rgba(255, 107, 0, 0.12);
+  box-shadow: 0 0 0 1px rgba(255, 107, 0, 0.12) inset;
   color: #f7931a;
 }
 
@@ -149,14 +200,20 @@ body {
   color: rgba(247, 147, 26, 0.6);
 }
 
-/* ── Sort (compact) ───────────────── */
+/* ── Controls (compact) ───────────── */
+
+.control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
 
 .sort-bar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
   gap: 0.4rem;
-  margin-bottom: 0.6rem;
 }
 
 .sort-label { color: #666; font-size: 0.74rem; }
@@ -176,6 +233,39 @@ body {
 
 #sort-select:hover { border-color: rgba(255, 255, 255, 0.2); }
 #sort-select option { background: #1a1a1a; color: #ddd; }
+
+.view-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.view-btn,
+.reset-btn {
+  padding: 0.28rem 0.58rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #888;
+  font-family: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-btn:hover,
+.reset-btn:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #ddd;
+}
+
+.view-btn.active {
+  border-color: rgba(139, 92, 246, 0.55);
+  background: rgba(139, 92, 246, 0.11);
+  color: #c4b5fd;
+}
+
+.reset-btn { color: #666; }
 
 /* ── Groups ──────────────────────── */
 
@@ -220,6 +310,11 @@ body {
   gap: 0.5rem;
 }
 
+.list {
+  display: grid;
+  gap: 0.45rem;
+}
+
 /* ── Venture Card (compact) ───────── */
 
 .venture-card {
@@ -231,6 +326,11 @@ body {
   transition: all 0.35s ease;
   cursor: default;
   padding: 0.65rem;
+}
+
+.venture-card[data-status="assessed"],
+.venture-card[data-status="idea"] {
+  border-color: rgba(245, 158, 11, 0.16);
 }
 
 .venture-card::before {
@@ -266,7 +366,9 @@ body {
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background:
-    radial-gradient(circle at center, #1a1a2e 0%, #0d0d0d 100%);
+    linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
+    radial-gradient(circle at 50% 42%, rgba(139, 92, 246, 0.16) 0%, rgba(13, 13, 13, 0) 52%),
+    #0d0d0d;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
@@ -291,24 +393,27 @@ body {
 
 .card-path-badge {
   font-size: 0.65rem;
-  padding: 0.1rem 0.35rem;
+  padding: 0.08rem 0.32rem;
   border-radius: 4px;
   letter-spacing: 0.02em;
 }
 
 .card-path-badge.path-venture {
-  background: rgba(74, 222, 128, 0.06);
-  color: #6ee7a0;
-  border: 1px solid rgba(74, 222, 128, 0.1);
+  background: rgba(255, 255, 255, 0.035);
+  color: rgba(110, 231, 160, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .card-path-badge.path-open-source {
-  background: rgba(139, 92, 246, 0.06);
-  color: #c4b5fd;
-  border: 1px solid rgba(139, 92, 246, 0.1);
+  background: rgba(255, 255, 255, 0.035);
+  color: rgba(196, 181, 253, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
   font-size: 0.62rem;
   font-weight: 500;
   padding: 0.1rem 0.4rem;
@@ -318,15 +423,15 @@ body {
 }
 
 .badge-idea {
-  background: rgba(255, 255, 255, 0.04);
-  color: #888;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(245, 158, 11, 0.08);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.16);
 }
 
 .badge-assessed {
-  background: rgba(250, 204, 21, 0.08);
-  color: #eab308;
-  border: 1px solid rgba(250, 204, 21, 0.15);
+  background: rgba(250, 204, 21, 0.1);
+  color: #facc15;
+  border: 1px solid rgba(250, 204, 21, 0.18);
 }
 
 .badge-building {
@@ -366,6 +471,8 @@ body {
   font-weight: 600;
   color: #fff;
   margin-bottom: 0.15rem;
+  line-height: 1.2;
+  min-height: 1.05rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -423,13 +530,48 @@ body {
   padding-top: 0.35rem;
 }
 
-.card-footer a {
+.card-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.card-footer a,
+.card-description summary {
   color: #f7931a;
   text-decoration: none;
   transition: color 0.2s;
 }
 
-.card-footer a:hover { color: #ffb347; }
+.card-footer a:hover,
+.card-description summary:hover { color: #ffb347; }
+
+.card-action,
+.card-description summary,
+.decision-marker {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+  font-size: 0.64rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.card-description summary {
+  list-style: none;
+}
+
+.card-description summary::-webkit-details-marker {
+  display: none;
+}
+
+.decision-marker {
+  padding: 0.12rem 0.32rem;
+  background: rgba(245, 158, 11, 0.08);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.14);
+}
 
 /* ── Collapsible details ─────────── */
 
@@ -438,11 +580,39 @@ body {
 .card-kill-reason {
   position: relative;
   z-index: 2;
-  display: none;
   margin-top: 0.35rem;
   font-size: 0.7rem;
   border-top: 1px solid rgba(255, 255, 255, 0.04);
   padding-top: 0.3rem;
+}
+
+.card-description {
+  display: inline-flex;
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+}
+
+.card-lessons,
+.card-kill-reason {
+  display: none;
+}
+
+.card-description[open] {
+  position: absolute;
+  right: 0.65rem;
+  bottom: 2.15rem;
+  left: 0.65rem;
+  display: block;
+  padding: 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 7px;
+  background: rgba(13, 13, 13, 0.96);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.card-description[open] summary {
+  margin-bottom: 0.25rem;
 }
 
 .card-description summary,
@@ -469,6 +639,51 @@ body {
 
 .card-kill-reason p strong { color: #aaa; }
 .dead-details { position: relative; z-index: 2; }
+
+/* ── List View ───────────────────── */
+
+.list .venture-card {
+  display: grid;
+  grid-template-columns: 94px minmax(0, 1fr);
+  gap: 0.7rem;
+  min-height: 96px;
+  padding: 0.55rem;
+}
+
+.list .card-image {
+  width: 94px;
+  height: 76px;
+  margin: 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 7px;
+}
+
+.list .card-image img {
+  padding: 4px;
+}
+
+.list .card-header-row {
+  margin-bottom: 0.25rem;
+}
+
+.list .card-title {
+  white-space: normal;
+}
+
+.list .card-tagline {
+  min-height: 0;
+  -webkit-line-clamp: 1;
+}
+
+.list .card-tags {
+  display: flex;
+}
+
+.list .card-description[open] {
+  right: 0.55rem;
+  bottom: 1.9rem;
+  left: calc(94px + 1.25rem);
+}
 
 /* ── Empty State ─────────────────── */
 
@@ -511,10 +726,25 @@ body {
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   }
+  .stats-bar {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
   .container { padding: 0.75rem 1rem; }
+  .stats-bar {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .control-row {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .sort-bar,
+  .view-controls {
+    justify-content: center;
+  }
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -523,7 +753,23 @@ body {
 
 @media (max-width: 480px) {
   .container { padding: 0.75rem 0.75rem; }
+  .stats-bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .stat-label {
+    font-size: 0.62rem;
+  }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filters { gap: 0.25rem; }
   .filter-btn { font-size: 0.7rem; padding: 0.25rem 0.5rem; }
+  .list .venture-card {
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+  .list .card-image {
+    width: 76px;
+    height: 68px;
+  }
+  .list .card-description[open] {
+    left: 0.55rem;
+  }
 }

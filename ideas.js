@@ -7,9 +7,15 @@ let allVentures = [];
 let currentPath = 'all';
 let currentFilter = 'all';
 let currentSort = 'recent';
+let currentView = 'grid';
 
 const statusIcons = { idea: '○', assessed: '◎', building: '⚙', live: '✓', dead: '✗', released: '✓', deprecated: '✗' };
 const statusOrder = { idea: 0, assessed: 1, building: 2, live: 3, released: 3, dead: 4, deprecated: 4 };
+const developedOrder = { live: 0, released: 0, building: 1, assessed: 2, idea: 3, dead: 4, deprecated: 4 };
+const shippedStatuses = new Set(['live', 'released']);
+const activeStatuses = new Set(['idea', 'assessed', 'building']);
+const parkedStatuses = new Set(['dead', 'deprecated']);
+const decisionStatuses = new Set(['assessed', 'idea']);
 
 // Which statuses belong to which path
 const pathStatuses = {
@@ -73,6 +79,18 @@ function setupEventListeners() {
     filterAndRender();
   });
 
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentView = btn.dataset.view;
+      document.querySelectorAll('.view-btn').forEach(viewBtn => {
+        viewBtn.classList.toggle('active', viewBtn.dataset.view === currentView);
+      });
+      filterAndRender();
+    });
+  });
+
+  document.getElementById('reset-filters').addEventListener('click', resetFilters);
+
   // URL hash changes
   window.addEventListener('hashchange', () => {
     const hash = window.location.hash.replace('#', '');
@@ -97,6 +115,21 @@ function setPathFilter(path) {
 
   syncFilterButtons();
   window.location.hash = path === 'all' ? '' : path;
+  filterAndRender();
+}
+
+function resetFilters() {
+  currentPath = 'all';
+  currentFilter = 'all';
+  currentSort = 'recent';
+
+  document.querySelectorAll('.path-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.path === 'all');
+  });
+  document.getElementById('sort-select').value = currentSort;
+
+  syncFilterButtons();
+  window.location.hash = '';
   filterAndRender();
 }
 
@@ -148,8 +181,10 @@ function filterAndRender() {
 
   // Sort
   const sortFns = {
-    status: (a, b) => statusOrder[a.status] - statusOrder[b.status],
+    decision: (a, b) => scoreDecision(a) - scoreDecision(b),
+    developed: (a, b) => (developedOrder[a.status] ?? 9) - (developedOrder[b.status] ?? 9),
     recent: (a, b) => (b.lastUpdated || b.created).localeCompare(a.lastUpdated || a.created),
+    shipped: (a, b) => scoreShipped(a) - scoreShipped(b),
     title: (a, b) => a.title.localeCompare(b.title),
   };
   filtered.sort(sortFns[currentSort] || sortFns.recent);
@@ -174,7 +209,8 @@ function renderGrid(ventures) {
     return;
   }
 
-  grid.innerHTML = `<div class="grid">${ventures.map(v => renderCard(v)).join('')}</div>`;
+  const viewClass = currentView === 'list' ? 'list' : 'grid';
+  grid.innerHTML = `<div class="${viewClass}">${ventures.map(v => renderCard(v)).join('')}</div>`;
 }
 
 function renderCard(v) {
@@ -184,9 +220,10 @@ function renderCard(v) {
     ? `<div class="card-tags">${v.tags.map(t => `<span>${escapeHtml(t)}</span>`).join('')}</div>`
     : '';
   const link = v.link
-    ? `<a href="${escapeHtml(v.link)}" target="_blank" rel="noopener">→ Open</a>`
+    ? `<a class="card-action" href="${escapeHtml(v.link)}" target="_blank" rel="noopener">Open</a>`
     : '';
   const date = v.lastUpdated || v.created;
+  const decisionMarker = decisionStatuses.has(v.status) ? '<span class="decision-marker">Decision</span>' : '';
 
   const imgSrc = v.cardImage || v.image || '';
   const imageHtml = imgSrc ? `<div class="card-image"><img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(v.title)}" loading="lazy"></div>` : '';
@@ -231,14 +268,17 @@ function renderCard(v) {
       </div>
       <h3 class="card-title">${escapeHtml(v.title)}</h3>
       ${v.tagline ? `<p class="card-tagline">${escapeHtml(v.tagline)}</p>` : ''}
-      <details class="card-description">
-        <summary>Description</summary>
-        <p>${escapeHtml(v.description)}</p>
-      </details>
       ${tags}
       <div class="card-footer">
         <span class="card-date">${date}</span>
-        ${link}
+        <div class="card-footer-actions">
+          ${decisionMarker}
+          <details class="card-description">
+            <summary>Details</summary>
+            <p>${escapeHtml(v.description)}</p>
+          </details>
+          ${link}
+        </div>
       </div>
       ${extras}
       </div>
@@ -258,9 +298,25 @@ function updateCounts() {
     const el = document.getElementById(`count-${status}`);
     if (el) el.textContent = count;
   });
+
+  document.getElementById('stat-total').textContent = pool.length;
+  document.getElementById('stat-active').textContent = pool.filter(v => activeStatuses.has(v.status)).length;
+  document.getElementById('stat-decision').textContent = pool.filter(v => decisionStatuses.has(v.status)).length;
+  document.getElementById('stat-shipped').textContent = pool.filter(v => shippedStatuses.has(v.status)).length;
+  document.getElementById('stat-parked').textContent = pool.filter(v => parkedStatuses.has(v.status)).length;
 }
 
 // ── Utils ────────────────────────
+
+function scoreDecision(v) {
+  const base = decisionStatuses.has(v.status) ? 0 : 10;
+  return base + (statusOrder[v.status] ?? 9);
+}
+
+function scoreShipped(v) {
+  const base = shippedStatuses.has(v.status) ? 0 : 10;
+  return base + (statusOrder[v.status] ?? 9);
+}
 
 function escapeHtml(str) {
   if (!str) return '';
