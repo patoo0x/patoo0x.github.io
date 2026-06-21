@@ -8,6 +8,7 @@ let currentPath = 'all';
 let currentFilter = 'all';
 let currentSort = 'recent';
 let currentView = 'grid';
+let lastDetailsTrigger = null;
 
 const statusIcons = { idea: '○', assessed: '◎', building: '⚙', live: '✓', dead: '✗', released: '✓', deprecated: '✗' };
 const statusOrder = { idea: 0, assessed: 1, building: 2, live: 3, released: 3, dead: 4, deprecated: 4 };
@@ -90,6 +91,21 @@ function setupEventListeners() {
   });
 
   document.getElementById('reset-filters').addEventListener('click', resetFilters);
+  document.getElementById('ventures-grid').addEventListener('click', (event) => {
+    const trigger = event.target.closest('.details-button');
+    if (!trigger) return;
+    const venture = allVentures.find(v => v.slug === trigger.dataset.slug);
+    if (!venture) return;
+    lastDetailsTrigger = trigger;
+    openDetailsModal(venture);
+  });
+
+  document.getElementById('modal-close').addEventListener('click', closeDetailsModal);
+  document.getElementById('modal-backdrop').addEventListener('click', closeDetailsModal);
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeDetailsModal();
+  });
 
   // URL hash changes
   window.addEventListener('hashchange', () => {
@@ -273,10 +289,7 @@ function renderCard(v) {
         <span class="card-date">${date}</span>
         <div class="card-footer-actions">
           ${decisionMarker}
-          <details class="card-description">
-            <summary>Details</summary>
-            <p>${escapeHtml(v.description)}</p>
-          </details>
+          <button class="details-button" type="button" data-slug="${escapeHtml(v.slug)}">Details</button>
           ${link}
         </div>
       </div>
@@ -304,6 +317,78 @@ function updateCounts() {
   document.getElementById('stat-decision').textContent = pool.filter(v => decisionStatuses.has(v.status)).length;
   document.getElementById('stat-shipped').textContent = pool.filter(v => shippedStatuses.has(v.status)).length;
   document.getElementById('stat-parked').textContent = pool.filter(v => parkedStatuses.has(v.status)).length;
+}
+
+// ── Details Modal ────────────────
+
+function openDetailsModal(v) {
+  const modal = document.getElementById('details-modal');
+  const icon = statusIcons[v.status] || '○';
+  const pathLabel = v.path === 'open-source' ? '🧩 Commons' : '💰 Venture';
+  const imgSrc = v.cardImage || v.image || '';
+  const modalImage = document.getElementById('modal-image');
+  const modalPath = document.getElementById('modal-path');
+  const modalStatus = document.getElementById('modal-status');
+  const modalLink = document.getElementById('modal-link');
+  const modalExtra = document.getElementById('modal-extra');
+  const modalTags = document.getElementById('modal-tags');
+
+  if (imgSrc) {
+    modalImage.hidden = false;
+    modalImage.innerHTML = `<img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(v.title)}">`;
+  } else {
+    modalImage.hidden = true;
+    modalImage.innerHTML = '';
+  }
+
+  modalPath.className = `card-path-badge path-${v.path}`;
+  modalPath.textContent = pathLabel;
+  modalStatus.className = `card-badge badge-${v.status}`;
+  modalStatus.textContent = `${icon} ${v.status}`;
+
+  document.getElementById('modal-title').textContent = v.title || '';
+  document.getElementById('modal-tagline').textContent = v.tagline || '';
+  document.getElementById('modal-description').textContent = v.description || '';
+  document.getElementById('modal-date').textContent = v.lastUpdated || v.created || '';
+
+  modalTags.innerHTML = v.tags && v.tags.length
+    ? v.tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join('')
+    : '';
+
+  const extraBlocks = [];
+  if ((v.status === 'dead' || v.status === 'deprecated') && v.killReason) {
+    extraBlocks.push(`<p><strong>${v.status === 'deprecated' ? 'Why deprecated' : 'Why it died'}:</strong> ${escapeHtml(v.killReason)}</p>`);
+  }
+  if (v.lessons) {
+    extraBlocks.push(`<p><strong>${v.status === 'live' || v.status === 'released' ? 'Lessons' : 'Notes'}:</strong> ${escapeHtml(v.lessons)}</p>`);
+  }
+  modalExtra.innerHTML = extraBlocks.join('');
+
+  if (v.link) {
+    modalLink.hidden = false;
+    modalLink.href = v.link;
+  } else {
+    modalLink.hidden = true;
+    modalLink.removeAttribute('href');
+  }
+
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('modal-open');
+  document.getElementById('modal-close').focus();
+}
+
+function closeDetailsModal() {
+  const modal = document.getElementById('details-modal');
+  if (!modal.classList.contains('open')) return;
+
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('modal-open');
+
+  if (lastDetailsTrigger && document.contains(lastDetailsTrigger)) {
+    lastDetailsTrigger.focus();
+  }
 }
 
 // ── Utils ────────────────────────
