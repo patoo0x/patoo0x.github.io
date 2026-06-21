@@ -236,6 +236,31 @@
       "created": "2026-06-21",
       "lastUpdated": "2026-06-21",
       "cardImage": "/img/lumin.png"
+    },
+    {
+      "slug": "kathreftestr",
+      "title": "Kathreftestr",
+      "path": "open-source",
+      "status": "released",
+      "tagline": "Mirror a livestream to Nostr with zaps",
+      "description": "Kathreftestr points at a YouTube or Twitch livestream, pulls the feed with yt-dlp, transcodes it through ffmpeg and MediaMTX, serves HLS, and publishes a NIP-53 kind:30311 live event to Nostr. Each mirrored stream gets a Lightning address for zaps via npub.cash. It is a lean, one-command, self-hosted bridge for reflecting existing livestreams into Nostr-native clients.",
+      "tags": [
+        "nostr",
+        "bitcoin",
+        "livestreaming",
+        "lightning",
+        "self-hosted",
+        "open-source",
+        "media"
+      ],
+      "link": "https://bobodread876.github.io/kathreftestr/",
+      "revenueModel": "Not a standalone venture in current form. Best as open-source commons infrastructure. Possible paid layer: managed Nostr stream hosting for Bitcoin events/conferences, recording/analytics, relay distribution, and white-label support.",
+      "lessons": "Good commons tool, weak standalone SaaS. The wedge is narrow but real: mirror an existing livestream into Nostr with NIP-53 discovery and zaps, without forcing creators to abandon YouTube/Twitch. Adjacent competitors are zap.stream, Owncast, and commercial restreaming tools; Kathreftestr sits between them as a bridge. Main risks are rights/platform policy, yt-dlp fragility, public HLS reliability, and weak monetization capture. Full assessment in assessments/kathreftestr-assessment.md.",
+      "killReason": null,
+      "id": "v-010",
+      "created": "2026-06-21",
+      "lastUpdated": "2026-06-21",
+      "cardImage": "/img/kathreftestr.png"
     }
   ]
 }
