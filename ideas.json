@@ -266,7 +266,7 @@
       "slug": "driftwood",
       "title": "Driftwood",
       "path": "venture",
-      "status": "idea",
+      "status": "dead",
       "tagline": "Lightning-native partner savings circles for the Caribbean diaspora",
       "description": "Driftwood digitizes the Caribbean 'Partner' (sousou) \u2014 a rotating savings circle where 10-20 people pool sats and take turns receiving the pot. Unlike failed blockchain ROSCAs that targeted crypto users, Driftwood serves existing Partner circles that already run on cash and trust. Lightning handles automated contributions and instant payouts. Nostr provides transparent round tracking. The wedge is Jamaica's Island Bitcoin community, where members already use Flash wallets.",
       "tags": [
@@ -279,9 +279,9 @@
         "flash"
       ],
       "link": null,
-      "revenueModel": "Small per-round fee (0.5% of pot) charged to the organizer, or optional monthly subscription for premium features like credit scoring, cross-circle reputation, and diaspora-to-home remittance routing. Free tier for circles under 5 members.",
-      "lessons": null,
-      "killReason": null,
+      "revenueModel": "Organizer fee or subscription is plausible, but the market is already served by Susu/ROSCA apps while custody and payout flows create MSB risk. Flash could explore non-custodial group reminders later, but pooled savings as a product is a compliance-heavy wedge.",
+      "lessons": "Susu Circles, JoinSusu, Naa Sika, R.O.S.C.A, Njangi On-Chain and Daret cover the same rotating-savings core. Lightning is a payment rail, not enough differentiation. The real trust layer remains social, and handling pooled funds risks money-transmitter obligations.",
+      "killReason": "Material competition from Susu/ROSCA apps plus money-transmitter risk for pooled funds.",
       "id": "v-011",
       "created": "2026-06-26",
       "lastUpdated": "2026-06-26"
