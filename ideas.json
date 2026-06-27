@@ -309,7 +309,8 @@
       "killReason": "Nunchuk Group Wallet (collaborative multisig + Nostr + group chat, $1B+ secured); Fedimint/Fedi (community custody + guardian governance). Core multisig coordination is already commoditized; the AI/voting layer is not defensible.",
       "id": "v-012",
       "created": "2026-06-27",
-      "lastUpdated": "2026-06-27"
+      "lastUpdated": "2026-06-27",
+      "image": "/img/quorum.png"
     }
   ]
 }
