@@ -291,7 +291,7 @@
       "slug": "quorum",
       "title": "Quorum",
       "path": "venture",
-      "status": "idea",
+      "status": "dead",
       "tagline": "Transparent treasury coordination for Bitcoin communities, on Nostr.",
       "description": "Bitcoin communities manage funds opaquely \u2014 Discord votes, spreadsheets, informal trust. Quorum brings radical transparency: spending proposals publish as Nostr events, members approve with signed votes, and execution flows through cooperative multisig. An AI agent summarizes proposals, tracks deadlines, and nudges voters. Built for meetups, nonprofits, and community pools \u2014 not DeFi DAOs. Beachhead: Island Bitcoin Jamaica's operational budget.",
       "tags": [
@@ -304,9 +304,9 @@
         "transparency"
       ],
       "link": null,
-      "revenueModel": "Free tier for small communities (1 active proposal, up to 5 signers). Pro tier at $29/mo for established communities: unlimited proposals, AI summaries, automated reminders, audit trail exports. Enterprise for nonprofits/foundations: custom multisig policies, treasury analytics, grant tracking.",
-      "lessons": null,
-      "killReason": null,
+      "revenueModel": "$29/mo Pro is plausible but the market \u2014 small Bitcoin meetups and nonprofits \u2014 is tiny, price-sensitive, and mostly volunteer-run on free Discord/spreadsheets. Few will pay. Nunchuk Group Wallet is free and self-custodial; Fedimint is open-source. Monetizing governance-as-a-feature is hard when coordination is commoditized. The enterprise nonprofit tier means long, low-volume sales cycles. Revenue ceiling is low; CAC likely exceeds LTV.",
+      "lessons": "Nunchuk Group Wallet already does collaborative multisig coordination over Nostr with group chat, securing $1B+. Fedimint/Fedi handles community custody and governance via guardians. Quorum's proposal/voting/AI layer is thin, non-defensible polish atop existing rails. Spreadsheet-vote habit is sticky; $29/mo willingness is unproven for volunteer-run meetups. The AI summaries and signed votes are features, not a moat.",
+      "killReason": "Nunchuk Group Wallet (collaborative multisig + Nostr + group chat, $1B+ secured); Fedimint/Fedi (community custody + guardian governance). Core multisig coordination is already commoditized; the AI/voting layer is not defensible.",
       "id": "v-012",
       "created": "2026-06-27",
       "lastUpdated": "2026-06-27"
