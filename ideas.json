@@ -311,6 +311,29 @@
       "created": "2026-06-27",
       "lastUpdated": "2026-06-27",
       "image": "/img/quorum.png"
+    },
+    {
+      "slug": "banyan",
+      "title": "Banyan",
+      "path": "venture",
+      "status": "idea",
+      "tagline": "Living, AI-indexed knowledge graph for Bitcoin communities, on Nostr.",
+      "description": "Bitcoin communities like Island Bitcoin accumulate deep knowledge \u2014 meetup notes, technical guides, project histories \u2014 scattered across Discord, WhatsApp, and members' heads. Banyan captures this as structured Nostr events and builds a living, queryable knowledge graph. An AI agent indexes and cross-references contributions. New members ask questions in natural language; Banyan surfaces community-specific answers, not generic AI. Contributors earn sats when their knowledge helps someone. Managed hosted layer for communities wanting turnkey deployments.",
+      "tags": [
+        "nostr",
+        "bitcoin",
+        "community",
+        "ai-agents",
+        "knowledge-graph",
+        "lightning"
+      ],
+      "link": null,
+      "revenueModel": "Free open protocol. Hosted tier: $49/mo per community for managed knowledge base, AI search, and contributor analytics. Enterprise: custom pricing for multi-chapter organizations and foundations.",
+      "lessons": null,
+      "killReason": null,
+      "id": "v-013",
+      "created": "2026-06-29",
+      "lastUpdated": "2026-06-29"
     }
   ]
 }
