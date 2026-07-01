@@ -339,7 +339,7 @@
       "slug": "hustle-link",
       "title": "Hustle Link",
       "path": "venture",
-      "status": "idea",
+      "status": "assessed",
       "tagline": "Turn WhatsApp orders into Lightning payments for Caribbean hustlers.",
       "description": "Caribbean informal commerce runs on WhatsApp \u2014 cook shops, craft vendors, market stalls all take orders via chat and collect cash on delivery. Hustle Link bridges that gap: an AI agent reads WhatsApp order messages, generates Lightning invoices, and confirms payment \u2014 no app for the vendor to learn. Vendors get paid in Bitcoin instantly; buyers get a payment link in chat. Beachhead: Island Bitcoin Jamaica community vendors already using Flash wallets.",
       "tags": [
@@ -352,8 +352,8 @@
         "commerce"
       ],
       "link": null,
-      "revenueModel": "Per-transaction fee (0.5-1% on paid invoices) or flat $5/mo vendor subscription. Flash wallet integration drives adoption; Island Bitcoin Jamaica meetup vendors are the pilot cohort.",
-      "lessons": null,
+      "revenueModel": "Per-transaction fee (0.5\u20131%) or ~$5/mo vendor subscription. Realistic: informal vendors are fee-sensitive and low-margin, so monetization stays thin until volume scales. Flash wallet plus Island Bitcoin Jamaica community give free distribution and the real moat.",
+      "lessons": "Generic WhatsApp AI order/invoice bots exist (Zoko, Zotok, QuickReply, Kanal) but are fiat-only. Bitcoin-on-WhatsApp is on-chain/manual (Blockonomics); Lightning invoicing is commoditized (Alby CLI, LNURL). No competitor targets a Lightning-native WhatsApp order flow for Caribbean informal vendors. Differentiator: Flash owns wallet infra plus Island Bitcoin Jamaica distribution. Risks: WhatsApp Business API crypto/ToS limits, thin margins, vendor Bitcoin literacy.",
       "killReason": null,
       "id": "v-014",
       "created": "2026-07-01",
