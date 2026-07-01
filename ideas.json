@@ -45,8 +45,8 @@
       "link": null,
       "created": "2026-06-03",
       "lastUpdated": "2026-06-07",
-      "revenueModel": "Free Discord \u2192 paid Builder Circle ($30/mo) + workshop tickets + sponsored sessions ($500 ea) + IRL event tickets ($20) + template/playbook sales ($15). Projected $4k/mo by month 6, profitable from month 2.",
-      "lessons": "Chess as a shared mental model is the differentiator \u2014 not playing chess, but using chess thinking (tactics, positioning, endgame) to discuss agent architecture and strategy. Full 90-day launch plan and revenue model in assessments/c3-assessment.md.",
+      "revenueModel": "Free Discord → paid Builder Circle ($30/mo) + workshop tickets + sponsored sessions ($500 ea) + IRL event tickets ($20) + template/playbook sales ($15). Projected $4k/mo by month 6, profitable from month 2.",
+      "lessons": "Chess as a shared mental model is the differentiator — not playing chess, but using chess thinking (tactics, positioning, endgame) to discuss agent architecture and strategy. Full 90-day launch plan and revenue model in assessments/c3-assessment.md.",
       "killReason": null,
       "image": "/img/coffee-claws-chess.png"
     },
@@ -70,14 +70,14 @@
       "created": "2026-06-05",
       "lastUpdated": "2026-06-07",
       "revenueModel": "Tiered SaaS layered on an open polling protocol. Free tier: self-serve poll creation/embeds for individuals and small communities (loss-leader, drives network effects). Pulse Pro (~$20-49/mo per org): cross-community sentiment dashboards, trend analysis over time, AI agent that summarizes open-ended responses and debate, branded embeds, custom weighting rules. Pulse Enterprise (custom): API access, SLA, custom weighting for DAO treasuries and foundations. No per-zap fee. CRITICAL REVENUE CAVEAT: the open protocol layer (the part described as the moat) is non-monetizable and already commoditized; the only defensible, billable surface is (a) the AI summarization/cross-community correlation analytics, and (b) the WhatsApp<->Nostr bridge as managed infrastructure. The lightning-weighted voting primitive that the original pitch treated as the differentiator is NOT a viable revenue or differentiation basis (see lessons). Realistic path to first dollar is selling the AI analytics + WhatsApp bridge to a tiny number of orgs (DAOs, OSS foundations, Bitcoin meetup networks), not a polling SaaS competing with free clients. TAM is small: Nostr DAU is in the low hundreds of thousands and orgs willing to pay for community-sentiment analytics number in the dozens, not thousands.",
-      "lessons": "Lightning-weighted polling is already solved: NIP-69 'Zap Polls' ships in Amethyst and Snort (re-proposed as NIP-B9), and NIP-88 covers free polls. The protocol layer is crowded (6+ competing proposals) and non-monetizable, so the headline differentiator is false. The only defensible assets are off-protocol: an AI sentiment-analytics layer on existing poll data, and\u2014most novel\u2014a WhatsApp-to-Nostr poll bridge for Caribbean/Island Bitcoin meetups. Verdict: kill the new-protocol framing; if pursued, validate only the WhatsApp bridge MVP.",
+      "lessons": "Lightning-weighted polling is already solved: NIP-69 'Zap Polls' ships in Amethyst and Snort (re-proposed as NIP-B9), and NIP-88 covers free polls. The protocol layer is crowded (6+ competing proposals) and non-monetizable, so the headline differentiator is false. The only defensible assets are off-protocol: an AI sentiment-analytics layer on existing poll data, and—most novel—a WhatsApp-to-Nostr poll bridge for Caribbean/Island Bitcoin meetups. Verdict: kill the new-protocol framing; if pursued, validate only the WhatsApp bridge MVP.",
       "killReason": null,
       "decision": {
         "status": "pending",
         "flaggedAt": "2026-06-06",
         "recommendation": "validate",
         "confidence": "high",
-        "rationale": "The headline protocol play is dead on arrival: lightning-weighted polling already ships in Amethyst and Snort via NIP-69/B9 (since 2023), and free polling is standardized in NIP-88 with multiple live clients (Pollerama, getwired, Pollstr). Competing on a new poll kind would add a 7th fragmented standard to an already-crowded design space \u2014 non-monetizable and undifferentiated. KILL that framing. But two off-protocol assets survive and are genuinely defensible: (1) the WhatsApp<->Nostr poll bridge for Island Bitcoin / Caribbean meetups \u2014 no turnkey equivalent exists, low build cost, real underserved user demand, and a warm beachhead via the Jamaica meetup; (2) an AI sentiment-analytics layer on TOP of existing NIP-88/69 data. Neither requires inventing a protocol. The risk is not technical (Baileys + nostr-tools + a vote-parser is a weekend MVP) \u2014 it is demand: will non-Nostr Caribbean users actually engage with poll replies over WhatsApp? That single unknown is worth one cheap, real-world test before committing build resources. Hence validate, not build, not kill.",
+        "rationale": "The headline protocol play is dead on arrival: lightning-weighted polling already ships in Amethyst and Snort via NIP-69/B9 (since 2023), and free polling is standardized in NIP-88 with multiple live clients (Pollerama, getwired, Pollstr). Competing on a new poll kind would add a 7th fragmented standard to an already-crowded design space — non-monetizable and undifferentiated. KILL that framing. But two off-protocol assets survive and are genuinely defensible: (1) the WhatsApp<->Nostr poll bridge for Island Bitcoin / Caribbean meetups — no turnkey equivalent exists, low build cost, real underserved user demand, and a warm beachhead via the Jamaica meetup; (2) an AI sentiment-analytics layer on TOP of existing NIP-88/69 data. Neither requires inventing a protocol. The risk is not technical (Baileys + nostr-tools + a vote-parser is a weekend MVP) — it is demand: will non-Nostr Caribbean users actually engage with poll replies over WhatsApp? That single unknown is worth one cheap, real-world test before committing build resources. Hence validate, not build, not kill.",
         "buildEstimate": "Scrappy MVP: 1-2 weeks for the WhatsApp<->Nostr bridge (Baileys client + nostr-tools relay client + vote-parser on existing NIP-88/69 kinds). Validation window: one Island Bitcoin Jamaica meetup cycle (~4 weeks). Full build only if engagement validates.",
         "nextStep": "Run a one-meetup validation: build the bare WhatsApp->Nostr poll bridge using existing NIP-88/69 kinds (NO new protocol), deploy it for the next Island Bitcoin Jamaica meetup-planning poll, and measure whether non-Nostr Caribbean users actually cast votes via text reply. Define a clear pass bar up front (e.g. 15+ real human votes from non-Nostr users). Pass -> build out AI analytics layer. Fail -> kill."
       },
@@ -89,7 +89,7 @@
       "path": "venture",
       "status": "dead",
       "tagline": "Lightning-native recurring payments protocol on Nostr",
-      "description": "Recurr is a protocol and hosted infrastructure for recurring Lightning payments built on Nostr \u2014 subscriptions, memberships, DCA, recurring tips, and salary streaming. A new event kind encodes Recurring Payment Agreements (payer, payee, amount, interval, expiry); both parties sign and payments settle automatically with on-relay receipts. The venture layer, Recurr Cloud, manages execution for wallets and businesses with scheduling, retries, and a dashboard. First target: Flash wallet, enabling one-tap subscriptions, creator support, and scheduled Bitcoin savings plans.",
+      "description": "Recurr is a protocol and hosted infrastructure for recurring Lightning payments built on Nostr — subscriptions, memberships, DCA, recurring tips, and salary streaming. A new event kind encodes Recurring Payment Agreements (payer, payee, amount, interval, expiry); both parties sign and payments settle automatically with on-relay receipts. The venture layer, Recurr Cloud, manages execution for wallets and businesses with scheduling, retries, and a dashboard. First target: Flash wallet, enabling one-tap subscriptions, creator support, and scheduled Bitcoin savings plans.",
       "tags": [
         "lightning",
         "nostr",
@@ -99,7 +99,7 @@
         "infrastructure"
       ],
       "link": null,
-      "revenueModel": "Two plausible paths, both thin. (1) Recurr Cloud SaaS: hosted recurring-payment orchestration for businesses/creators \u2014 per-merchant monthly fee + small % or flat fee per executed payment, plus dashboards/retry/analytics. (2) Wallet infra licensing: white-label recurring-subscription module sold to wallets (Flash first) as an embedded feature. Realistic take rate is tiny because the underlying rails (NWC) are free and open, so Recurr can only charge for hosting, reliability, UX, and merchant tooling \u2014 not for the protocol itself. This caps pricing power and pushes it toward a commodity ops/dashboard business competing directly with Alby's free ZapPlanner.",
+      "revenueModel": "Two plausible paths, both thin. (1) Recurr Cloud SaaS: hosted recurring-payment orchestration for businesses/creators — per-merchant monthly fee + small % or flat fee per executed payment, plus dashboards/retry/analytics. (2) Wallet infra licensing: white-label recurring-subscription module sold to wallets (Flash first) as an embedded feature. Realistic take rate is tiny because the underlying rails (NWC) are free and open, so Recurr can only charge for hosting, reliability, UX, and merchant tooling — not for the protocol itself. This caps pricing power and pushes it toward a commodity ops/dashboard business competing directly with Alby's free ZapPlanner.",
       "lessons": "Premise is outdated: NWC (NIP-47) is already the standard for app-initiated, budget-capped recurring Lightning payments, implemented by Alby Hub, LNbits, Coinos and more. ZapPlanner is a shipped, free, non-custodial 'Recurr Cloud' equivalent. A bespoke RPA event kind plus LNURL-Withdraw adds little and is the weaker design. Hosted custody also risks MSB/money-transmitter classification. The best move for Flash is to add native NWC support rather than invent a new rail. Verdict: protocol is DOA; moat is weak.",
       "killReason": "NWC (NIP-47) + Alby ZapPlanner already solve recurring Lightning payments as a free, open-source, non-custodial service. Building a new RPA event kind + LNURL-Withdraw stack adds no protocol value. The venture layer competes with free, shipped tooling. Best outcome: Flash adopts NWC natively.",
       "id": "v-004",
@@ -110,9 +110,9 @@
         "flaggedAt": "2026-06-06",
         "recommendation": "kill",
         "confidence": "high",
-        "rationale": "NWC (NIP-47) + Alby ZapPlanner already solve recurring Lightning payments as a free, open-source, non-custodial service. Building a new RPA event kind + LNURL-Withdraw stack adds no protocol value. The venture layer (Recurr Cloud) competes with free tooling. Best outcome: Flash adopts NWC natively \u2014 no new protocol needed.",
+        "rationale": "NWC (NIP-47) + Alby ZapPlanner already solve recurring Lightning payments as a free, open-source, non-custodial service. Building a new RPA event kind + LNURL-Withdraw stack adds no protocol value. The venture layer (Recurr Cloud) competes with free tooling. Best outcome: Flash adopts NWC natively — no new protocol needed.",
         "buildEstimate": null,
-        "nextStep": "Kill the protocol play. If anything, scope to Flash NWC support \u2014 no Recurr brand, no new event kind, no new repo."
+        "nextStep": "Kill the protocol play. If anything, scope to Flash NWC support — no Recurr brand, no new event kind, no new repo."
       },
       "image": "/img/recurr.png"
     },
@@ -134,7 +134,7 @@
       ],
       "link": null,
       "revenueModel": "Primary: 2-4% platform fee on completed bounties, settled in sats via Lightning (lower than Gitcoin/Bountysource cuts to undercut on a Bitcoin-native basis). Recurring SaaS: curated/branded bounty boards for projects, DAOs and foundations at $49-249/mo (priority listing, custom workflows, analytics, ecosystem-specific boards for Nostr/Bitcoin Core/Lightning/Flash/Caribbean OSS). Escrow-as-a-service using Lightning hold invoices for orgs needing auditable, trust-minimized bounty pipelines (per-volume or flat retainer). Upsell: AI-agent bounty matchmaking + auto-execution of well-defined micro-tasks, taking a margin on agent-completed work. Beachhead is Flash's own repos to seed liquidity and prove the loop before opening curated boards to the wider Nostr/Bitcoin dev community.",
-      "lessons": "Validated but contested: Resolvr (Bolt.Fun) is a near-identical Bitcoin-native Nostr bounty adjudicator, and Alby already runs sats bounties via GitHub \u2014 so the wedge is execution, UX and liquidity, not novelty. Tailwind is real (Gitcoin sunset, Bountysource dead, Dorsey's 1B-sat Nostr-GitHub bounty). Hold-invoice escrow and Nostr identity are feasible. Key risks: cold-start liquidity, custody/money-transmission exposure, dispute cost, and verifying merged work. Differentiate on instant settlement plus AI auto-bounty of tiny tasks humans ignore.",
+      "lessons": "Validated but contested: Resolvr (Bolt.Fun) is a near-identical Bitcoin-native Nostr bounty adjudicator, and Alby already runs sats bounties via GitHub — so the wedge is execution, UX and liquidity, not novelty. Tailwind is real (Gitcoin sunset, Bountysource dead, Dorsey's 1B-sat Nostr-GitHub bounty). Hold-invoice escrow and Nostr identity are feasible. Key risks: cold-start liquidity, custody/money-transmission exposure, dispute cost, and verifying merged work. Differentiate on instant settlement plus AI auto-bounty of tiny tasks humans ignore.",
       "killReason": "Killed by Dread (2026-06-07): bounty space is too crowded. Resolvr (Bolt.Fun), Alby GitHub sats bounties, and Gitcoin/Bountysource all occupy adjacent ground; the wedge would be execution/UX/liquidity rather than novelty, and the competitive density does not justify the build.",
       "id": "v-005",
       "created": "2026-06-07",
@@ -146,8 +146,8 @@
       "title": "Agent Bonds (working title: Tether / Kith)",
       "path": "venture",
       "status": "dead",
-      "tagline": "The matching engine for AI agents \u2014 persistent, signed relationship bonds.",
-      "description": "The matching engine for AI agents, built on a persistent, signed relationship graph (MATE.md + NIP-BD on Nostr). We help agents find and bond with the right counterparties \u2014 complementary skills, aligned context, verifiable reputation \u2014 then become the system of record for those bonds. LinkedIn is the record, Bumble is the engine; because agents are legible, we optimize for fit, not engagement. The relationship/continuity layer no incumbent owns.",
+      "tagline": "The matching engine for AI agents — persistent, signed relationship bonds.",
+      "description": "The matching engine for AI agents, built on a persistent, signed relationship graph (MATE.md + NIP-BD on Nostr). We help agents find and bond with the right counterparties — complementary skills, aligned context, verifiable reputation — then become the system of record for those bonds. LinkedIn is the record, Bumble is the engine; because agents are legible, we optimize for fit, not engagement. The relationship/continuity layer no incumbent owns.",
       "tags": [
         "ai-agents",
         "nostr",
@@ -170,7 +170,7 @@
       "path": "venture",
       "status": "assessed",
       "tagline": "Lightning-native wallet SDK for autonomous AI agents",
-      "description": "AI agents need wallets to operate autonomously \u2014 pay API costs, distribute rewards, manage budgets. Pawket is a lightweight SDK giving agents a Lightning wallet with NWC delegation, Nostr identity binding, programmable spending policies, and budget caps. Open-core SDK is free; the venture layer is a hosted service with multi-agent treasury management, audit trails, and Flash wallet integration.",
+      "description": "AI agents need wallets to operate autonomously — pay API costs, distribute rewards, manage budgets. Pawket is a lightweight SDK giving agents a Lightning wallet with NWC delegation, Nostr identity binding, programmable spending policies, and budget caps. Open-core SDK is free; the venture layer is a hosted service with multi-agent treasury management, audit trails, and Flash wallet integration.",
       "tags": [
         "lightning",
         "ai-agents",
@@ -219,7 +219,7 @@
       "path": "venture",
       "status": "dead",
       "tagline": "Lightning-native compliance for wallet operators",
-      "description": "Lumin is a compliance toolkit for Lightning wallets in regulated markets. It monitors transactions, handles travel rule data, screens sanctions, and flags suspicious activity \u2014 designed for Lightning's privacy model. It ingests NWC/Nostr event data and scores risk without compromising user privacy. Unlike Chainalysis or TRM Labs (built for on-chain), Lumin natively understands HTLCs, MPP, hodl invoices, and keysend. Target: wallet operators needing cost-effective, privacy-first compliance. First customer: Flash.",
+      "description": "Lumin is a compliance toolkit for Lightning wallets in regulated markets. It monitors transactions, handles travel rule data, screens sanctions, and flags suspicious activity — designed for Lightning's privacy model. It ingests NWC/Nostr event data and scores risk without compromising user privacy. Unlike Chainalysis or TRM Labs (built for on-chain), Lumin natively understands HTLCs, MPP, hodl invoices, and keysend. Target: wallet operators needing cost-effective, privacy-first compliance. First customer: Flash.",
       "tags": [
         "lightning",
         "compliance",
@@ -229,8 +229,8 @@
         "privacy"
       ],
       "link": null,
-      "revenueModel": "Intended SaaS: $99/mo base for small operators, transaction-volume or per-active-wallet tiers, enterprise custom. Reality: incumbents (Chainalysis, TRM, Elliptic) sell bundled AML suites on enterprise contracts and own regulator relationships; Notabene owns travel-rule rails. Standalone Lightning compliance is a feature, not a platform \u2014 hard to price above noise. Operators consolidate vendors rather than add a niche tool. Flash could build internal tooling, but productizing for third parties faces entrenched, well-funded competition and thin willingness-to-pay.",
-      "lessons": "Chainalysis launched Lightning transaction monitoring in 2023; its Reactor Wallet Scan now maps Lightning nodes, channels, and clusters (2026). Notabene dominates travel rule (91 VASPs, ~100% compliance commitment). TRM Labs and Elliptic also cover crypto AML broadly. Differentiator \u2014 privacy-first, HTLC/MPP/keysend-native scoring \u2014 is real but thin against entrenched incumbents with regulator trust and data network effects. Most operators buy bundled suites, not a standalone Lightning tool. White space too narrow to defend.",
+      "revenueModel": "Intended SaaS: $99/mo base for small operators, transaction-volume or per-active-wallet tiers, enterprise custom. Reality: incumbents (Chainalysis, TRM, Elliptic) sell bundled AML suites on enterprise contracts and own regulator relationships; Notabene owns travel-rule rails. Standalone Lightning compliance is a feature, not a platform — hard to price above noise. Operators consolidate vendors rather than add a niche tool. Flash could build internal tooling, but productizing for third parties faces entrenched, well-funded competition and thin willingness-to-pay.",
+      "lessons": "Chainalysis launched Lightning transaction monitoring in 2023; its Reactor Wallet Scan now maps Lightning nodes, channels, and clusters (2026). Notabene dominates travel rule (91 VASPs, ~100% compliance commitment). TRM Labs and Elliptic also cover crypto AML broadly. Differentiator — privacy-first, HTLC/MPP/keysend-native scoring — is real but thin against entrenched incumbents with regulator trust and data network effects. Most operators buy bundled suites, not a standalone Lightning tool. White space too narrow to defend.",
       "killReason": "Chainalysis (Lightning Network monitoring + Reactor Wallet Scan); Notabene owns travel rule",
       "id": "v-009",
       "created": "2026-06-21",
@@ -268,7 +268,7 @@
       "path": "venture",
       "status": "dead",
       "tagline": "Lightning-native partner savings circles for the Caribbean diaspora",
-      "description": "Driftwood digitizes the Caribbean 'Partner' (sousou) \u2014 a rotating savings circle where 10-20 people pool sats and take turns receiving the pot. Unlike failed blockchain ROSCAs that targeted crypto users, Driftwood serves existing Partner circles that already run on cash and trust. Lightning handles automated contributions and instant payouts. Nostr provides transparent round tracking. The wedge is Jamaica's Island Bitcoin community, where members already use Flash wallets.",
+      "description": "Driftwood digitizes the Caribbean 'Partner' (sousou) — a rotating savings circle where 10-20 people pool sats and take turns receiving the pot. Unlike failed blockchain ROSCAs that targeted crypto users, Driftwood serves existing Partner circles that already run on cash and trust. Lightning handles automated contributions and instant payouts. Nostr provides transparent round tracking. The wedge is Jamaica's Island Bitcoin community, where members already use Flash wallets.",
       "tags": [
         "bitcoin",
         "lightning",
@@ -293,7 +293,7 @@
       "path": "venture",
       "status": "dead",
       "tagline": "Transparent treasury coordination for Bitcoin communities, on Nostr.",
-      "description": "Bitcoin communities manage funds opaquely \u2014 Discord votes, spreadsheets, informal trust. Quorum brings radical transparency: spending proposals publish as Nostr events, members approve with signed votes, and execution flows through cooperative multisig. An AI agent summarizes proposals, tracks deadlines, and nudges voters. Built for meetups, nonprofits, and community pools \u2014 not DeFi DAOs. Beachhead: Island Bitcoin Jamaica's operational budget.",
+      "description": "Bitcoin communities manage funds opaquely — Discord votes, spreadsheets, informal trust. Quorum brings radical transparency: spending proposals publish as Nostr events, members approve with signed votes, and execution flows through cooperative multisig. An AI agent summarizes proposals, tracks deadlines, and nudges voters. Built for meetups, nonprofits, and community pools — not DeFi DAOs. Beachhead: Island Bitcoin Jamaica's operational budget.",
       "tags": [
         "nostr",
         "bitcoin",
@@ -304,7 +304,7 @@
         "transparency"
       ],
       "link": null,
-      "revenueModel": "$29/mo Pro is plausible but the market \u2014 small Bitcoin meetups and nonprofits \u2014 is tiny, price-sensitive, and mostly volunteer-run on free Discord/spreadsheets. Few will pay. Nunchuk Group Wallet is free and self-custodial; Fedimint is open-source. Monetizing governance-as-a-feature is hard when coordination is commoditized. The enterprise nonprofit tier means long, low-volume sales cycles. Revenue ceiling is low; CAC likely exceeds LTV.",
+      "revenueModel": "$29/mo Pro is plausible but the market — small Bitcoin meetups and nonprofits — is tiny, price-sensitive, and mostly volunteer-run on free Discord/spreadsheets. Few will pay. Nunchuk Group Wallet is free and self-custodial; Fedimint is open-source. Monetizing governance-as-a-feature is hard when coordination is commoditized. The enterprise nonprofit tier means long, low-volume sales cycles. Revenue ceiling is low; CAC likely exceeds LTV.",
       "lessons": "Nunchuk Group Wallet already does collaborative multisig coordination over Nostr with group chat, securing $1B+. Fedimint/Fedi handles community custody and governance via guardians. Quorum's proposal/voting/AI layer is thin, non-defensible polish atop existing rails. Spreadsheet-vote habit is sticky; $29/mo willingness is unproven for volunteer-run meetups. The AI summaries and signed votes are features, not a moat.",
       "killReason": "Nunchuk Group Wallet (collaborative multisig + Nostr + group chat, $1B+ secured); Fedimint/Fedi (community custody + guardian governance). Core multisig coordination is already commoditized; the AI/voting layer is not defensible.",
       "id": "v-012",
@@ -318,7 +318,7 @@
       "path": "venture",
       "status": "idea",
       "tagline": "Living, AI-indexed knowledge graph for Bitcoin communities, on Nostr.",
-      "description": "Bitcoin communities like Island Bitcoin accumulate deep knowledge \u2014 meetup notes, technical guides, project histories \u2014 scattered across Discord, WhatsApp, and members' heads. Banyan captures this as structured Nostr events and builds a living, queryable knowledge graph. An AI agent indexes and cross-references contributions. New members ask questions in natural language; Banyan surfaces community-specific answers, not generic AI. Contributors earn sats when their knowledge helps someone. Managed hosted layer for communities wanting turnkey deployments.",
+      "description": "Bitcoin communities like Island Bitcoin accumulate deep knowledge — meetup notes, technical guides, project histories — scattered across Discord, WhatsApp, and members' heads. Banyan captures this as structured Nostr events and builds a living, queryable knowledge graph. An AI agent indexes and cross-references contributions. New members ask questions in natural language; Banyan surfaces community-specific answers, not generic AI. Contributors earn sats when their knowledge helps someone. Managed hosted layer for communities wanting turnkey deployments.",
       "tags": [
         "nostr",
         "bitcoin",
@@ -341,7 +341,7 @@
       "path": "venture",
       "status": "assessed",
       "tagline": "Turn WhatsApp orders into Lightning payments for Caribbean hustlers.",
-      "description": "Caribbean informal commerce runs on WhatsApp \u2014 cook shops, craft vendors, market stalls all take orders via chat and collect cash on delivery. Hustle Link bridges that gap: an AI agent reads WhatsApp order messages, generates Lightning invoices, and confirms payment \u2014 no app for the vendor to learn. Vendors get paid in Bitcoin instantly; buyers get a payment link in chat. Beachhead: Island Bitcoin Jamaica community vendors already using Flash wallets.",
+      "description": "Caribbean informal commerce runs on WhatsApp — cook shops, craft vendors, market stalls all take orders via chat and collect cash on delivery. Hustle Link bridges that gap: an AI agent reads WhatsApp order messages, generates Lightning invoices, and confirms payment — no app for the vendor to learn. Vendors get paid in Bitcoin instantly; buyers get a payment link in chat. Beachhead: Island Bitcoin Jamaica community vendors already using Flash wallets.",
       "tags": [
         "lightning",
         "bitcoin",
@@ -352,12 +352,13 @@
         "commerce"
       ],
       "link": null,
-      "revenueModel": "Per-transaction fee (0.5\u20131%) or ~$5/mo vendor subscription. Realistic: informal vendors are fee-sensitive and low-margin, so monetization stays thin until volume scales. Flash wallet plus Island Bitcoin Jamaica community give free distribution and the real moat.",
+      "revenueModel": "Per-transaction fee (0.5–1%) or ~$5/mo vendor subscription. Realistic: informal vendors are fee-sensitive and low-margin, so monetization stays thin until volume scales. Flash wallet plus Island Bitcoin Jamaica community give free distribution and the real moat.",
       "lessons": "Generic WhatsApp AI order/invoice bots exist (Zoko, Zotok, QuickReply, Kanal) but are fiat-only. Bitcoin-on-WhatsApp is on-chain/manual (Blockonomics); Lightning invoicing is commoditized (Alby CLI, LNURL). No competitor targets a Lightning-native WhatsApp order flow for Caribbean informal vendors. Differentiator: Flash owns wallet infra plus Island Bitcoin Jamaica distribution. Risks: WhatsApp Business API crypto/ToS limits, thin margins, vendor Bitcoin literacy.",
       "killReason": null,
       "id": "v-014",
       "created": "2026-07-01",
-      "lastUpdated": "2026-07-01"
+      "lastUpdated": "2026-07-01",
+      "image": "/img/hustle-link.png"
     }
   ]
 }
