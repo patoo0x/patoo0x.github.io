@@ -334,6 +334,30 @@
       "id": "v-013",
       "created": "2026-06-29",
       "lastUpdated": "2026-06-29"
+    },
+    {
+      "slug": "hustle-link",
+      "title": "Hustle Link",
+      "path": "venture",
+      "status": "idea",
+      "tagline": "Turn WhatsApp orders into Lightning payments for Caribbean hustlers.",
+      "description": "Caribbean informal commerce runs on WhatsApp \u2014 cook shops, craft vendors, market stalls all take orders via chat and collect cash on delivery. Hustle Link bridges that gap: an AI agent reads WhatsApp order messages, generates Lightning invoices, and confirms payment \u2014 no app for the vendor to learn. Vendors get paid in Bitcoin instantly; buyers get a payment link in chat. Beachhead: Island Bitcoin Jamaica community vendors already using Flash wallets.",
+      "tags": [
+        "lightning",
+        "bitcoin",
+        "caribbean",
+        "whatsapp",
+        "flash",
+        "ai-agents",
+        "commerce"
+      ],
+      "link": null,
+      "revenueModel": "Per-transaction fee (0.5-1% on paid invoices) or flat $5/mo vendor subscription. Flash wallet integration drives adoption; Island Bitcoin Jamaica meetup vendors are the pilot cohort.",
+      "lessons": null,
+      "killReason": null,
+      "id": "v-014",
+      "created": "2026-07-01",
+      "lastUpdated": "2026-07-01"
     }
   ]
 }
