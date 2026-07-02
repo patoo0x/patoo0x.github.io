@@ -383,7 +383,8 @@
       "killReason": null,
       "id": "v-015",
       "created": "2026-07-02",
-      "lastUpdated": "2026-07-02"
+      "lastUpdated": "2026-07-02",
+      "image": "/img/campfire.png"
     }
   ]
 }
