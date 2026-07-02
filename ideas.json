@@ -365,7 +365,7 @@
       "slug": "campfire",
       "title": "Campfire",
       "path": "venture",
-      "status": "idea",
+      "status": "assessed",
       "tagline": "Lightning-paid, AI-moderated focus groups for Bitcoin and freedom-tech projects.",
       "description": "Finding product-market fit in Bitcoin is hard \u2014 the audience is niche, global, and privacy-conscious. Campfire lets projects post research questions and recruit verified Bitcoin/Nostr community members for paid focus groups, settled in sats via Lightning. An AI agent moderates sessions, synthesizes responses, and generates insight reports. Nostr identity provides pseudonymous verification without doxxing. Beachhead: Flash testing features with Island Bitcoin Jamaica members.",
       "tags": [
@@ -378,8 +378,8 @@
         "flash"
       ],
       "link": null,
-      "revenueModel": "Per-session marketplace fee (15-20% of participant payouts) plus $99/mo Pro tier for teams wanting recurring research cycles, custom screening, and priority recruitment. Enterprise: custom pricing for foundations and funded startups needing continuous community feedback loops.",
-      "lessons": null,
+      "revenueModel": "Marketplace take (15-20%) on sats settled to verified participants; $99/mo Pro for teams wanting recurring cycles, custom Nostr screening, and priority recruitment; enterprise pricing for foundations and funded startups needing continuous feedback loops. Flash also captures Lightning settlement and can bundle with wallet infra. Standalone AI insight reports are an upsell. Early revenue thin given niche audience, but low CAC via Island Bitcoin community.",
+      "lessons": "AI-moderation is crowded: Outset, Perspective AI, Strella, Listen Labs, Synthetic Users, Evidenza. Recruitment incumbents: Respondent, User Interviews. Crypto surveys exist (BlockSurvey, Bitcoin survey sites) but generic. No Bitcoin/Nostr-native focus-group tool found \u2014 genuine white-space. Differentiator: Lightning sats payouts, Nostr pseudonymous verification, and Flashs Island Bitcoin beachhead. Risks: marketplace cold-start, thin niche demand, participant quality/sybil, and a commoditized AI layer. Real moat is distribution plus rails, not moderation.",
       "killReason": null,
       "id": "v-015",
       "created": "2026-07-02",
