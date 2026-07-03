@@ -352,13 +352,13 @@
         "ai-agents",
         "commerce"
       ],
-      "link": null,
+      "link": "https://bobodread876.github.io/hustle-link/",
       "revenueModel": "Per-transaction fee (0.5\u20131%) or ~$5/mo vendor subscription. Realistic: informal vendors are fee-sensitive and low-margin, so monetization stays thin until volume scales. Flash wallet plus Island Bitcoin Jamaica community give free distribution and the real moat.",
       "lessons": "Generic WhatsApp AI order/invoice bots exist (Zoko, Zotok, QuickReply, Kanal) but are fiat-only. Bitcoin-on-WhatsApp is on-chain/manual (Blockonomics); Lightning invoicing is commoditized (Alby CLI, LNURL). No competitor targets a Lightning-native WhatsApp order flow for Caribbean informal vendors. Differentiator: Flash owns wallet infra plus Island Bitcoin Jamaica distribution. Risks: WhatsApp Business API crypto/ToS limits, thin margins, vendor Bitcoin literacy.",
       "killReason": null,
       "id": "v-014",
       "created": "2026-07-01",
-      "lastUpdated": "2026-07-01",
+      "lastUpdated": "2026-07-03",
       "image": "/img/hustle-link.png"
     },
     {
