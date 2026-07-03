@@ -399,7 +399,7 @@
       "slug": "coral",
       "title": "Coral",
       "path": "venture",
-      "status": "idea",
+      "status": "assessed",
       "tagline": "AI onboarding concierge that turns Bitcoin curiosity into action.",
       "description": "Coral is an AI onboarding concierge that lives in WhatsApp and guides newcomers through their first Bitcoin experience \u2014 wallet setup, first Lightning payment, receiving sats, and joining Nostr communities. Deployed by community organizations (Island Bitcoin, meetups, wallet operators), Coral handles 90% of support questions automatically, escalates complex ones to humans, and tracks conversion through each onboarding step. Built for Flash wallet integration. Scales the one-on-one hand-holding every Bitcoin community struggles with.",
       "tags": [
@@ -413,8 +413,8 @@
         "caribbean"
       ],
       "link": null,
-      "revenueModel": "Per-community SaaS: $49-149/mo per organization for concierge, analytics, and conversion dashboards. Wallet operators pay per-active-onboarded-user ($0.50-2). Enterprise custom for NGOs and cross-border programs.",
-      "lessons": null,
+      "revenueModel": "SaaS $49-149/mo per community is thin; Bitcoin meetup organizers rarely have budgets. Real money is wallet-operator per-onboarded-user ($0.50-2) and NGO/remittance programs. Serviceable market small (hundreds of orgs). Viable mainly as a Flash distribution wedge, not standalone SaaS. Bundle free with Flash to drive activation; monetize via wallet transaction volume and enterprise cross-border deals over per-seat subscriptions.",
+      "lessons": "No dedicated Bitcoin-community concierge exists \u2014 white space. But commodity WhatsApp chatbot builders (YourGPT, AiSensy) plus ChatGPT let anyone clone it; infra (Privy, Turnkey) and KYC (Persona) are adjacent. Biggest risk: regulators flag WhatsApp crypto education groups as scam vectors, so trust/branding is critical. Differentiator: Flash wallet integration plus Island Bitcoin Caribbean community distribution Patoo already owns. Defensible only if bundled with Flash, not generic SaaS.",
       "killReason": null,
       "id": "v-016",
       "created": "2026-07-03",
