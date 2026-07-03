@@ -394,6 +394,31 @@
       "created": "2026-07-02",
       "lastUpdated": "2026-07-02",
       "image": "/img/campfire.png"
+    },
+    {
+      "slug": "coral",
+      "title": "Coral",
+      "path": "venture",
+      "status": "idea",
+      "tagline": "AI onboarding concierge that turns Bitcoin curiosity into action.",
+      "description": "Coral is an AI onboarding concierge that lives in WhatsApp and guides newcomers through their first Bitcoin experience \u2014 wallet setup, first Lightning payment, receiving sats, and joining Nostr communities. Deployed by community organizations (Island Bitcoin, meetups, wallet operators), Coral handles 90% of support questions automatically, escalates complex ones to humans, and tracks conversion through each onboarding step. Built for Flash wallet integration. Scales the one-on-one hand-holding every Bitcoin community struggles with.",
+      "tags": [
+        "bitcoin",
+        "lightning",
+        "ai-agents",
+        "onboarding",
+        "community",
+        "whatsapp",
+        "flash",
+        "caribbean"
+      ],
+      "link": null,
+      "revenueModel": "Per-community SaaS: $49-149/mo per organization for concierge, analytics, and conversion dashboards. Wallet operators pay per-active-onboarded-user ($0.50-2). Enterprise custom for NGOs and cross-border programs.",
+      "lessons": null,
+      "killReason": null,
+      "id": "v-016",
+      "created": "2026-07-03",
+      "lastUpdated": "2026-07-03"
     }
   ]
 }
