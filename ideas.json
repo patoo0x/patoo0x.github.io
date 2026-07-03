@@ -340,7 +340,7 @@
       "slug": "hustle-link",
       "title": "Hustle Link",
       "path": "venture",
-      "status": "assessed",
+      "status": "building",
       "tagline": "Turn WhatsApp orders into Lightning payments for Caribbean hustlers.",
       "description": "Caribbean informal commerce runs on WhatsApp \u2014 cook shops, craft vendors, market stalls all take orders via chat and collect cash on delivery. Hustle Link bridges that gap: an AI agent reads WhatsApp order messages, generates Lightning invoices, and confirms payment \u2014 no app for the vendor to learn. Vendors get paid in Bitcoin instantly; buyers get a payment link in chat. Beachhead: Island Bitcoin Jamaica community vendors already using Flash wallets.",
       "tags": [
