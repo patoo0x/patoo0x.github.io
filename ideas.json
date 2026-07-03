@@ -418,7 +418,8 @@
       "killReason": null,
       "id": "v-016",
       "created": "2026-07-03",
-      "lastUpdated": "2026-07-03"
+      "lastUpdated": "2026-07-03",
+      "image": "/img/coral.png"
     }
   ]
 }
