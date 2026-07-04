@@ -420,6 +420,30 @@
       "created": "2026-07-03",
       "lastUpdated": "2026-07-03",
       "image": "/img/coral.png"
+    },
+    {
+      "slug": "trade-wind",
+      "title": "Trade Wind",
+      "path": "venture",
+      "status": "idea",
+      "tagline": "Lightning-paid import coordination for Caribbean small businesses.",
+      "description": "Caribbean merchants import everything from Miami and Panama, navigating freight forwarders, customs brokers, and couriers with WhatsApp threads and spreadsheets. Trade Wind is an AI agent that orchestrates the full import cycle: quotes from freight forwarders, customs documentation, duty estimates, and delivery tracking \u2014 all coordinated through WhatsApp. Every service gets paid in sats via Lightning. Merchants pay one transparent bundle instead of five opaque invoices. Beachhead: Island Bitcoin Jamaica vendors already importing goods monthly.",
+      "tags": [
+        "bitcoin",
+        "lightning",
+        "caribbean",
+        "logistics",
+        "ai-agents",
+        "whatsapp",
+        "flash"
+      ],
+      "link": null,
+      "revenueModel": "Per-shipment coordination fee (3-5% of freight cost, settled in sats) or flat $15-30/shipment. Freight forwarders pay listing/lead fee. Volume scales with merchant acquisition through Island Bitcoin Jamaica network.",
+      "lessons": null,
+      "killReason": null,
+      "id": "v-017",
+      "created": "2026-07-04",
+      "lastUpdated": "2026-07-04"
     }
   ]
 }
