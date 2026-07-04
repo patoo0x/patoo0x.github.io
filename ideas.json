@@ -425,7 +425,7 @@
       "slug": "trade-wind",
       "title": "Trade Wind",
       "path": "venture",
-      "status": "idea",
+      "status": "assessed",
       "tagline": "Lightning-paid import coordination for Caribbean small businesses.",
       "description": "Caribbean merchants import everything from Miami and Panama, navigating freight forwarders, customs brokers, and couriers with WhatsApp threads and spreadsheets. Trade Wind is an AI agent that orchestrates the full import cycle: quotes from freight forwarders, customs documentation, duty estimates, and delivery tracking \u2014 all coordinated through WhatsApp. Every service gets paid in sats via Lightning. Merchants pay one transparent bundle instead of five opaque invoices. Beachhead: Island Bitcoin Jamaica vendors already importing goods monthly.",
       "tags": [
@@ -438,8 +438,8 @@
         "flash"
       ],
       "link": null,
-      "revenueModel": "Per-shipment coordination fee (3-5% of freight cost, settled in sats) or flat $15-30/shipment. Freight forwarders pay listing/lead fee. Volume scales with merchant acquisition through Island Bitcoin Jamaica network.",
-      "lessons": null,
+      "revenueModel": "Per-shipment fee (3-5% of freight or $15-30 flat) is realistic; Caribbean merchants import monthly, freight ~$200-2000/shipment. Sats settlement via Flash removes FX friction; forwarder lead fees add revenue. Thin margins need volume. Island Bitcoin network gives cheap CAC. Marketplace take-rate model proven by Freightos. Early ARPU low; unit economics hinge on repeat monthly shipments.",
+      "lessons": "Incumbents: Freightos, Flexport, GoFreight, CargoNet (forwarder software); Caribbean consolidators (JP Logistics, Intl Freight Consolidators, Xpress) already do customs/delivery with WhatsApp support. Lightning infra (Lightspark, Voltage, Speed) exists but none applied to freight. No Lightning-native AI import-coordination agent for Caribbean SMBs. Risk: forwarders are suppliers not aggregators, so chicken-and-egg supply. Differentiator: Flash rails plus Island Bitcoin Jamaica beachhead nobody replicates.",
       "killReason": null,
       "id": "v-017",
       "created": "2026-07-04",
