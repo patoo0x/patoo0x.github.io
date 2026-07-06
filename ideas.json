@@ -450,7 +450,7 @@
       "slug": "grip",
       "title": "Grip",
       "path": "venture",
-      "status": "idea",
+      "status": "assessed",
       "tagline": "WhatsApp-first AI assistant for Lightning merchants \u2014 payments, reconciliation, receipts.",
       "description": "Caribbean merchants accepting Lightning at markets and cook shops struggle with unreliable internet, slow checkout, fiat/sats reconciliation, and customer education. Grip is a WhatsApp-first AI assistant that confirms payments in real time, reconciles daily totals, generates receipts, converts prices between sats and fiat, and troubleshoots failed transactions. No new hardware or app. Integrates with Flash wallet merchant API. Beachhead: Island Bitcoin Jamaica vendors already accepting sats.",
       "tags": [
@@ -464,8 +464,8 @@
         "pos"
       ],
       "link": null,
-      "revenueModel": "Per-merchant subscription ($5-10/mo) or small % of confirmed transaction volume. Flash wallet integration drives distribution. Thin margins offset by volume and merchant lock-in through reconciliation workflows.",
-      "lessons": null,
+      "revenueModel": "Per-merchant SaaS ($5-10/mo) is realistic only when ROI is obvious; many informal Caribbean vendors will not pay. A small transaction percentage (0.5-1%) aligns better with thin margins. Real edge: Flash already runs WhatsApp Lightning wallets for Island Bitcoin merchants, so integration cost is low and reconciliation lock-in is plausible. Volume, not per-seat pricing, is the path. Expect slow ARPU; value is retention and Flash ecosystem stickiness.",
+      "lessons": "Competitors: BTCPay Server (FOSS POS), OpenNode, Strike, Breez POS, Coinsnap, IBEX mobile PoS handle payments/receipts; WhatsApp crypto bots (Lite.Im, Panda) do send/buy. None combine AI reconciliation, receipts, and fiat/sats coaching inside WhatsApp for merchants. Risks: WhatsApp Business API cost/policy, thin margins, vendor willingness-to-pay, offline reliability. Differentiator: AI reconciliation layer plus Flash merchant API and Island Bitcoin distribution. Defensible mainly while tied to Flash captive vendors.",
       "killReason": null,
       "id": "v-018",
       "created": "2026-07-06",
