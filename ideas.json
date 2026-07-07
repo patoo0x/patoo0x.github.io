@@ -29,7 +29,7 @@
       "slug": "coffee-claws-chess",
       "title": "Coffee + Claws + Chess",
       "path": "venture",
-      "status": "assessed",
+      "status": "dead",
       "tagline": "Online-first thinking club for AI-native builders.",
       "description": "A premium Discord community blending three rituals: Coffee (casual conversation), Claws (OpenClaw, AI agents, automation, tool-building), and Chess (strategy and systems thinking). Weekly 60-90 minute meetups run coffee-chat intros, a live agent/workflow demo, then strategic discussion using chess as the metaphor. The community-first wedge grows into a paid builder circle, workshops, office hours, templates, sponsored sessions from AI/devtool companies, and occasional IRL coffee + chess meetups. The angle: learning to think and build with AI agents strategically.",
       "tags": [
@@ -44,10 +44,10 @@
       ],
       "link": null,
       "created": "2026-06-03",
-      "lastUpdated": "2026-06-07",
+      "lastUpdated": "2026-07-07",
       "revenueModel": "Free Discord → paid Builder Circle ($30/mo) + workshop tickets + sponsored sessions ($500 ea) + IRL event tickets ($20) + template/playbook sales ($15). Projected $4k/mo by month 6, profitable from month 2.",
       "lessons": "Chess as a shared mental model is the differentiator — not playing chess, but using chess thinking (tactics, positioning, endgame) to discuss agent architecture and strategy. Full 90-day launch plan and revenue model in assessments/c3-assessment.md.",
-      "killReason": null,
+      "killReason": "Killed 2026-07-07 by owner decision: paid builder communities are commodity (material competition by standing rules), and a weekly-hosted community collides with the Flash v0.6.0 launch marathon. The chess-as-mental-model framing was the one original asset — revivable later as a free community if the itch returns, not as a venture.",
       "image": "/img/coffee-claws-chess.png"
     },
     {
