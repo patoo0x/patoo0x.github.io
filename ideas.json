@@ -471,6 +471,30 @@
       "created": "2026-07-06",
       "lastUpdated": "2026-07-06",
       "image": "/img/grip.png"
+    },
+    {
+      "slug": "sift",
+      "title": "Sift",
+      "path": "venture",
+      "status": "idea",
+      "tagline": "AI grant intelligence for Bitcoin and freedom-tech funders.",
+      "description": "Sift is an AI agent that discovers, vets, and tracks underfunded Bitcoin and freedom-tech projects for grantmakers like OpenSats, HRF, and Spiral. It monitors GitHub activity, Nostr developer feeds, and community signals to surface high-impact work before it dies from neglect. Funders get curated deal flow with impact scoring; maintainers get discovered without grant-writing. Post-funding, Sift tracks milestones automatically. Built by someone inside the funding ecosystem who knows the blind spots.",
+      "tags": [
+        "bitcoin",
+        "open-source",
+        "ai-agents",
+        "grants",
+        "opensats",
+        "nostr",
+        "funding"
+      ],
+      "link": null,
+      "revenueModel": "Annual SaaS license per funder org ($5-20k/yr depending on assets under management). Cheaper than manual deal-flow research. OpenSats as anchor user and case study.",
+      "lessons": null,
+      "killReason": null,
+      "id": "v-019",
+      "created": "2026-07-07",
+      "lastUpdated": "2026-07-07"
     }
   ]
 }
