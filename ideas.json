@@ -55,7 +55,7 @@
       "slug": "nostr-pulse",
       "title": "Nostr Pulse",
       "path": "venture",
-      "status": "decided",
+      "status": "dead",
       "tagline": "Lightning-weighted community polling protocol for Nostr",
       "description": "Nostr has no native way for communities to gauge sentiment. Nostr Pulse is a lightweight polling protocol using new event kinds for poll creation and zap-based voting, with flexible weighting (1 sat = 1 vote, quadratic, or custom per-poll rules). The open-source protocol is free; the venture layer, Pulse Pro, is a hosted SaaS adding branded embeds, cross-community sentiment dashboards, AI summarization, and custom weighting. First real-world use case: Island Bitcoin meetup planning via a WhatsApp-to-Nostr bridge.",
       "tags": [
@@ -68,18 +68,14 @@
       ],
       "link": null,
       "created": "2026-06-05",
-      "lastUpdated": "2026-06-07",
+      "lastUpdated": "2026-07-07",
       "revenueModel": "Tiered SaaS layered on an open polling protocol. Free tier: self-serve poll creation/embeds for individuals and small communities (loss-leader, drives network effects). Pulse Pro (~$20-49/mo per org): cross-community sentiment dashboards, trend analysis over time, AI agent that summarizes open-ended responses and debate, branded embeds, custom weighting rules. Pulse Enterprise (custom): API access, SLA, custom weighting for DAO treasuries and foundations. No per-zap fee. CRITICAL REVENUE CAVEAT: the open protocol layer (the part described as the moat) is non-monetizable and already commoditized; the only defensible, billable surface is (a) the AI summarization/cross-community correlation analytics, and (b) the WhatsApp<->Nostr bridge as managed infrastructure. The lightning-weighted voting primitive that the original pitch treated as the differentiator is NOT a viable revenue or differentiation basis (see lessons). Realistic path to first dollar is selling the AI analytics + WhatsApp bridge to a tiny number of orgs (DAOs, OSS foundations, Bitcoin meetup networks), not a polling SaaS competing with free clients. TAM is small: Nostr DAU is in the low hundreds of thousands and orgs willing to pay for community-sentiment analytics number in the dozens, not thousands.",
       "lessons": "Lightning-weighted polling is already solved: NIP-69 'Zap Polls' ships in Amethyst and Snort (re-proposed as NIP-B9), and NIP-88 covers free polls. The protocol layer is crowded (6+ competing proposals) and non-monetizable, so the headline differentiator is false. The only defensible assets are off-protocol: an AI sentiment-analytics layer on existing poll data, and—most novel—a WhatsApp-to-Nostr poll bridge for Caribbean/Island Bitcoin meetups. Verdict: kill the new-protocol framing; if pursued, validate only the WhatsApp bridge MVP.",
-      "killReason": null,
+      "killReason": "Protocol layer confirmed occupied: NIP-69/B9 zap-weighted polls ship in Amethyst and Snort, NIP-88 covers free polls, with six-plus competing proposals. The pivot angles (AI sentiment layer, WhatsApp bridge) are features hunting for a product. Decision closed 2026-07-07 after a month pending: kill.",
       "decision": {
-        "status": "pending",
-        "flaggedAt": "2026-06-06",
-        "recommendation": "validate",
-        "confidence": "high",
-        "rationale": "The headline protocol play is dead on arrival: lightning-weighted polling already ships in Amethyst and Snort via NIP-69/B9 (since 2023), and free polling is standardized in NIP-88 with multiple live clients (Pollerama, getwired, Pollstr). Competing on a new poll kind would add a 7th fragmented standard to an already-crowded design space — non-monetizable and undifferentiated. KILL that framing. But two off-protocol assets survive and are genuinely defensible: (1) the WhatsApp<->Nostr poll bridge for Island Bitcoin / Caribbean meetups — no turnkey equivalent exists, low build cost, real underserved user demand, and a warm beachhead via the Jamaica meetup; (2) an AI sentiment-analytics layer on TOP of existing NIP-88/69 data. Neither requires inventing a protocol. The risk is not technical (Baileys + nostr-tools + a vote-parser is a weekend MVP) — it is demand: will non-Nostr Caribbean users actually engage with poll replies over WhatsApp? That single unknown is worth one cheap, real-world test before committing build resources. Hence validate, not build, not kill.",
-        "buildEstimate": "Scrappy MVP: 1-2 weeks for the WhatsApp<->Nostr bridge (Baileys client + nostr-tools relay client + vote-parser on existing NIP-88/69 kinds). Validation window: one Island Bitcoin Jamaica meetup cycle (~4 weeks). Full build only if engagement validates.",
-        "nextStep": "Run a one-meetup validation: build the bare WhatsApp->Nostr poll bridge using existing NIP-88/69 kinds (NO new protocol), deploy it for the next Island Bitcoin Jamaica meetup-planning poll, and measure whether non-Nostr Caribbean users actually cast votes via text reply. Define a clear pass bar up front (e.g. 15+ real human votes from non-Nostr users). Pass -> build out AI analytics layer. Fail -> kill."
+        "status": "closed",
+        "decidedAt": "2026-07-07",
+        "outcome": "kill"
       },
       "image": "/img/nostr-pulse.png"
     },
@@ -365,7 +361,7 @@
       "slug": "campfire",
       "title": "Campfire",
       "path": "venture",
-      "status": "assessed",
+      "status": "decided",
       "tagline": "Lightning-paid, AI-moderated focus groups for Bitcoin and freedom-tech projects.",
       "description": "Finding product-market fit in Bitcoin is hard — the audience is niche, global, and privacy-conscious. Campfire lets projects post research questions and recruit verified Bitcoin/Nostr community members for paid focus groups, settled in sats via Lightning. An AI agent moderates sessions, synthesizes responses, and generates insight reports. Nostr identity provides pseudonymous verification without doxxing. Beachhead: Flash testing features with Island Bitcoin Jamaica members.",
       "tags": [
@@ -381,25 +377,22 @@
       "revenueModel": "Start as a paid research service before a marketplace: one-off Campfire cycles for Bitcoin/freedom-tech teams at ~$100-300 per session, with participants paid in sats and Campfire taking a service margin. Later expand into marketplace take (15-20%) on sats settled to verified participants; $99/mo Pro for recurring cycles, custom Nostr screening, and priority recruitment; enterprise pricing for foundations and funded startups needing continuous feedback loops. Flash can also capture Lightning settlement and bundle Campfire with wallet infra. Standalone AI insight reports are an upsell. Early revenue is thin, but CAC is low via Island Bitcoin and Flash.",
       "lessons": "Reframed after competitor review: Campfire is not a general forum, review site, poll app, or bounty board. Stacker News is the strongest indirect substitute because founders can already post questions, boost them, zap useful replies, and reach a real Bitcoin audience; Campfire must beat it with screened participants, guided/private cohorts, and founder-ready insight reports. Candeq is relevant only if Campfire drifts into public reviews/social proof; avoid that lane early and stay focused on pre-launch product discovery. Pollerama is feature-level competition for Nostr-native polls, not the product. Stakwork proves Lightning-paid work is viable but is not optimized for qualitative research. The real moat is access to verified Bitcoin/Nostr users, sats payouts, pseudonymous verification, and Flash/Island Bitcoin distribution; AI moderation is commoditized.",
       "decision": {
-        "status": "pending",
-        "flaggedAt": "2026-07-02",
-        "recommendation": "validate",
-        "confidence": "medium-high",
-        "rationale": "There is still a credible wedge, but only if Campfire is positioned as paid customer discovery for Bitcoin/freedom-tech teams that need real user feedback without forcing users to dox themselves. Competing head-on with Stacker News as a discussion community or with Candeq as a review/reputation network would dilute the product. The right test is whether teams will pay for structured, pseudonymous, Lightning-paid research sessions and usable insight memos.",
-        "buildEstimate": "Scrappy validation: 2-5 days to run manually with lightweight tooling, sats payouts, AI transcript synthesis, and a simple intake/report template. Marketplace product only after repeated paid demand.",
-        "nextStep": "Run one Flash research cycle: post 3 questions for an upcoming feature, recruit 10-15 Island Bitcoin/Flash users, pay each participant sats, verify lightly via Flash/Nostr/community membership, and deliver a founder-ready memo with themes, objections, quotes, and product recommendations. Pass bar: Flash or another Bitcoin company would pay $100-300 to run the same cycle again."
+        "status": "validating",
+        "decidedAt": "2026-07-07",
+        "outcome": "validate",
+        "rationale": "Approved 2026-07-07: run one manual paid Campfire cycle (5 screened Bitcoin/Nostr participants, one research question, sats payouts, AI-synthesized report) before writing any code. Build/kill decision follows the pilot result. Plan: assessments/campfire-validation-plan.md"
       },
       "killReason": null,
       "id": "v-015",
       "created": "2026-07-02",
-      "lastUpdated": "2026-07-02",
+      "lastUpdated": "2026-07-07",
       "image": "/img/campfire.png"
     },
     {
       "slug": "coral",
       "title": "Coral",
       "path": "venture",
-      "status": "assessed",
+      "status": "decided",
       "tagline": "AI onboarding concierge that turns Bitcoin curiosity into action.",
       "description": "Coral is an AI onboarding concierge that lives in WhatsApp and guides newcomers through their first Bitcoin experience — wallet setup, first Lightning payment, receiving sats, and joining Nostr communities. Deployed by community organizations (Island Bitcoin, meetups, wallet operators), Coral handles 90% of support questions automatically, escalates complex ones to humans, and tracks conversion through each onboarding step. Built for Flash wallet integration. Scales the one-on-one hand-holding every Bitcoin community struggles with.",
       "tags": [
@@ -414,12 +407,18 @@
       ],
       "link": null,
       "revenueModel": "SaaS $49-149/mo per community is thin; Bitcoin meetup organizers rarely have budgets. Real money is wallet-operator per-onboarded-user ($0.50-2) and NGO/remittance programs. Serviceable market small (hundreds of orgs). Viable mainly as a Flash distribution wedge, not standalone SaaS. Bundle free with Flash to drive activation; monetize via wallet transaction volume and enterprise cross-border deals over per-seat subscriptions.",
-      "lessons": "No dedicated Bitcoin-community concierge exists — white space. But commodity WhatsApp chatbot builders (YourGPT, AiSensy) plus ChatGPT let anyone clone it; infra (Privy, Turnkey) and KYC (Persona) are adjacent. Biggest risk: regulators flag WhatsApp crypto education groups as scam vectors, so trust/branding is critical. Differentiator: Flash wallet integration plus Island Bitcoin Caribbean community distribution Patoo already owns. Defensible only if bundled with Flash, not generic SaaS.",
+      "lessons": "Terminal 2026-07-07: absorbed into Flash roadmap as an onboarding/activation wedge. Not a standalone venture; the distribution asset (Flash + Island Bitcoin) belongs to the wallet, so the concierge should live there too.",
       "killReason": null,
       "id": "v-016",
       "created": "2026-07-03",
-      "lastUpdated": "2026-07-03",
-      "image": "/img/coral.png"
+      "lastUpdated": "2026-07-07",
+      "image": "/img/coral.png",
+      "decision": {
+        "status": "closed",
+        "decidedAt": "2026-07-07",
+        "outcome": "absorbed-into-flash",
+        "rationale": "Own assessment: viable mainly as a Flash distribution wedge, not standalone SaaS. Absorbed into the Flash growth roadmap (Linear ticket filed); pipeline entry terminal."
+      }
     },
     {
       "slug": "trade-wind",
@@ -450,7 +449,7 @@
       "slug": "grip",
       "title": "Grip",
       "path": "venture",
-      "status": "assessed",
+      "status": "decided",
       "tagline": "WhatsApp-first AI assistant for Lightning merchants — payments, reconciliation, receipts.",
       "description": "Caribbean merchants accepting Lightning at markets and cook shops struggle with unreliable internet, slow checkout, fiat/sats reconciliation, and customer education. Grip is a WhatsApp-first AI assistant that confirms payments in real time, reconciles daily totals, generates receipts, converts prices between sats and fiat, and troubleshoots failed transactions. No new hardware or app. Integrates with Flash wallet merchant API. Beachhead: Island Bitcoin Jamaica vendors already accepting sats.",
       "tags": [
@@ -469,8 +468,14 @@
       "killReason": null,
       "id": "v-018",
       "created": "2026-07-06",
-      "lastUpdated": "2026-07-06",
-      "image": "/img/grip.png"
+      "lastUpdated": "2026-07-07",
+      "image": "/img/grip.png",
+      "decision": {
+        "status": "closed",
+        "decidedAt": "2026-07-07",
+        "outcome": "merged-into-v-014",
+        "rationale": "Same user, same channel, same wallet rails as Hustle Link: grip is the post-payment feature set (confirmations, reconciliation, receipts, fiat/sats coaching). Merged onto the hustle-link roadmap 2026-07-07; one venture owns the full merchant loop."
+      }
     },
     {
       "slug": "sift",
