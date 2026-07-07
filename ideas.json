@@ -476,7 +476,7 @@
       "slug": "sift",
       "title": "Sift",
       "path": "venture",
-      "status": "idea",
+      "status": "assessed",
       "tagline": "AI grant intelligence for Bitcoin and freedom-tech funders.",
       "description": "Sift is an AI agent that discovers, vets, and tracks underfunded Bitcoin and freedom-tech projects for grantmakers like OpenSats, HRF, and Spiral. It monitors GitHub activity, Nostr developer feeds, and community signals to surface high-impact work before it dies from neglect. Funders get curated deal flow with impact scoring; maintainers get discovered without grant-writing. Post-funding, Sift tracks milestones automatically. Built by someone inside the funding ecosystem who knows the blind spots.",
       "tags": [
@@ -489,8 +489,8 @@
         "funding"
       ],
       "link": null,
-      "revenueModel": "Annual SaaS license per funder org ($5-20k/yr depending on assets under management). Cheaper than manual deal-flow research. OpenSats as anchor user and case study.",
-      "lessons": null,
+      "revenueModel": "Annual SaaS $5-20k/funder. But TAM tiny: ~10-15 serious Bitcoin/freedom-tech grantmakers (OpenSats, HRF, Spiral, Brink). Total ceiling ~$150-300k/yr. Funders run lean, route 100% to grantees, low SaaS willingness-to-pay. Better as a bundled service or expand to broader FOSS funders (Gitcoin, Sovereign Tech Fund, NLnet) to reach venture scale.",
+      "lessons": "No direct competitor serves Bitcoin FOSS funders with AI deal-flow. Adjacent: grant-intelligence tools (Instrumentl, GrantWatch, Foundant) serve grant-seekers; gitdealflow.com scores GitHub momentum for VCs; grantmaking.ai does AI-safety funder curation. Core tech (GitHub/impact scoring) is commoditized, not defensible. Real moat is Dread OpenSats insider access. Verdict: genuine white-space but tiny TAM caps it at a niche tool, not venture-scale. Assessed \u2014 pursue only if broadened beyond Bitcoin.",
       "killReason": null,
       "id": "v-019",
       "created": "2026-07-07",
