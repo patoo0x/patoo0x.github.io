@@ -494,7 +494,8 @@
       "killReason": null,
       "id": "v-019",
       "created": "2026-07-07",
-      "lastUpdated": "2026-07-07"
+      "lastUpdated": "2026-07-07",
+      "image": "/img/sift.png"
     }
   ]
 }
