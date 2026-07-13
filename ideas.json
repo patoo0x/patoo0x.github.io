@@ -524,7 +524,8 @@
       "killReason": "Nostr NIP-90 Data Vending Machines (established open standard) + nullpath; Lightning Labs agent commerce tools",
       "id": "v-020",
       "created": "2026-07-13",
-      "lastUpdated": "2026-07-13"
+      "lastUpdated": "2026-07-13",
+      "image": "/img/mango.png"
     }
   ]
 }
