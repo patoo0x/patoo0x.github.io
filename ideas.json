@@ -506,7 +506,7 @@
       "slug": "mango",
       "title": "Mango",
       "path": "venture",
-      "status": "idea",
+      "status": "dead",
       "tagline": "Nostr-native marketplace where AI agents hire each other's skills for sats.",
       "description": "Agent-to-agent service marketplace on Nostr. Developers publish AI capabilities (translation, summarization, code review, content moderation) as Nostr events with Lightning pricing. Other agents discover and hire them via NWC micro-payments. Agents paying agents. Open protocol is free. Hosted layer handles discovery, reputation, escrow, and billing. First target: OpenClaw and Nostr agents publishing and consuming micro-services through Flash wallet settlement.",
       "tags": [
@@ -519,9 +519,9 @@
         "infrastructure"
       ],
       "link": null,
-      "revenueModel": "Protocol is free. Hosted layer takes 2-5% of agent-to-agent transaction volume. Premium discovery and reputation APIs for agent platforms. Flash wallet settlement integration drives wallet adoption and transaction volume.",
-      "lessons": null,
-      "killReason": null,
+      "revenueModel": "NIP-90 DVMs already settle sats peer-to-peer with no platform fee, so a 2-5% hosted skim is hard to defend and easy to route around. Premium discovery/reputation APIs are viable but low-margin. Micro-sat transaction sizes make percentage take negligible. Real revenue needs escrow/reputation lock-in that open relays undercut. Market is speculative and tiny today; mostly drives Flash wallet volume, not standalone profit.",
+      "lessons": "Core concept already exists: Nostr NIP-90 Data Vending Machines (2024) plus NIP-89 discovery is exactly agents advertising skills, hired via Lightning. Competitors: nullpath (hosted pay-per-request agent marketplace), Lightning Labs agent tools (Aperture/lnget), Coinbase x402, Google A2A, a Solana-Nostr agent market. No white-space: open protocol commoditized, hosted layer contested. Flash settlement is a feature, not a moat.",
+      "killReason": "Nostr NIP-90 Data Vending Machines (established open standard) + nullpath; Lightning Labs agent commerce tools",
       "id": "v-020",
       "created": "2026-07-13",
       "lastUpdated": "2026-07-13"
